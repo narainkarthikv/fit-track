@@ -8,12 +8,20 @@ import SignUp from './pages/SignUp';
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userID, setUserID] = useState('');
+  const [notifications, setNotifications] = useState([
+    { id: 1, message: 'Welcome to Fit Track!', read: false },
+    { id: 2, message: 'Your profile is 80% complete.', read: false }
+  ]);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserID('');
-    navigate('/');
+    navigate('/login');
+  };
+
+  const markNotificationsAsRead = () => {
+    setNotifications(notifications.map(n => ({ ...n, read: true })));
   };
 
   const renderLogin = () => (
@@ -31,7 +39,14 @@ const App = () => {
 
   return (
     <div className="App">
-      {isLoggedIn && <NavBar user={userID} handleLogout={handleLogout} />}
+      {isLoggedIn && (
+        <NavBar 
+          user={userID} 
+          handleLogout={handleLogout} 
+          notifications={notifications} 
+          markNotificationsAsRead={markNotificationsAsRead}
+        />
+      )}
       <Routes>
         <Route path="/login" element={renderLogin()} />
         <Route path={`/${userID}`} element={renderHome()} />

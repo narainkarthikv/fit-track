@@ -1,51 +1,89 @@
 import React from 'react';
-import { FaDoorOpen, FaPencilAlt, FaDumbbell, FaUserAlt } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-
-const NavBar = ({ user, handleLogout }) => {
+import { Navbar, Nav, NavDropdown, Badge, Container } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import { FaDumbbell } from 'react-icons/fa';
+const NavBar = ({ user, handleLogout, notifications }) => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-4 d-flex flex-row">
-      <BrandLink user={user} />
-      <div className="ml-auto d-flex">
-        <NavDropdown user={user} handleLogout={handleLogout} />
-      </div>
-    </nav>
+    <Navbar bg="dark" variant="dark" expand="lg">
+      <Container fluid className="d-flex justify-content-between align-items-center px-4">
+        <LinkContainer to={`/${user}`}>
+          <Navbar.Brand>
+            <FaDumbbell className="mb-1" /> Fit-Track
+          </Navbar.Brand>
+        </LinkContainer>
+        <Navbar.Toggle aria-controls="navbar-content" />
+        <Navbar.Collapse id="navbar-content" className="justify-content-end">
+          <Nav>
+            <NotificationDropdown notifications={notifications} />
+            <UserDropdown user={user} handleLogout={handleLogout} />
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 };
 
-const BrandLink = ({ user }) => (
-  <Link className="navbar-brand" to={`/${user}`}>
-    <FaDumbbell className='mb-1' /> Fit Track
-  </Link>
-);
+const NotificationDropdown = ({ notifications = [] }) => {
+  const unreadNotifications = notifications.filter(n => !n.read);
+  const readNotifications = notifications.filter(n => n.read);
+  const unreadCount = unreadNotifications.length;
 
-const NavDropdown = ({ user, handleLogout }) => (
-  <ul className="navbar-nav">
-    <li className="nav-item dropdown">
-      <button
-        className="nav-link dropdown-toggle btn btn-dark"
-        id="navbarDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        <FaUserAlt />
-      </button>
-      <ul className="dropdown-menu dropdown-menu-end text-center bg-dark" aria-labelledby="navbarDropdown">
-        <DropdownItem to={`/${user}/edit`} icon={<FaPencilAlt />} label="Edit Profile" className="text-primary" />
-        <li>
-          <button className="dropdown-item font-weight-bold btn text-danger" onClick={handleLogout}>
-            <FaDoorOpen /> Logout
-          </button>
-        </li>
-      </ul>
-    </li>
-  </ul>
-);
+  return (
+    <NavDropdown
+      title={
+        <span>
+          <i className="bi bi-bell-fill"></i>
+          {unreadCount > 0 && <Badge pill bg="danger" className="ms-1">{unreadCount}</Badge>}
+        </span>
+      }
+      id="notificationDropdown"
+      align="end"
+    >
+      {notifications.length > 0 ? (
+        <>
+          <NavDropdown.Header>Unread Notifications</NavDropdown.Header>
+          {unreadNotifications.length > 0 ? (
+            unreadNotifications.map((notification, index) => (
+              <NavDropdown.Item key={`unread-${index}`} className="fw-bold">
+                {notification.message}
+              </NavDropdown.Item>
+            ))
+          ) : (
+            <NavDropdown.Item className="text-muted">No unread notifications</NavDropdown.Item>
+          )}
 
-const DropdownItem = ({ to, icon, label, className }) => (
-  <Link className={`dropdown-item font-weight-bold btn ${className}`} to={to}>
-    {icon} {label}
-  </Link>
+          <NavDropdown.Divider />
+
+          <NavDropdown.Header>Read Notifications</NavDropdown.Header>
+          {readNotifications.length > 0 ? (
+            readNotifications.map((notification, index) => (
+              <NavDropdown.Item key={`read-${index}`}>
+                {notification.message}
+              </NavDropdown.Item>
+            ))
+          ) : (
+            <NavDropdown.Item className="text-muted">No read notifications</NavDropdown.Item>
+          )}
+        </>
+      ) : (
+        <NavDropdown.Item className="text-muted">No new notifications</NavDropdown.Item>
+      )}
+    </NavDropdown>
+  );
+};
+
+const UserDropdown = ({ user, handleLogout }) => (
+  <NavDropdown title={<i className="bi bi-person-circle"></i>} id="userDropdown" align="end">
+    <LinkContainer to={`/${user}/edit`}>
+      <NavDropdown.Item className="text-primary">
+        <i className="bi bi-pencil-square me-2"></i> Edit Profile
+      </NavDropdown.Item>
+    </LinkContainer>
+    <NavDropdown.Divider />
+    <NavDropdown.Item className="text-danger" onClick={handleLogout}>
+      <i className="bi bi-box-arrow-right me-2"></i> Logout
+    </NavDropdown.Item>
+  </NavDropdown>
 );
 
 export default NavBar;
