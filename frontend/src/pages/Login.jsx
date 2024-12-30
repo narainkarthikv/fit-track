@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { FaDumbbell, FaEnvelope, FaLock } from 'react-icons/fa'; 
 import { BsEmojiSmile } from 'react-icons/bs'; 
+import InputField from '../components/common/InputField';
 
 const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -88,27 +89,18 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
         
         <HeaderSection />
 
-        <InputField
-          label="Email"
-          id="email"
-          type="email"
-          placeholder="Enter your email"
-          value={credentials.email}
-          onChange={handleInputChange}
-          icon={<FaEnvelope />}
-          required
-        />
-
-        <InputField
-          label="Password"
-          id="password"
-          type="password"
-          placeholder="Enter your password"
-          value={credentials.password}
-          onChange={handleInputChange}
-          icon={<FaLock />}
-          required
-        />
+        {['email', 'password'].map((field, index) => (
+          <InputField
+            key={index}
+            id={field}
+            name={field}
+            type={field === 'password' ? 'password' : 'email'}
+            placeholder={`Enter your ${field}`}
+            value={credentials[field]}
+            onChange={handleInputChange}
+            Icon={getIcon(field)}
+          />
+        ))}
 
         <SubmitButton isSubmitting={isSubmitting} />
 
@@ -126,30 +118,6 @@ const HeaderSection = () => (
   <div className="text-center mb-4">
     <FaDumbbell size={50} color="#ff6f61" aria-hidden="true" />
     <h1 className="text-center mt-2" style={{ color: '#ff6f61' }}>Fit-Track Login</h1>
-  </div>
-);
-
-const InputField = ({ label, id, type, placeholder, value, onChange, icon, required }) => (
-  <div className="form-group mb-3">
-    <label htmlFor={id} className="text-muted">{label}</label>
-    <div className="input-group">
-      <div className="input-group-prepend">
-        <span className="input-group-text">
-          {icon}
-        </span>
-      </div>
-      <input
-        id={id}
-        className="form-control border-secondary"
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        required={required}
-        aria-required={required}
-        aria-label={`${label} input`}
-      />
-    </div>
   </div>
 );
 
@@ -184,5 +152,16 @@ const EmojiSection = ({ emoji, onClick }) => (
     </span>
   </div>
 );
+
+const getIcon = (field) => {
+  switch (field) {
+    case 'email':
+      return FaEnvelope;
+    case 'password':
+      return FaLock;
+    default:
+      return null;
+  }
+};
 
 export default LoginPage;

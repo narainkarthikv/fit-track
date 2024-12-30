@@ -97,7 +97,7 @@ router.post('/:userId/track-exercise', async (req, res) => {
     }
 
     await exerciseData.save();
-    res.status(201).json({ message: 'Exercise data updated successfully', data: exerciseData });
+    res.status(201).json({ message: 'Exercise data updated successfully', data: exerciseData.trackExercises });
   } catch (error) {
     console.error('Error updating exercise data:', error);
     res.status(500).json({ message: 'Error updating exercise data' });
@@ -124,6 +124,7 @@ router.get('/:userId/data/:month', async (req, res) => {
             $gte: startDate,
             $lt: new Date(endDate.getTime() + 24 * 60 * 60 * 1000), // inclusive of last day
           },
+          userId: userId
         }
       },
       {

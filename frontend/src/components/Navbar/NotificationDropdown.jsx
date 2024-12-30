@@ -1,27 +1,5 @@
 import React from 'react';
-import { Navbar, Nav, NavDropdown, Badge, Container } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-import { FaDumbbell } from 'react-icons/fa';
-const NavBar = ({ user, handleLogout, notifications }) => {
-  return (
-    <Navbar bg="dark" variant="dark" expand="lg">
-      <Container fluid className="d-flex justify-content-between align-items-center px-4">
-        <LinkContainer to={`/${user}`}>
-          <Navbar.Brand>
-            <FaDumbbell className="mb-1" /> Fit-Track
-          </Navbar.Brand>
-        </LinkContainer>
-        <Navbar.Toggle aria-controls="navbar-content" />
-        <Navbar.Collapse id="navbar-content" className="justify-content-end">
-          <Nav>
-            <NotificationDropdown notifications={notifications} />
-            <UserDropdown user={user} handleLogout={handleLogout} />
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  );
-};
+import { NavDropdown, Badge } from 'react-bootstrap';
 
 const NotificationDropdown = ({ notifications = [] }) => {
   const unreadNotifications = notifications.filter(n => !n.read);
@@ -51,9 +29,7 @@ const NotificationDropdown = ({ notifications = [] }) => {
           ) : (
             <NavDropdown.Item className="text-muted">No unread notifications</NavDropdown.Item>
           )}
-
           <NavDropdown.Divider />
-
           <NavDropdown.Header>Read Notifications</NavDropdown.Header>
           {readNotifications.length > 0 ? (
             readNotifications.map((notification, index) => (
@@ -72,18 +48,4 @@ const NotificationDropdown = ({ notifications = [] }) => {
   );
 };
 
-const UserDropdown = ({ user, handleLogout }) => (
-  <NavDropdown title={<i className="bi bi-person-circle"></i>} id="userDropdown" align="end">
-    <LinkContainer to={`/${user}/edit`}>
-      <NavDropdown.Item className="text-primary">
-        <i className="bi bi-pencil-square me-2"></i> Edit Profile
-      </NavDropdown.Item>
-    </LinkContainer>
-    <NavDropdown.Divider />
-    <NavDropdown.Item className="text-danger" onClick={handleLogout}>
-      <i className="bi bi-box-arrow-right me-2"></i> Logout
-    </NavDropdown.Item>
-  </NavDropdown>
-);
-
-export default NavBar;
+export default NotificationDropdown;
