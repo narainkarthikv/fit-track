@@ -3,34 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaRunning, FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-
-// InputField Component
-const InputField = ({ id, name, type, placeholder, value, onChange, Icon }) => (
-  <div className="form-group mb-3">
-    <label htmlFor={id} className="visually-hidden">
-      {placeholder}
-    </label>
-    <div className="input-group">
-      <div className="input-group-prepend">
-        <span className="input-group-text">
-          <Icon />
-        </span>
-      </div>
-      <input
-        id={id}
-        className="form-control border-secondary"
-        type={type}
-        placeholder={placeholder}
-        name={name}
-        value={value}
-        onChange={onChange}
-        required
-        aria-required="true"
-        aria-label={`${placeholder} input`}
-      />
-    </div>
-  </div>
-);
+import InputField from '../components/common/InputField';
 
 // Main SignUp Component
 const SignUp = () => {
@@ -93,52 +66,23 @@ const SignUp = () => {
         style={{ width: '100%', maxWidth: '400px', borderRadius: '12px' }}
         onSubmit={handleSubmit}
       >
-        <div className="mb-4">
-          <FaRunning size={50} color="#ff6f61" aria-hidden="true" />
-          <h1 className="mt-2" style={{ color: '#ff6f61' }}>Join Fit-Track</h1>
-          <p className="text-muted">Your fitness journey starts here!</p>
-        </div>
-
+        <HeaderSection />
         <ProgressBar now={progress} className="mb-3" animated style={{ height: '10px', borderRadius: '5px' }} />
         <div className="text-muted mb-3">{message}</div>
 
         {/* Input Fields using InputField Component */}
-        <InputField
-          id="username"
-          name="username"
-          type="text"
-          placeholder="Username"
-          value={formState.username}
-          onChange={handleChange}
-          Icon={FaUser}
-        />
-        <InputField
-          id="email"
-          name="email"
-          type="email"
-          placeholder="Email"
-          value={formState.email}
-          onChange={handleChange}
-          Icon={FaEnvelope}
-        />
-        <InputField
-          id="password"
-          name="password"
-          type="password"
-          placeholder="Password"
-          value={formState.password}
-          onChange={handleChange}
-          Icon={FaLock}
-        />
-        <InputField
-          id="confirmPassword"
-          name="confirmPassword"
-          type="password"
-          placeholder="Confirm Password"
-          value={formState.confirmPassword}
-          onChange={handleChange}
-          Icon={FaLock}
-        />
+        {['username', 'email', 'password', 'confirmPassword'].map((field, index) => (
+          <InputField
+            key={index}
+            id={field}
+            name={field}
+            type={field.includes('password') ? 'password' : 'text'}
+            placeholder={capitalizeFirstLetter(field)}
+            value={formState[field]}
+            onChange={handleChange}
+            Icon={getIcon(field)}
+          />
+        ))}
 
         {error && <div className="text-danger mb-3">{error}</div>}
 
@@ -155,6 +99,30 @@ const SignUp = () => {
       </form>
     </div>
   );
+};
+
+const HeaderSection = () => (
+  <div className="mb-4">
+    <FaRunning size={50} color="#ff6f61" aria-hidden="true" />
+    <h1 className="mt-2" style={{ color: '#ff6f61' }}>Join Fit-Track</h1>
+    <p className="text-muted">Your fitness journey starts here!</p>
+  </div>
+);
+
+const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+
+const getIcon = (field) => {
+  switch (field) {
+    case 'username':
+      return FaUser;
+    case 'email':
+      return FaEnvelope;
+    case 'password':
+    case 'confirmPassword':
+      return FaLock;
+    default:
+      return null;
+  }
 };
 
 export default SignUp;

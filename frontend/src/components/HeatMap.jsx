@@ -65,7 +65,7 @@ const HeatMap = ({ userID }) => {
     const renderCalendarHeatmap = () => {
         const year = new Date().getFullYear();
         const monthIndex = months.indexOf(selectedMonth);
-        const startDate = new Date(year, monthIndex, 1); 
+        const startDate = new Date(year, monthIndex, 0); 
         const endDate = new Date(year, monthIndex + 1, 0);
 
         const transformedData = Array.isArray(monthData) ? monthData.map(item => ({
@@ -83,9 +83,9 @@ const HeatMap = ({ userID }) => {
                     values={transformedData}
                     classForValue={(value) => {
                         if (!value || value.count === 0) return 'color-empty';
-                        if (value.count < 4) return 'bg-danger';
-                        if (value.count < 8) return 'bg-warning';
-                        return 'bg-success';
+                        if (value.count < 4) return 'color-scale-1';
+                        if (value.count < 8) return 'color-scale-2';
+                        return 'color-scale-3';
                     }}
                     onClick={handleClick}
                     horizontal={false}
