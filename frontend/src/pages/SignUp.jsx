@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaRunning, FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
-import ProgressBar from 'react-bootstrap/ProgressBar';
+import { Form, Button, Container, Card, ProgressBar } from 'react-bootstrap';
 import InputField from '../components/common/InputField';
+import HeaderSection from '../components/common/HeaderSection';
+import SubmitButton from '../components/common/SubmitButton';
+import SignupLink from '../components/common/SignupLink';
 
-// Main SignUp Component
 const SignUp = () => {
   const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
@@ -25,7 +27,6 @@ const SignUp = () => {
     const { name, value } = e.target;
     setFormState((prevState) => ({ ...prevState, [name]: value }));
 
-    // Calculate progress based on the number of fields filled
     const filledFields = Object.values({ ...formState, [name]: value }).filter((field) => field !== '').length;
     const newProgress = (filledFields / 4) * 100;
     setProgress(newProgress);
@@ -60,54 +61,36 @@ const SignUp = () => {
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-center vh-100" style={{ backgroundColor: '#d3d3d3' }}>
-      <form
-        className="p-5 bg-light rounded shadow-lg text-center"
-        style={{ width: '100%', maxWidth: '400px', borderRadius: '12px' }}
-        onSubmit={handleSubmit}
-      >
-        <HeaderSection />
-        <ProgressBar now={progress} className="mb-3" animated style={{ height: '10px', borderRadius: '5px' }} />
-        <div className="text-muted mb-3">{message}</div>
+    <Container fluid className="d-flex align-items-center justify-content-center vh-100" style={{ backgroundColor: '#d3d3d3' }}>
+      <Card className="p-5 bg-light rounded shadow-lg text-center" style={{ width: '100%', maxWidth: '400px' }}>
+        <Form onSubmit={handleSubmit} style={{ borderRadius: '12px' }}>
+          <HeaderSection title="Join Fit-Track" icon={<FaRunning size={50} color="#ff6f61" />} />
+          <ProgressBar now={progress} className="mb-3" animated style={{ height: '10px', borderRadius: '5px' }} />
+          <div className="text-muted mb-3">{message}</div>
 
-        {/* Input Fields using InputField Component */}
-        {['username', 'email', 'password', 'confirmPassword'].map((field, index) => (
-          <InputField
-            key={index}
-            id={field}
-            name={field}
-            type={field.includes('password') ? 'password' : 'text'}
-            placeholder={capitalizeFirstLetter(field)}
-            value={formState[field]}
-            onChange={handleChange}
-            Icon={getIcon(field)}
-          />
-        ))}
+          {['username', 'email', 'password', 'confirmPassword'].map((field, index) => (
+            <InputField
+              key={index}
+              id={field}
+              name={field}
+              type={field.includes('password') ? 'password' : 'text'}
+              placeholder={capitalizeFirstLetter(field)}
+              value={formState[field]}
+              onChange={handleChange}
+              Icon={getIcon(field)}
+            />
+          ))}
 
-        {error && <div className="text-danger mb-3">{error}</div>}
+          {error && <div className="text-danger mb-3">{error}</div>}
 
-        <button className="btn btn-danger btn-block mb-4" type="submit">
-          Start Your Journey
-        </button>
+          <SubmitButton text="Start Your Journey" />
 
-        <div className="text-muted small">
-          Already have an account?{' '}
-          <Link to="/login" className="text-primary" aria-label="Login">
-            Log in
-          </Link>
-        </div>
-      </form>
-    </div>
+          <SignupLink text="Already have an account?" linkText="Log in" linkTo="/login" />
+        </Form>
+      </Card>
+    </Container>
   );
 };
-
-const HeaderSection = () => (
-  <div className="mb-4">
-    <FaRunning size={50} color="#ff6f61" aria-hidden="true" />
-    <h1 className="mt-2" style={{ color: '#ff6f61' }}>Join Fit-Track</h1>
-    <p className="text-muted">Your fitness journey starts here!</p>
-  </div>
-);
 
 const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 

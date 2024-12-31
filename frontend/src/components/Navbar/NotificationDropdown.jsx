@@ -9,9 +9,13 @@ const NotificationDropdown = ({ notifications = [] }) => {
   return (
     <NavDropdown
       title={
-        <span>
+        <span className="position-relative px-1">
           <i className="bi bi-bell-fill"></i>
-          {unreadCount > 0 && <Badge pill bg="danger" className="ms-1">{unreadCount}</Badge>}
+          {unreadCount > 0 && (
+            <Badge pill bg="danger" className="position-absolute top-0 start-100 translate-middle">
+              {unreadCount}
+            </Badge>
+          )}
         </span>
       }
       id="notificationDropdown"

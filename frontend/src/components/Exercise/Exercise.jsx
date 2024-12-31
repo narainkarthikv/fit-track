@@ -1,4 +1,5 @@
 import { FaCheckCircle, FaTimesCircle, FaTrash } from "react-icons/fa";
+import { Button, Table } from "react-bootstrap";
 
 const Exercise = ({ deleteExercise, exercise }) => {
     return (
@@ -13,9 +14,9 @@ const Exercise = ({ deleteExercise, exercise }) => {
                 )}
             </td>
             <td>
-                <button className="btn btn-outline-danger btn-md rounded-pill" onClick={() => deleteExercise(exercise._id)}>
+                <Button variant="outline-danger" size="md" className="rounded-pill" onClick={() => deleteExercise(exercise._id)}>
                     <FaTrash className="d-flex align-items-center" />
-                </button>
+                </Button>
             </td>
         </tr>
     );

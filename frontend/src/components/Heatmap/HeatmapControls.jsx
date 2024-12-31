@@ -20,7 +20,7 @@ const HeatmapControls = ({ selectedMonth, setSelectedMonth, handleAddExercise, m
                 </select>
             </div>
             <div>
-                <Button variant="primary" onClick={handleAddExercise}>Add Exercise</Button>
+                <Button variant="btn btn-outline-primary" onClick={handleAddExercise}>Add Exercise</Button>
             </div>
         </div>
     );

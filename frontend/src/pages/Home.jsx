@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 import ExercisesList from '../components/ExercisesList';
 import Quotes from '../components/Quotes';
 import UserRoutine from '../components/UserRoutine';
@@ -41,46 +42,46 @@ const Home = ({ user }) => {
   }, [user, backendURL]);
 
   return (
-    <div className="container-fluid">
-      <div className="row mt-3">
-        <div className="col-sm-3 col-md-3 col-lg-3 mb-3">
-          <div className="border rounded-5 p-3 bg-dark text-white">
+    <Container fluid>
+      <Row className="mt-3">
+        <Col sm={3} md={3} lg={3} className="mb-3">
+          <Card className="bg-dark text-white rounded-5 p-3">
             <UserExperience userID={user} userDetails={userDetails} />
-          </div>
-        </div>
-        <div className="col-sm-6 col-md-6 col-lg-6 mb-3">
-          <div className="border rounded-5 p-3 bg-dark text-white">
+          </Card>
+        </Col>
+        <Col sm={6} md={6} lg={6} className="mb-3">
+          <Card className="bg-dark text-white rounded-5 p-3">
             <Quotes userID={user} quote={quote} />
-          </div>
-        </div>
-        <div className="col-sm-3 col-md-3 col-lg-3 mb-3">
-          <div className="border rounded-5 p-3 bg-dark text-white">
+          </Card>
+        </Col>
+        <Col sm={3} md={3} lg={3} className="mb-3">
+          <Card className="bg-dark text-white rounded-5 p-3">
             <TotalDays userDetails={userDetails} />
-          </div>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-md-6 mb-3">
-          <div className="border rounded-5 p-3 bg-dark text-white">
+          </Card>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={6} className="mb-3">
+          <Card className="bg-dark text-white rounded-5 p-3">
             <ExercisesList userID={user} />
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="row mb-3">
-            <div className="col-12 mb-3">
-              <div className="border rounded-5 p-3 bg-dark text-white">
+          </Card>
+        </Col>
+        <Col md={6}>
+          <Row className="mb-3">
+            <Col className="mb-3">
+              <Card className="bg-dark text-white rounded-5 p-3">
                 <UserRoutine userID={user} setUserDetails={setUserDetails} />
-              </div>
-            </div>
-            <div className="col-12">
-              <div className="border rounded-5 p-3 bg-dark text-white">
+              </Card>
+            </Col>
+            <Col>
+              <Card className="bg-dark text-white rounded-5 p-3">
                 <HeatMap userID={user} setUserDetails={setUserDetails} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              </Card>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
