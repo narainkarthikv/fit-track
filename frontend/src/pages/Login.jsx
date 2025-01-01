@@ -85,14 +85,14 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
   }, []);
 
   if (isAuthenticated) {
-    return <Navigate to="/" />;
+    return <Navigate to='/' />;
   }
 
   return (
-    <Container fluid className="d-flex align-items-center justify-content-center vh-100" style={{ backgroundColor: '#d3d3d3' }}>
-      <Card className="p-5 bg-light rounded shadow-lg text-center" style={{ width: '100%', maxWidth: '400px' }}>
-        <Form onSubmit={onSubmit} aria-label="Login Form">
-          <HeaderSection title="Fit-Track Login" icon={<FaDumbbell size={50} color="#ff6f61" />} />
+    <Container fluid className='d-flex align-items-center justify-content-center vh-100' style={{ backgroundColor: '#d3d3d3' }}>
+      <Card className='p-5 bg-light rounded shadow-lg text-center' style={{ width: '100%', maxWidth: '400px' }}>
+        <Form onSubmit={onSubmit} aria-label='Login Form'>
+          <HeaderSection title='Fit-Track Login' icon={<FaDumbbell size={50} color='#ff6f61' />} />
 
           {['email', 'password'].map((field, index) => (
             <InputField
@@ -109,7 +109,7 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
 
           <SubmitButton isSubmitting={isSubmitting} />
 
-          {error && <div className="text-danger text-center mt-3" role="alert">{error}</div>}
+          {error && <div className='text-danger text-center mt-3' role='alert'>{error}</div>}
 
           <SignupLink />
 

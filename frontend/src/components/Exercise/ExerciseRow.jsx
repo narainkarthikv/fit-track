@@ -17,7 +17,7 @@ const ExerciseRow = ({ exercises = [], handleDelete }) => {
                 })
             ) : (
                 <tr>
-                    <td colSpan="3" className="text-center">No exercises available.</td>
+                    <td colSpan=3 className=text-center>No exercises available.</td>
                 </tr>
             )}
         </>

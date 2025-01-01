@@ -96,7 +96,7 @@ const HeatMap = ({ userID }) => {
     };
 
     return (
-        <div className="p-1 d-flex font-weight-bold flex-column justify-content-center">
+        <div className=p-1 d-flex font-weight-bold flex-column justify-content-center>
             <HeatmapControls
                 selectedMonth={selectedMonth}
                 setSelectedMonth={setSelectedMonth}
@@ -104,7 +104,7 @@ const HeatMap = ({ userID }) => {
                 months={months}
             />
 
-            <div className="w-50">
+            <div className=w-50>
                 {renderCalendarHeatmap()}
             </div>
 

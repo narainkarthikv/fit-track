@@ -8,7 +8,7 @@ const Modal = ({ show, handleClose, title, children }) => (
     </BootstrapModal.Header>
     <BootstrapModal.Body>{children}</BootstrapModal.Body>
     <BootstrapModal.Footer>
-      <Button variant="secondary" onClick={handleClose}>
+      <Button variant=secondary onClick={handleClose}>
         Close
       </Button>
     </BootstrapModal.Footer>

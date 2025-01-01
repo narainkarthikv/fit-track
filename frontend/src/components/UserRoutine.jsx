@@ -1,6 +1,6 @@
-import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-import { updateTotalDays } from "../slices/userRoutineSlice";
+import { FaCheckCircle, FaTimesCircle } from react-icons/fa;
+import { useDispatch, useSelector } from react-redux;
+import { updateTotalDays } from ../slices/userRoutineSlice;
 
 const UserRoutine = ({ userID }) => {
     const dispatch = useDispatch();
@@ -21,18 +21,18 @@ const UserRoutine = ({ userID }) => {
     };
 
     return (
-        <div className="d-flex flex-column justify-content-center align-items-center">
-            <h5 className="font-weight-bold">User Weekly Routine</h5>
-            <div className="btn-group" role="group" aria-label="Day Buttons">
+        <div className=d-flex flex-column justify-content-center align-items-center>
+            <h5 className=font-weight-bold>User Weekly Routine</h5>
+            <div className=btn-group role=group aria-label=Day Buttons>
                 {dayCheck.length > 0 && dayCheck.map((day, index) => (
-                    <div key={index} className="d-flex flex-column align-items-center m-1">
+                    <div key={index} className=d-flex flex-column align-items-center m-1>
                         <button
                             onClick={() => onButtonClick(index)}
                             className={`btn rounded-pill d-flex ${day ? 'btn-outline-success' : 'btn-outline-danger'}`}
                         >
                             {day ? <FaCheckCircle /> : <FaTimesCircle />}
                         </button>
-                        <small className="mt-1 font-weight-bold">{weekdays[index]}</small>
+                        <small className=mt-1 font-weight-bold>{weekdays[index]}</small>
                     </div>
                 ))}
             </div>

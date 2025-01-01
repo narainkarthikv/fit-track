@@ -41,7 +41,7 @@ const ExercisesList = ({ userID }) => {
     };
 
     return (
-        <div className="p-1" style={{ minHeight: "420px", maxHeight: "420px", overflowY: "auto" }}>
+        <div className=p-1 style={{ minHeight: 420px, maxHeight: 420px, overflowY: auto }}>
             {status === 'loading' && <p>Loading exercises...</p>}
             {status === 'failed' && <p>Error fetching exercises.</p>}
             <ExerciseTable exercises={exercises} handleDelete={handleDelete} />
@@ -54,7 +54,7 @@ const ExercisesList = ({ userID }) => {
                 />
             )}
             {!formVisible && (
-                <button className="btn btn-outline-primary" onClick={() => setFormVisible(true)}>Add Exercise</button>
+                <button className=btn btn-outline-primary onClick={() => setFormVisible(true)}>Add Exercise</button>
             )}
         </div>
     );

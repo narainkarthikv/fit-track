@@ -8,10 +8,6 @@ import SignUp from './pages/SignUp';
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userID, setUserID] = useState('');
-  const [notifications, setNotifications] = useState([
-    { id: 1, message: 'Welcome to Fit Track!', read: false },
-    { id: 2, message: 'Your profile is 80% complete.', read: false }
-  ]);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -20,12 +16,8 @@ const App = () => {
     navigate('/login');
   };
 
-  const markNotificationsAsRead = () => {
-    setNotifications(notifications.map(n => ({ ...n, read: true })));
-  };
-
   const renderLogin = () => (
-    isLoggedIn ? <Navigate to="/" /> : 
+    isLoggedIn ? <Navigate to='/' /> : 
     <Login 
       isAuthenticated={isLoggedIn} 
       setIsAuthenticated={setIsLoggedIn} 
@@ -34,26 +26,24 @@ const App = () => {
   );
 
   const renderHome = () => (
-    isLoggedIn ? <Home user={userID} /> : <Navigate to="/login" />
+    isLoggedIn ? <Home user={userID} /> : <Navigate to='/login' />
   );
 
   return (
-    <div className="App">
+    <div className='App'>
       {isLoggedIn && (
         <NavBar 
           user={userID} 
-          handleLogout={handleLogout} 
-          notifications={notifications} 
-          markNotificationsAsRead={markNotificationsAsRead}
+          handleLogout={handleLogout}
         />
       )}
       <Routes>
-        <Route path="/login" element={renderLogin()} />
+        <Route path='/login' element={renderLogin()} />
         <Route path={`/${userID}`} element={renderHome()} />
         <Route path={`/${userID}/edit`} element={<SignUp />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path='/signup' element={<SignUp />} />
         {/* Redirect undefined routes to root */}
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path='*' element={<Navigate to='/' />} />
       </Routes>
     </div>
   );

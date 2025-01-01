@@ -4,19 +4,19 @@ import { Form } from 'react-bootstrap';
 const ExerciseForm = ({ exerciseDate, setExerciseDate, newExerciseCount, setNewExerciseCount }) => {
     return (
         <Form>
-            <Form.Group controlId="exerciseDate">
+            <Form.Group controlId=exerciseDate>
                 <Form.Label>Select Date:</Form.Label>
                 <Form.Control
-                    type="date"
+                    type=date
                     value={exerciseDate}
                     onChange={(e) => setExerciseDate(e.target.value)}
                 />
             </Form.Group>
-            <Form.Group controlId="exerciseCount">
+            <Form.Group controlId=exerciseCount>
                 <Form.Label>Exercise Count:</Form.Label>
                 <Form.Control
-                    type="number"
-                    min="0"
+                    type=number
+                    min=0
                     value={newExerciseCount}
                     onChange={(e) => setNewExerciseCount(Number(e.target.value) || 0)}
                 />

@@ -25,8 +25,8 @@ const ExerciseModal = ({
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>Close</Button>
-                <Button variant="primary" onClick={handleSubmitExercise}>Submit</Button>
+                <Button variant=secondary onClick={handleClose}>Close</Button>
+                <Button variant=primary onClick={handleSubmitExercise}>Submit</Button>
             </Modal.Footer>
         </Modal>
     );
