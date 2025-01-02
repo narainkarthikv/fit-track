@@ -1,5 +1,5 @@
-import { FaCheckCircle, FaTimesCircle, FaTrash } from react-icons/fa;
-import { Button, Table } from react-bootstrap;
+import { FaCheckCircle, FaTimesCircle, FaTrash } from "react-icons/fa";
+import { Button, Table } from "react-bootstrap";
 
 const Exercise = ({ deleteExercise, exercise }) => {
     return (
@@ -8,14 +8,14 @@ const Exercise = ({ deleteExercise, exercise }) => {
             <td>{exercise.duration} mins</td>
             <td>
                 {exercise.exerciseCheck ? (
-                    <FaCheckCircle className=text-success />
+                    <FaCheckCircle className="text-success" />
                 ) : (
-                    <FaTimesCircle className=text-danger />
+                    <FaTimesCircle className="text-danger" />
                 )}
             </td>
             <td>
-                <Button variant=outline-danger size=md className=rounded-pill onClick={() => deleteExercise(exercise._id)}>
-                    <FaTrash className=d-flex align-items-center />
+                <Button variant="outline-danger" size="md" className="rounded-pill" onClick={() => deleteExercise(exercise._id)}>
+                    <FaTrash className="d-flex align-items-center" />
                 </Button>
             </td>
         </tr>

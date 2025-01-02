@@ -2,8 +2,8 @@ import React from 'react';
 import ExerciseRow from './ExerciseRow';
 
 const ExerciseTable = ({ exercises, handleDelete }) => (
-    <table className=table table-striped table-dark>
-        <thead className=text-center>
+    <table className="table table-striped table-dark">
+        <thead className="text-center">
             <tr>
                 <th>Description</th>
                 <th>Duration (minutes)</th>
@@ -11,7 +11,7 @@ const ExerciseTable = ({ exercises, handleDelete }) => (
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody className=text-center>
+        <tbody className="text-center">
             <ExerciseRow exercises={exercises} handleDelete={handleDelete} />
         </tbody>
     </table>

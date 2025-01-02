@@ -1,9 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Exercise from './Exercise';
+import React from "react";
+import PropTypes from "prop-types";
+import Exercise from "./Exercise";
 
 const ExerciseRow = ({ exercises = [], handleDelete }) => {
-
     return (
         <>
             {exercises.length > 0 ? (
@@ -17,7 +16,7 @@ const ExerciseRow = ({ exercises = [], handleDelete }) => {
                 })
             ) : (
                 <tr>
-                    <td colSpan=3 className=text-center>No exercises available.</td>
+                    <td colSpan="3" className="text-center">No exercises available.</td>
                 </tr>
             )}
         </>

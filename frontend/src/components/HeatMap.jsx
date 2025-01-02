@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import CalendarHeatmap from 'react-calendar-heatmap';
-import 'react-calendar-heatmap/dist/styles.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchMonthData, addExercise } from '../slices/heatMapSlice';
-import HeatmapControls from './Heatmap/HeatmapControls';
-import ExerciseModal from './Heatmap/ExerciseModal';
-import DetailsModal from './Heatmap/DetailsModal';
+import React, { useState, useEffect } from "react";
+import CalendarHeatmap from "react-calendar-heatmap";
+import "react-calendar-heatmap/dist/styles.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMonthData, addExercise } from "../slices/heatMapSlice";
+import HeatmapControls from "./Heatmap/HeatmapControls";
+import ExerciseModal from "./Heatmap/ExerciseModal";
+import DetailsModal from "./Heatmap/DetailsModal";
 
 const HeatMap = ({ userID }) => {
     const dispatch = useDispatch();
@@ -14,16 +14,16 @@ const HeatMap = ({ userID }) => {
 
     // Set the default month to the current month
     const [selectedMonth, setSelectedMonth] = useState(() => 
-        new Date().toLocaleString('default', { month: 'long' })
+        new Date().toLocaleString("default", { month: "long" })
     );
     const [selectedValue, setSelectedValue] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
     const [newExerciseCount, setNewExerciseCount] = useState(0);
-    const [exerciseDate, setExerciseDate] = useState(new Date().toISOString().split('T')[0]);
+    const [exerciseDate, setExerciseDate] = useState(new Date().toISOString().split("T")[0]);
 
     const months = Array.from({ length: 12 }, (_, index) => 
-        new Date(0, index).toLocaleString('default', { month: 'long' })
+        new Date(0, index).toLocaleString("default", { month: "long" })
     );
 
     useEffect(() => {
@@ -38,7 +38,7 @@ const HeatMap = ({ userID }) => {
     };
 
     const handleAddExercise = () => {
-        setExerciseDate(new Date().toISOString().split('T')[0]);
+        setExerciseDate(new Date().toISOString().split("T")[0]);
         setNewExerciseCount(0);
         setShowAddModal(true);
     };
@@ -58,7 +58,7 @@ const HeatMap = ({ userID }) => {
 
     const resetAddExerciseForm = () => {
         setShowAddModal(false);
-        setExerciseDate(new Date().toISOString().split('T')[0]);
+        setExerciseDate(new Date().toISOString().split("T")[0]);
         setNewExerciseCount(0);
     };
 
@@ -69,12 +69,12 @@ const HeatMap = ({ userID }) => {
         const endDate = new Date(year, monthIndex + 1, 0);
 
         const transformedData = Array.isArray(monthData) ? monthData.map(item => ({
-            date: new Date(item.date).toISOString().split('T')[0],
+            date: new Date(item.date).toISOString().split("T")[0],
             count: item.count,
         })) : [];
 
         return (
-            status === 'loading' ? (
+            status === "loading" ? (
                 <p>Loading...</p>
             ) : (
                 <CalendarHeatmap
@@ -82,10 +82,10 @@ const HeatMap = ({ userID }) => {
                     endDate={endDate}
                     values={transformedData}
                     classForValue={(value) => {
-                        if (!value || value.count === 0) return 'color-empty';
-                        if (value.count < 4) return 'color-scale-1';
-                        if (value.count < 8) return 'color-scale-2';
-                        return 'color-scale-3';
+                        if (!value || value.count === 0) return "color-empty";
+                        if (value.count < 4) return "color-scale-1";
+                        if (value.count < 8) return "color-scale-2";
+                        return "color-scale-3";
                     }}
                     onClick={handleClick}
                     horizontal={false}
@@ -96,7 +96,7 @@ const HeatMap = ({ userID }) => {
     };
 
     return (
-        <div className=p-1 d-flex font-weight-bold flex-column justify-content-center>
+        <div className="p-1 d-flex font-weight-bold flex-column justify-content-center">
             <HeatmapControls
                 selectedMonth={selectedMonth}
                 setSelectedMonth={setSelectedMonth}
@@ -104,7 +104,7 @@ const HeatMap = ({ userID }) => {
                 months={months}
             />
 
-            <div className=w-50>
+            <div className="w-50">
                 {renderCalendarHeatmap()}
             </div>
 

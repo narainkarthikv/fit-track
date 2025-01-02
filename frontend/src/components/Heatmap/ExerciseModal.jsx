@@ -1,6 +1,6 @@
-import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import ExerciseForm from './ExerciseForm';
+import React from "react";
+import { Modal, Button } from "react-bootstrap";
+import ExerciseForm from "./ExerciseForm";
 
 const ExerciseModal = ({
     showAddModal,
@@ -25,8 +25,8 @@ const ExerciseModal = ({
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button variant=secondary onClick={handleClose}>Close</Button>
-                <Button variant=primary onClick={handleSubmitExercise}>Submit</Button>
+                <Button variant="secondary" onClick={handleClose}>Close</Button>
+                <Button variant="primary" onClick={handleSubmitExercise}>Submit</Button>
             </Modal.Footer>
         </Modal>
     );
