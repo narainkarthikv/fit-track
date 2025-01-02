@@ -1,9 +1,9 @@
-import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import React from "react";
+import { Modal, Button } from "react-bootstrap";
 
 const DetailsModal = ({ showModal, handleClose, selectedValue }) => {
     const defaultValue = {
-        date: 'No date selected',
+        date: "No date selected",
         count: 0,
         dayCheck: false,
     };
@@ -17,7 +17,7 @@ const DetailsModal = ({ showModal, handleClose, selectedValue }) => {
                 <div className="text-center">
                     <p>Date: {selectedValue ? selectedValue.date : defaultValue.date}</p>
                     <p>Exercises Count: {selectedValue ? selectedValue.count : defaultValue.count}</p>
-                    <p>Day Check: {selectedValue ? (selectedValue.dayCheck ? 'Completed' : 'Not Completed') : (defaultValue.dayCheck ? 'Completed' : 'Not Completed')}</p>
+                    <p>Day Check: {selectedValue ? (selectedValue.dayCheck ? "Completed" : "Not Completed") : (defaultValue.dayCheck ? "Completed" : "Not Completed")}</p>
                 </div>
             </Modal.Body>
             <Modal.Footer>

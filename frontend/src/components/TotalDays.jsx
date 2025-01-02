@@ -1,11 +1,11 @@
-import React from 'react';
-import { useSelector } from 'react-redux'; 
+import React from "react";
+import { useSelector } from "react-redux"; 
 
 const TotalDays = ({ userDetails }) => { 
     const totalDays = useSelector((state) => state.userRoutine.totalDays); 
 
     return (
-        <div className='d-flex flex-column text-center font-weight-bold'>
+        <div className="d-flex flex-column text-center font-weight-bold">
             <h5>{userDetails.username}'s Year Workout</h5> {/* Use userDetails passed as props */}
             <h6>Total Days: {totalDays}</h6> 
             <div className="progress">

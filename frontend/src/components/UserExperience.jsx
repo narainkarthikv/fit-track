@@ -1,6 +1,6 @@
 const UserExperience = ({ userDetails }) => {
     return (
-        <div className='d-flex flex-column text-center font-weight-bold'>
+        <div className="d-flex flex-column text-center font-weight-bold">
             <h5>Welcome {userDetails.username}</h5>
             <h6>XP : {userDetails.xp}</h6>
             <div className="progress">

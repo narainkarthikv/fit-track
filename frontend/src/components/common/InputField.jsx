@@ -1,30 +1,26 @@
 import React from 'react';
+import { Form } from 'react-bootstrap';
 
 const InputField = ({ id, name, type, placeholder, value, onChange, Icon }) => (
-  <div className="form-group mb-3">
-    <label htmlFor={id} className="visually-hidden">
-      {placeholder}
-    </label>
-    <div className="input-group">
-      <div className="input-group-prepend">
-        <span className="input-group-text">
-          <Icon />
-        </span>
-      </div>
-      <input
-        id={id}
-        className="form-control border-secondary"
+  <Form.Group controlId={id} className='mb-3'>
+    <div className='input-group'>
+      {Icon && (
+        <div className='input-group-prepend'>
+          <span className='input-group-text'>
+            <Icon />
+          </span>
+        </div>
+      )}
+      <Form.Control
         type={type}
-        placeholder={placeholder}
         name={name}
+        placeholder={placeholder}
         value={value}
         onChange={onChange}
         required
-        aria-required="true"
-        aria-label={`${placeholder} input`}
       />
     </div>
-  </div>
+  </Form.Group>
 );
 
 export default InputField;

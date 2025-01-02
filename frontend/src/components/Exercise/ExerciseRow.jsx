@@ -1,9 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Exercise from './Exercise';
+import React from "react";
+import PropTypes from "prop-types";
+import Exercise from "./Exercise";
 
 const ExerciseRow = ({ exercises = [], handleDelete }) => {
-
     return (
         <>
             {exercises.length > 0 ? (

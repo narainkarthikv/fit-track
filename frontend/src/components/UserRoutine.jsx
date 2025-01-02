@@ -9,7 +9,7 @@ const UserRoutine = ({ userID }) => {
     const { dayCheck = [] } = useSelector((state) => state.userRoutine); // Default to empty array if undefined
 
     // Weekdays array
-    const weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+    const weekdays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
     // Function to handle button clicks for marking days
     const onButtonClick = (index) => {
@@ -28,7 +28,7 @@ const UserRoutine = ({ userID }) => {
                     <div key={index} className="d-flex flex-column align-items-center m-1">
                         <button
                             onClick={() => onButtonClick(index)}
-                            className={`btn rounded-pill d-flex ${day ? 'btn-outline-success' : 'btn-outline-danger'}`}
+                            className={`btn rounded-pill d-flex ${day ? "btn-outline-success" : "btn-outline-danger"}`}
                         >
                             {day ? <FaCheckCircle /> : <FaTimesCircle />}
                         </button>

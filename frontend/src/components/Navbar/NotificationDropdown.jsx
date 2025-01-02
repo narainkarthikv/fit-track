@@ -1,50 +1,43 @@
-import React from 'react';
-import { NavDropdown, Badge } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Dropdown, Badge } from 'react-bootstrap';
+import { FaBell, FaEnvelope, FaEnvelopeOpen } from 'react-icons/fa';
 
-const NotificationDropdown = ({ notifications = [] }) => {
-  const unreadNotifications = notifications.filter(n => !n.read);
-  const readNotifications = notifications.filter(n => n.read);
-  const unreadCount = unreadNotifications.length;
+const NotificationDropdown = () => {
+  const initialNotifications = [
+    { id: 1, message: 'Welcome to Fit Track!', read: false },
+    { id: 2, message: 'Your profile is 80% complete. Complete it for full', read: false }
+  ];
+  
+  const [notifications, setNotifications] = useState(initialNotifications);
+
+  const toggleNotificationReadStatus = (id) => {
+    setNotifications(notifications.map(n => 
+      n.id === id ? { ...n, read: !n.read } : n
+    ));
+  };
+
+  const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
-    <NavDropdown
-      title={
-        <span>
-          <i className="bi bi-bell-fill"></i>
-          {unreadCount > 0 && <Badge pill bg="danger" className="ms-1">{unreadCount}</Badge>}
-        </span>
-      }
-      id="notificationDropdown"
-      align="end"
-    >
-      {notifications.length > 0 ? (
-        <>
-          <NavDropdown.Header>Unread Notifications</NavDropdown.Header>
-          {unreadNotifications.length > 0 ? (
-            unreadNotifications.map((notification, index) => (
-              <NavDropdown.Item key={`unread-${index}`} className="fw-bold">
-                {notification.message}
-              </NavDropdown.Item>
-            ))
-          ) : (
-            <NavDropdown.Item className="text-muted">No unread notifications</NavDropdown.Item>
-          )}
-          <NavDropdown.Divider />
-          <NavDropdown.Header>Read Notifications</NavDropdown.Header>
-          {readNotifications.length > 0 ? (
-            readNotifications.map((notification, index) => (
-              <NavDropdown.Item key={`read-${index}`}>
-                {notification.message}
-              </NavDropdown.Item>
-            ))
-          ) : (
-            <NavDropdown.Item className="text-muted">No read notifications</NavDropdown.Item>
-          )}
-        </>
-      ) : (
-        <NavDropdown.Item className="text-muted">No new notifications</NavDropdown.Item>
-      )}
-    </NavDropdown>
+    <Dropdown align='start'>
+      <Dropdown.Toggle variant='dark' id='dropdown-basic' className='position-relative'>
+        <FaBell />
+        {unreadCount > 0 && <Badge bg='danger' className='position-absolute top-0 start-50 badge rounded-pill'>{unreadCount}</Badge>}
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu align='end'>
+        {notifications.map(notification => (
+          <Dropdown.Item 
+            key={notification.id} 
+            onClick={() => toggleNotificationReadStatus(notification.id)}
+            className='d-flex justify-content-between align-items-center text-wrap'
+          >
+            <span className='flex-wrap'>{notification.message}</span>
+            {notification.read ? <FaEnvelopeOpen /> : <FaEnvelope />}
+          </Dropdown.Item>
+        ))}
+      </Dropdown.Menu>
+    </Dropdown>
   );
 };
 
