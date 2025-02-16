@@ -68,7 +68,7 @@ const SignUp = () => {
           <ProgressBar now={progress} className="mb-3" animated style={{ height: '10px', borderRadius: '5px' }} />
           <div className="text-muted mb-3">{message}</div>
 
-          {['username', 'email', 'password', 'confirmPassword'].map((field, index) => (
+          {['username', 'email', 'password', 'confirmpassword'].map((field, index) => (
             <InputField
               key={index}
               id={field}
@@ -101,7 +101,7 @@ const getIcon = (field) => {
     case 'email':
       return FaEnvelope;
     case 'password':
-    case 'confirmPassword':
+    case 'confirmpassword':
       return FaLock;
     default:
       return null;
