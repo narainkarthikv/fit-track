@@ -1,11 +1,13 @@
 import React from 'react';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, ButtonGroup, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 const UserDropdown = ({ user, handleLogout }) => (
-  <Dropdown align='end'>
-    <Dropdown.Toggle variant='dark' id='dropdown-basic'>
-      <i className='bi bi-person-circle'></i>
+  <Dropdown align='end' as={ButtonGroup}>
+
+    <Button variant='primary'><i className='bi bi-person-circle'></i></Button>
+
+    <Dropdown.Toggle variant='primary' id='dropdown-split-basic' className='position-relative'>
     </Dropdown.Toggle>
 
     <Dropdown.Menu align='end'>

@@ -15,7 +15,7 @@ const NavBar = ({ user, handleLogout, notifications, toggleNotificationReadStatu
       </LinkContainer>
       <Navbar.Toggle aria-controls='navbar-content' />
       <Navbar.Collapse id='navbar-content' className='justify-content-end'>
-        <Nav>
+        <Nav className='gap-3'>
           <NotificationDropdown notifications={notifications} toggleNotificationReadStatus={toggleNotificationReadStatus} />
           <UserDropdown user={user} handleLogout={handleLogout} />
         </Nav>
