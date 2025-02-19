@@ -16,7 +16,6 @@ const ExerciseForm = ({ exerciseDate, setExerciseDate, newExerciseCount, setNewE
                 <Form.Label>Exercise Count:</Form.Label>
                 <Form.Control
                     type="number"
-                    min="0"
                     value={newExerciseCount}
                     onChange={(e) => setNewExerciseCount(Number(e.target.value) || 0)}
                 />
