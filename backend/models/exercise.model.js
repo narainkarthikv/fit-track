@@ -11,7 +11,6 @@ const exerciseSchema = new mongoose.Schema({
     trackExercises: [{
         date: { type: Date },
         totalExercises: { type: Number },
-        feedback: {type: String, default: 'Bad'}
     }]
 },
     {
