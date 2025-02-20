@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
-import { FaDumbbell, FaEnvelope, FaLock } from 'react-icons/fa'; 
+import { FaDumbbell, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa'; 
 import { BsEmojiSmile } from 'react-icons/bs'; 
 import { Form, Button, Container, Card, Spinner } from 'react-bootstrap';
 import InputField from '../components/common/InputField';
@@ -8,12 +8,17 @@ import HeaderSection from '../components/common/HeaderSection';
 import SubmitButton from '../components/common/SubmitButton';
 import EmojiSection from '../components/common/EmojiSection';
 import SignupLink from '../components/common/SignupLink';
+import Lottie from 'react-lottie';
+import animationData from '../assets/lottie/login-lottie.json';
+import Snackbar from '../components/common/Snackbar';
 
 const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [emoji, setEmoji] = useState('🏋️‍♀️'); 
+  const [showPassword, setShowPassword] = useState(false);
+  const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
   const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:4000'; 
   const navigate = useNavigate();
 
@@ -52,14 +57,18 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
       const user = users.find((user) => user.email === credentials.email);
 
       if (user) {
-        setIsAuthenticated(true);
-        setUserID(user._id);
-        navigate(`/${user._id}`);
+        setSnackbar({ show: true, message: 'Login successful!', type: 'success' });
+        setTimeout(() => {
+          setIsAuthenticated(true);
+          setUserID(user._id);
+          navigate(`/${user._id}`);
+        }, 3000);
       } else {
         throw new Error('User not found');
       }
     } catch (err) {
       setError(err.message || 'Invalid user or password');
+      setSnackbar({ show: true, message: 'Login failed!', type: 'failure' });
     } finally {
       setIsSubmitting(false);
     }
@@ -84,39 +93,72 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
     setEmoji(fitnessEmojis[Math.floor(Math.random() * fitnessEmojis.length)]);
   }, []);
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   if (isAuthenticated) {
     return <Navigate to='/' />;
   }
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice'
+    }
+  };
+
   return (
-    <Container fluid className='d-flex align-items-center justify-content-center vh-100' style={{ backgroundColor: '#d3d3d3' }}>
-      <Card className='p-5 bg-light rounded shadow-lg text-center' style={{ width: '100%', maxWidth: '400px' }}>
-        <Form onSubmit={onSubmit} aria-label='Login Form'>
-          <HeaderSection title='Fit-Track Login' icon={<FaDumbbell size={50} color='#ff6f61' />} />
+    <>
+      <Container fluid className='d-flex align-items-center justify-content-center vh-100 p-0'>
+        <div className='d-flex w-100 h-100'>
+          <div className='d-none d-md-flex align-items-center justify-content-center flex-grow-1' style={{ backgroundColor: '#ffffff', cursor: 'default' }}>
+            <Lottie options={defaultOptions} height={500} width={500} />
+          </div>
+          <div className='d-flex align-items-center justify-content-center flex-grow-1'>
+            <Card className='p-5 bg-white rounded shadow-lg' style={{ width: '100%', maxWidth: '450px', border: '1px solid #ccc', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+              <Form onSubmit={onSubmit} aria-label='Login Form'>
+                <HeaderSection title='Fit-Track Login' icon={<FaDumbbell size={50} color='#ff6f61' />} />
 
-          {['email', 'password'].map((field, index) => (
-            <InputField
-              key={index}
-              id={field}
-              name={field}
-              type={field === 'password' ? 'password' : 'email'}
-              placeholder={`Enter your ${field}`}
-              value={credentials[field]}
-              onChange={handleInputChange}
-              Icon={getIcon(field)}
-            />
-          ))}
+                {['email', 'password'].map((field, index) => (
+                  <InputField
+                    key={index}
+                    id={field}
+                    name={field}
+                    type={field === 'password' && !showPassword ? 'password' : 'text'}
+                    placeholder={`Enter your ${field}`}
+                    value={credentials[field]}
+                    onChange={handleInputChange}
+                    Icon={getIcon(field)}
+                    appendIcon={field === 'password' ? (showPassword ? FaEyeSlash : FaEye) : null}
+                    onAppendIconClick={field === 'password' ? togglePasswordVisibility : null}
+                    className="mb-3"
+                  />
+                ))}
 
-          <SubmitButton isSubmitting={isSubmitting} />
+                <div className="d-flex justify-content-center">
+                  <SubmitButton isSubmitting={isSubmitting} className="w-100 mb-3" />
+                </div>
 
-          {error && <div className='text-danger text-center mt-3' role='alert'>{error}</div>}
+                {error && <div className='text-danger text-center mt-3' role='alert'>{error}</div>}
 
-          <SignupLink />
+                <SignupLink className="text-center" />
 
-          <EmojiSection emoji={emoji} onClick={handleEmojiChange} />
-        </Form>
-      </Card>
-    </Container>
+                <EmojiSection emoji={emoji} onClick={handleEmojiChange} className="text-center mt-3" />
+              </Form>
+            </Card>
+          </div>
+        </div>
+      </Container>
+      <Snackbar
+        show={snackbar.show}
+        message={snackbar.message}
+        type={snackbar.type}
+        onClose={() => setSnackbar({ show: false, message: '', type: '' })}
+      />
+    </>
   );
 };
 

@@ -4,10 +4,12 @@ on:
   pull_request:
     branches:
       - main
-    types: [opened]
+  pull_request_target:
+    types: [closed]
 
 jobs:
   lint:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     strategy:

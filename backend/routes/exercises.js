@@ -86,13 +86,11 @@ router.post('/:userId/track-exercise', async (req, res) => {
     if (existingEntryIndex !== -1) {
       // If an entry exists, update it
       exerciseData.trackExercises[existingEntryIndex].totalExercises = count;
-      exerciseData.trackExercises[existingEntryIndex].feedback = count > 5 ? 'Good' : 'Bad';
     } else {
       // If no entry exists, add a new one
       exerciseData.trackExercises.push({
         date: new Date(date),
         totalExercises: count,
-        feedback: count > 5 ? 'Good' : 'Bad'
       });
     }
 
@@ -132,7 +130,6 @@ router.get('/:userId/data/:month', async (req, res) => {
           _id: 0,
           date: "$trackExercises.date",
           count: "$trackExercises.totalExercises",
-          dayCheck: "$trackExercises.feedback",
         }
       }
     ]);
