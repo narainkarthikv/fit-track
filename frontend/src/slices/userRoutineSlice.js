@@ -38,11 +38,11 @@ export const updateTotalDays = (userID, updatedDayCheck) => async (dispatch, get
   try {
     const url = `${backendURL}/api/user/${userID}/updateTotalDays`;
     console.log(url); // Verify URL
-    
+   
     // Make the API call
-    const response = await axios.post(url  ,{ dayCheck: updatedDayCheck });
+   const response = await axios.post(url  ,{ dayCheck: updatedDayCheck  });
     
-    // Calculate the new totalDays based on updatedDayCheck
+    // Extract updated totalDays from the response
     const { totalDays } = response.data;
 
     dispatch(setDayCheck(updatedDayCheck));

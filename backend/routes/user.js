@@ -99,7 +99,7 @@ router.post('/:userId/updateTotalDays', async (req, res) => {
             const totalDays = dayCheck.filter(Boolean).length;
             user.totalDays = totalDays;
             await user.save();
-            res.status(200).json({ message: "TotalDays updated successfully" });
+            res.status(200).json({ message: "TotalDays updated successfully" ,totalDays });
         } else {
             res.status(404).json({ message: "User not found" });
         }
