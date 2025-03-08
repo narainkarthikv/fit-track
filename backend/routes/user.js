@@ -92,13 +92,14 @@ router.get('/:userId', async (req, res) => {
 // Update totalDays
 router.post('/:userId/updateTotalDays', async (req, res) => {
     const { userId } = req.params;
-
+    const { dayCheck } = req.body;
     try {
         const user = await User.findById(userId);
         if (user) {
-            user.totalDays += 1;
+            const totalDays = dayCheck.filter(Boolean).length;
+            user.totalDays = totalDays;
             await user.save();
-            res.status(200).json({ message: "TotalDays updated successfully" });
+            res.status(200).json({ message: "TotalDays updated successfully" ,totalDays });
         } else {
             res.status(404).json({ message: "User not found" });
         }
