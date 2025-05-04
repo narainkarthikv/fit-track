@@ -13,6 +13,7 @@ const UserRoutine = ({ userID }) => {
 
     // Function to handle button clicks for marking days
     const onButtonClick = (index) => {
+        
         const updatedDayCheck = [...dayCheck];
         updatedDayCheck[index] = !updatedDayCheck[index]; // Toggle day status
 
