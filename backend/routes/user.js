@@ -55,6 +55,42 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
 
+        //Automatic streak updation logic
+        
+        const today = new Date()
+        const todayIndex = today.getDay()
+
+        const lastDate = user.lastActiveDate ? new Date (user.lastActiveDate) : null;
+        const yesterday = new Date()
+        yesterday = setDate(today.getDate()-1)
+
+        //check if the user has already logged in today
+        const isSameDay = lastDate &&
+        lastDate.getDate() === today.getDate() &&
+        lastDate.getMonth() === today.getMonth() &&
+        lastDate.getFullYear() === today.getFullYear();
+
+        if(!isSameDay){ //Was this user already active today? If yes, do nothing
+
+            //1- Mark today's day of the week as true
+            const newDayCheck = user.dayCheck || [false,false,false,false,false,false,false]
+            newDayCheck[todayIndex] = true;
+
+            //2-Compare last active day from the user's DB with yesterday to see if the streak continues
+            const isYesterday = lastDate &&
+            lastDate.getDate() === yesterday.getDate() &&
+            lastDate.getMonth() === yesterday.getMonth() &&
+            lastDate.getFullYear() === yesterday.getFullYear();
+
+            user.streakCount = isYesterday ? user.streakCount +1 : 1; //3- Update streak count
+            user.lastActiveDate = today;
+            user.dayCheck = newDayCheck;
+
+            user.totalDays = newDayCheck.filter(Boolean).length;
+
+            await user.save();
+        }
+
         res.status(200).json({ message: 'Login successful' });
     } catch (error) {
         console.error('Error during login:', error);
