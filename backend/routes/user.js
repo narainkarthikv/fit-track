@@ -62,7 +62,7 @@ router.post('/login', async (req, res) => {
 
         const lastDate = user.lastActiveDate ? new Date (user.lastActiveDate) : null;
         const yesterday = new Date()
-        yesterday = setDate(today.getDate()-1)
+        yesterday.setDate(today.getDate()-1)
 
         //check if the user has already logged in today
         const isSameDay = lastDate &&
@@ -74,6 +74,10 @@ router.post('/login', async (req, res) => {
 
             //1- Mark today's day of the week as true
             const newDayCheck = user.dayCheck || [false,false,false,false,false,false,false]
+            const isNewWeek = todayIndex === 0; //if sunday then start fresh
+            if (isNewWeek) {
+            newDayCheck = [false, false, false, false, false, false, false]; // Start fresh week
+            }
             newDayCheck[todayIndex] = true;
 
             //2-Compare last active day from the user's DB with yesterday to see if the streak continues
@@ -99,11 +103,11 @@ router.post('/login', async (req, res) => {
 });
 
 //fetch streak info
-router.get('/streak/:userId', async(req,res) => {
-    const {userId} = req.params;
+router.get('/streak/:userID', async(req,res) => {
+    const {userID} = req.params;
 
     try {
-        const user = await User.findById(userId)
+        const user = await User.findById(userID)
 
         if(!user) return res.status(404).json({ error: 'User not found' });
 
