@@ -1,42 +1,78 @@
-import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
 import { updateTotalDays } from "../slices/userRoutineSlice";
+import React, { useEffect, useState } from "react";
+import { Sparkles, Droplet } from "lucide-react"; // optional icon library
+import clsx from "clsx";
 
 const UserRoutine = ({ userID }) => {
-    const dispatch = useDispatch();
-
-    // Retrieve dayCheck and totalDays from Redux store
-    const { dayCheck = [] } = useSelector((state) => state.userRoutine); // Default to empty array if undefined
-
+    const [dayCheck, setDayCheck] = useState([false, false, false, false, false, false, false]);
+    const [streak, setStreak] = useState(0);
+    const [weeklyStreakValue,setWeeklyStreakValue] = useState(0)
+    const [msg, setMsg] = useState("")
+    const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:4000'; 
+    
     // Weekdays array
     const weekdays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
-    // Function to handle button clicks for marking days
-    const onButtonClick = (index) => {
-        const updatedDayCheck = [...dayCheck];
-        updatedDayCheck[index] = !updatedDayCheck[index]; // Toggle day status
-
-        // Dispatch action to update dayCheck and totalDays in Redux
-        dispatch(updateTotalDays(userID, updatedDayCheck));
+    const weeklyStreak = () => {
+        const todayIndex = new Date().getDay();
+        for (let index = 0; index < dayCheck.length; index++) {
+            if (!dayCheck[index]) {
+                setWeeklyStreakValue(index - 1);  // Set value when a false condition is found
+                if(index<todayIndex) setMsg("Streak Missed Mid-week 😢");
+                else setMsg("")
+                return;  // Exit the loop after the first false condition is found
+            }
+        }
     };
 
+    useEffect(() => {
+        if (!userID) return;
+    
+        const fetchData = async () => {
+            try {
+                const res = await fetch(`${backendURL}/api/user/streak/${userID}`, {
+                    method: 'GET', 
+                    headers: { 'Content-Type': 'application/json' }
+                });
+    
+                const data = await res.json();
+                setStreak(data.streakCount)
+                setDayCheck(data.dayCheck)
+                weeklyStreak()
+            } catch (error) {
+                console.log("Fetch error:", error);
+            }
+        };
+    
+        fetchData();
+    }, [userID]);
+
     return (
-        <div className="d-flex flex-column justify-content-center align-items-center">
-            <h5 className="font-weight-bold">User Weekly Routine</h5>
-            <div className="btn-group" role="group" aria-label="Day Buttons">
-                {dayCheck.length > 0 && dayCheck.map((day, index) => (
-                    <div key={index} className="d-flex flex-column align-items-center m-1">
-                        <button
-                            onClick={() => onButtonClick(index)}
-                            className={`btn rounded-pill d-flex ${day ? "btn-outline-success" : "btn-outline-danger"}`}
-                        >
-                            {day ? <FaCheckCircle /> : <FaTimesCircle />}
-                        </button>
-                        <small className="mt-1 font-weight-bold">{weekdays[index]}</small>
-                    </div>
-                ))}
+      <div className="d-flex flex-column">
+        <div className="d-flex flex-column items-center p-6 rounded-lg bg-yellow-600 text-white font-bold">
+            <h1 className="text-6xl">{streak}</h1>
+            <p className="text-2xl mb-4">day streak!</p>
+        </div>
+        <div className="d-flex flex-column w-100">
+            <div className="d-flex flex-row justify-content-between px-1">
+                {
+                    weekdays.map((day, index) => (
+                        <span key={index}>{day}</span>
+                    ))
+                }
+            </div>
+            <div> 
+            <input type="range" min="0" max="6" value={weeklyStreakValue} disabled   className="w-100 mt-2" />
             </div>
         </div>
+        <div>
+            {
+                msg!=="" && (
+                    <div>{msg}</div>
+                )
+            }
+        </div>
+    </div>
     );
 };
 
