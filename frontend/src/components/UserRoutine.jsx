@@ -2,6 +2,7 @@ import { updateTotalDays } from "../slices/userRoutineSlice";
 import React, { useEffect, useState } from "react";
 import { Sparkles, Droplet } from "lucide-react"; // optional icon library
 import clsx from "clsx";
+import { useDispatch } from "react-redux";
 
 const UserRoutine = ({ userID }) => {
     const [dayCheck, setDayCheck] = useState([false, false, false, false, false, false, false]);
@@ -10,13 +11,15 @@ const UserRoutine = ({ userID }) => {
     const [msg, setMsg] = useState("")
     const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:4000'; 
     
+
+    const dispatch= useDispatch();
     // Weekdays array
     const weekdays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
-    const weeklyStreak = () => {
+    const weeklyStreak = (updatedDayCheck) => {
         const todayIndex = new Date().getDay();
-        for (let index = 0; index < dayCheck.length; index++) {
-            if (!dayCheck[index]) {
+        for (let index = 0; index < updatedDayCheck.length; index++) {
+            if (!updatedDayCheck[index]) {
                 setWeeklyStreakValue(index - 1);  // Set value when a false condition is found
                 if(index<todayIndex) setMsg("Streak Missed Mid-week 😢");
                 else setMsg("")
@@ -38,7 +41,8 @@ const UserRoutine = ({ userID }) => {
                 const data = await res.json();
                 setStreak(data.streakCount)
                 setDayCheck(data.dayCheck)
-                weeklyStreak()
+                weeklyStreak(data.dayCheck);
+                dispatch(updateTotalDays(userID , data.dayCheck))
             } catch (error) {
                 console.log("Fetch error:", error);
             }
