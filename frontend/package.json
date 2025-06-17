@@ -14,6 +14,8 @@
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.516.0",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.5",
