@@ -4,6 +4,7 @@ import NavBar from './components/Navbar/NavBar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import DashBoard from './pages/Dashboard';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -38,6 +39,7 @@ const App = () => {
         />
       )}
       <Routes>
+         <Route path='/' element={<DashBoard />} /> 
         <Route path='/login' element={renderLogin()} />
         <Route path={`/${userID}`} element={renderHome()} />
         <Route path={`/${userID}/edit`} element={<SignUp />} />
