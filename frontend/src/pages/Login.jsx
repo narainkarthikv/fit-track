@@ -61,7 +61,6 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
         setTimeout(() => {
           setIsAuthenticated(true);
           setUserID(user._id);
-          navigate(`/${user._id}`);
         }, 3000);
       } else {
         throw new Error('User not found');

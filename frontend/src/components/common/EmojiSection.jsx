@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { BsEmojiSmile } from 'react-icons/bs';
 
 const EmojiSection = ({ emoji, onClick }) => (
@@ -9,5 +10,10 @@ const EmojiSection = ({ emoji, onClick }) => (
     </span>
   </div>
 );
+
+EmojiSection.propTypes = {
+  emoji: PropTypes.string.isRequired,
+  onClick: PropTypes.func
+};
 
 export default EmojiSection;

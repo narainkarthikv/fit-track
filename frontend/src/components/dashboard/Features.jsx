@@ -1,44 +1,56 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FaUserCircle, FaRunning, FaCalendarPlus, FaFire, FaChartLine } from 'react-icons/fa';
 
 const Features = () => {
   return (
-    <section className="py-5 bg-light text-center" id="features">
+    <section className="features-section py-5" id="features">
       <div className="container">
-        <h2 className="mb-5 display-5 fw-bold">Why Choose <span style={{ color: '#FFC107' }}>Fit-Track?</span></h2>
+        <h2 className="mb-5 display-5 fw-bold text-center">
+          Why Choose <span className="text-warning">Fit-Track?</span>
+        </h2>
         <div className="row g-4 justify-content-center">
           {features.map((feature, idx) => (
-            <div className="col-md-4" key={idx}>
-              <div className="feature-card p-4 rounded shadow-m h-100">
-                <div className={`icon-box mb-3 text-${feature.color}`}>
+            <div className="col-12 col-sm-6 col-lg-4 d-flex" key={idx}>
+              <div className="feature-glass-card p-4 rounded-4 shadow-lg w-100 d-flex flex-column align-items-center h-100">
+                <div className={`icon-box mb-3 text-${feature.color}`} aria-label={feature.title} tabIndex={0}>
                   {feature.icon}
                 </div>
-                <h5 className="fw-semibold">{feature.title}</h5>
-                <p className="text-muted">{feature.description}</p>
+                <h5 className="fw-semibold mb-2 text-center">{feature.title}</h5>
+                <p className="text-muted text-center mb-0">{feature.description}</p>
               </div>
             </div>
           ))}
         </div>
       </div>
-
-      {/* Inline styles for the component */}
       <style>{`
-        .feature-card {
-          background: white;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .features-section {
+          background: linear-gradient(120deg, #f8fafc 60%, #e3e6ed 100%);
         }
-
-        .feature-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+        .feature-glass-card {
+          background: rgba(255,255,255,0.85);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(200,200,200,0.18);
+          box-shadow: 0 8px 32px 0 rgba(31,38,135,0.10);
+          transition: transform 0.3s, box-shadow 0.3s;
         }
-
+        .feature-glass-card:hover, .feature-glass-card:focus-within {
+          transform: translateY(-8px) scale(1.03);
+          box-shadow: 0 16px 40px 0 rgba(31,38,135,0.18);
+        }
         .icon-box {
           font-size: 3rem;
+          background: linear-gradient(135deg, #fffbe6 60%, #ffe082 100%);
+          border-radius: 50%;
+          width: 80px;
+          height: 80px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 12px rgba(255,193,7,0.10);
         }
-
         @media (max-width: 768px) {
-          .feature-card {
+          .feature-glass-card {
             margin-bottom: 1.5rem;
           }
         }
@@ -47,7 +59,6 @@ const Features = () => {
   );
 };
 
-// Feature data array for cleaner JSX
 const features = [
   {
     icon: <FaUserCircle />,
@@ -80,5 +91,7 @@ const features = [
     color: "info"
   }
 ];
+
+Features.propTypes = {};
 
 export default Features;

@@ -1,10 +1,31 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import NavBar from './components/Navbar/NavBar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import DashBoard from './pages/Dashboard';
+
+// Private Route wrapper component
+const PrivateRoute = ({ isLoggedIn, children }) => {
+  return isLoggedIn ? children : <Navigate to="login" />;
+};
+
+PrivateRoute.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  children: PropTypes.node.isRequired
+};
+
+// Public Route wrapper component
+const PublicRoute = ({ isLoggedIn, children }) => {
+  return !isLoggedIn ? children : <Navigate to="dashboard" />;
+};
+
+PublicRoute.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  children: PropTypes.node.isRequired
+};
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -14,47 +35,64 @@ const App = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserID('');
-    navigate('/login');
+    navigate('login');
   };
-
-  const renderLogin = () => (
-    isLoggedIn ? <Navigate to='/' /> : 
-    <Login 
-      isAuthenticated={isLoggedIn} 
-      setIsAuthenticated={setIsLoggedIn} 
-      setUserID={setUserID} 
-    />
-  );
-
-  const renderHome = () => (
-    isLoggedIn ? <Home user={userID} /> : <Navigate to='/login' />
-  );
 
   return (
     <div className='App'>
+      {/* Only render NavBar if user is logged in */}
       {isLoggedIn && (
         <NavBar 
           user={userID} 
           handleLogout={handleLogout}
         />
       )}
+      
       <Routes>
-         <Route path='/' element={<DashBoard />} /> 
-        <Route path='/login' element={renderLogin()} />
-        <Route path={`/${userID}`} element={renderHome()} />
-        <Route path={`/${userID}/edit`} element={<SignUp />} />
-        <Route path='/signup' element={<SignUp />} />
+        {/* Public routes */}
+        <Route path="" element={
+          <PublicRoute isLoggedIn={isLoggedIn}>
+            <DashBoard isLoggedIn={isLoggedIn} />
+          </PublicRoute>
+        } />
+        <Route path="login" element={
+          <PublicRoute isLoggedIn={isLoggedIn}>
+            <Login 
+              isAuthenticated={isLoggedIn}
+              setIsAuthenticated={setIsLoggedIn}
+              setUserID={setUserID}
+            />
+          </PublicRoute>
+        } />
+        <Route path="signup" element={
+          <PublicRoute isLoggedIn={isLoggedIn}>
+            <SignUp />
+          </PublicRoute>
+        } />
+
+        {/* Private routes */}
+        <Route path="dashboard" element={
+          <PrivateRoute isLoggedIn={isLoggedIn}>
+            <Home user={userID} />
+          </PrivateRoute>
+        } />
+        <Route path="profile/edit" element={
+          <PrivateRoute isLoggedIn={isLoggedIn}>
+            <SignUp />
+          </PrivateRoute>
+        } />
+
         {/* Redirect undefined routes to root */}
-        <Route path='*' element={<Navigate to='/' />} />
+        <Route path="*" element={<Navigate to={isLoggedIn ? "dashboard" : ""} />} />
       </Routes>
     </div>
   );
 };
 
 const WrappedApp = () => (
-  <Router>
+  <BrowserRouter>
     <App />
-  </Router>
+  </BrowserRouter>
 );
 
 export default WrappedApp;

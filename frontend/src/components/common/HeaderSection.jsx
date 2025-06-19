@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const HeaderSection = ({ title, icon }) => (
   <div className='text-center mb-4'>
@@ -6,5 +7,10 @@ const HeaderSection = ({ title, icon }) => (
     <h1 className='text-center mt-2' style={{ color: '#ff6f61' }}>{title}</h1>
   </div>
 );
+
+HeaderSection.propTypes = {
+  title: PropTypes.string.isRequired,
+  icon: PropTypes.node
+};
 
 export default HeaderSection;

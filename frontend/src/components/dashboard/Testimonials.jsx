@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FaUserCircle } from 'react-icons/fa';
 
 const Testimonials = () => {
@@ -78,5 +79,7 @@ const Testimonials = () => {
     </section>
   );
 };
+
+Testimonials.propTypes = {};
 
 export default Testimonials;

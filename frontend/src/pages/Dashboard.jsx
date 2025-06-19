@@ -13,7 +13,9 @@ const DashBoard = () => {
       <Features />
       <ProgressShowcase />
       <Testimonials />
-      <CTA />
+      <div id="cta">
+        <CTA />
+      </div>
       <Footer />
     </>
   );
