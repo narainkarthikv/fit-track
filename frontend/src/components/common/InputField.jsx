@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
 const InputField = ({ id, name, type, placeholder, value, onChange, Icon }) => {
   const [inputValue, setInputValue] = useState(value || '');
@@ -36,6 +37,15 @@ const InputField = ({ id, name, type, placeholder, value, onChange, Icon }) => {
       </div>
     </Form.Group>
   );
+};
+InputField.propTypes = {
+  id: PropTypes.string,
+  name: PropTypes.string,
+  type: PropTypes.string,
+  placeholder: PropTypes.string,
+  value: PropTypes.any,
+  onChange: PropTypes.func,
+  Icon: PropTypes.elementType,
 };
 
 export default InputField;
