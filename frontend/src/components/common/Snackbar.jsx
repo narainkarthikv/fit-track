@@ -3,6 +3,7 @@ import { Toast, ToastContainer, ProgressBar } from 'react-bootstrap';
 import Lottie from 'react-lottie';
 import successAnimation from '../../assets/lottie/success-lottie.json';
 import failureAnimation from '../../assets/lottie/failure-lottie.json';
+import PropTypes from 'prop-types';
 
 const Snackbar = ({ show, message, type, onClose }) => {
   const defaultOptions = {
@@ -46,7 +47,6 @@ const Snackbar = ({ show, message, type, onClose }) => {
   );
 };
 
-import PropTypes from 'prop-types';
 
 Snackbar.propTypes = {
   show: PropTypes.bool.isRequired,
