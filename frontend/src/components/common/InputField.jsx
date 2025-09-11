@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-const InputField = ({ id, name, type, placeholder, value, onChange, Icon }) => {
+const InputField = ({ id, name, type, placeholder, value, onChange, Icon, AppendIcon, onAppendIconClick }) => {
   const [inputValue, setInputValue] = useState(value || '');
 
   useEffect(() => {
@@ -11,9 +11,7 @@ const InputField = ({ id, name, type, placeholder, value, onChange, Icon }) => {
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
-    if (onChange) {
-      onChange(e);
-    }
+    if (onChange) onChange(e);
   };
 
   return (
@@ -26,6 +24,7 @@ const InputField = ({ id, name, type, placeholder, value, onChange, Icon }) => {
             </span>
           </div>
         )}
+
         <Form.Control
           type={type}
           name={name}
@@ -33,11 +32,21 @@ const InputField = ({ id, name, type, placeholder, value, onChange, Icon }) => {
           value={inputValue}
           onChange={handleChange}
           required
+          autoComplete={name === 'password' ? 'current-password' : 'off'}
         />
+
+        {AppendIcon && (
+          <div className='input-group-append'>
+            <span className='input-group-text' style={{ cursor: 'pointer' }} onClick={onAppendIconClick}>
+              <AppendIcon />
+            </span>
+          </div>
+        )}
       </div>
     </Form.Group>
   );
 };
+
 InputField.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
@@ -46,6 +55,8 @@ InputField.propTypes = {
   value: PropTypes.any,
   onChange: PropTypes.func,
   Icon: PropTypes.elementType,
+  AppendIcon: PropTypes.elementType,
+  onAppendIconClick: PropTypes.func,
 };
 
 export default InputField;
