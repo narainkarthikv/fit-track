@@ -11,6 +11,7 @@ import SignupLink from '../components/common/SignupLink';
 import Lottie from 'react-lottie';
 import animationData from '../assets/lottie/login-lottie.json';
 import Snackbar from '../components/common/Snackbar';
+import PropTypes from 'prop-types';
 
 const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -18,7 +19,9 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [emoji, setEmoji] = useState('🏋️‍♀️'); 
   const [showPassword, setShowPassword] = useState(false);
-  const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
+  
+  //must start with a value in order to have no errors
+  const [snackbar, setSnackbar] = useState({ show: false, message: '', type: 'success' });
   const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:4000'; 
   const navigate = useNavigate();
 
@@ -171,6 +174,11 @@ const getIcon = (field) => {
     default:
       return null;
   }
+};
+LoginPage.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  setIsAuthenticated: PropTypes.func.isRequired,
+  setUserID: PropTypes.func.isRequired,
 };
 
 export default LoginPage;

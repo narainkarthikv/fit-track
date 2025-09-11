@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { Toast, ToastContainer, ProgressBar } from 'react-bootstrap';
 import Lottie from 'react-lottie';
 import successAnimation from '../../assets/lottie/success-lottie.json';
@@ -44,6 +44,15 @@ const Snackbar = ({ show, message, type, onClose }) => {
         </Toast>
       </ToastContainer>
   );
+};
+
+import PropTypes from 'prop-types';
+
+Snackbar.propTypes = {
+  show: PropTypes.bool.isRequired,
+  message: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['success', 'failure']).isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default Snackbar;
