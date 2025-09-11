@@ -1,5 +1,5 @@
-import React from 'react';
 import { Card as BootstrapCard } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
 const Card = ({ title, text, children }) => (
   <BootstrapCard>
@@ -10,5 +10,11 @@ const Card = ({ title, text, children }) => (
     </BootstrapCard.Body>
   </BootstrapCard>
 );
+
+Card.propTypes = {
+  title: PropTypes.string,
+  text: PropTypes.string,
+  children: PropTypes.node.isRequired,
+};
 
 export default Card;
