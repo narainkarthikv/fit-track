@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux"; 
 
 const TotalDays = ({ userDetails }) => { 
-    const totalDays = useSelector((state) => state.userRoutine.totalDays); 
+    const totalDays = useSelector((state) => state.userRoutine.userRoutineData[userDetails._id]?.totalDays || 0); 
 
     return (
         <div className="d-flex flex-column text-center font-weight-bold">

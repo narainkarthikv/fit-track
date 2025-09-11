@@ -4,8 +4,7 @@ import axios from 'axios';
 const backendURL = import.meta.env.VITE_API_URL;
 
 const initialState = {
-  dayCheck: [false, false, false, false, false, false, false],
-  totalDays: 0,
+  userRoutineData: {},
   status: 'idle',
   error: null,
 };
@@ -15,10 +14,19 @@ const userRoutineSlice = createSlice({
   initialState,
   reducers: {
     setDayCheck: (state, action) => {
-      state.dayCheck = action.payload;
+      const { userID , dayCheck}=action.payload;
+      if(!state.userRoutineData[userID]) 
+      {
+        state.userRoutineData[userID]={};
+      }
+      state.userRoutineData[userID].dayCheck= dayCheck;
     },
     updateTotalDaysSuccess: (state, action) => {
-      state.totalDays = action.payload; 
+      const {userID , totalDays}=action.payload;
+      if(!state.userRoutineData[userID]) {
+        state.userRoutineData[userID]={};
+      }
+      state.userRoutineData[userID].totalDays= totalDays;
       state.status = 'succeeded';
     },
     updateTotalDaysFailure: (state, action) => {
@@ -33,7 +41,7 @@ const userRoutineSlice = createSlice({
 
 export const { setDayCheck, updateTotalDaysSuccess, updateTotalDaysFailure, setStatus } = userRoutineSlice.actions;
 
-export const updateTotalDays = (userID, updatedDayCheck) => async (dispatch, getState) => {
+export const updateTotalDays = (userID, updatedDayCheck) => async (dispatch) => {
   dispatch(setStatus('loading'));
   try {
     const url = `${backendURL}/api/user/${userID}/updateTotalDays`;
@@ -45,8 +53,8 @@ export const updateTotalDays = (userID, updatedDayCheck) => async (dispatch, get
     // Extract updated totalDays from the response
     const { totalDays } = response.data;
 
-    dispatch(setDayCheck(updatedDayCheck));
-    dispatch(updateTotalDaysSuccess(totalDays));
+    dispatch(setDayCheck({ userID ,dayCheck:updatedDayCheck}));
+    dispatch(updateTotalDaysSuccess({ userID, totalDays}));
   } catch (error) {
     console.error('Error in updateTotalDays:', error);
     dispatch(updateTotalDaysFailure(error.toString()));

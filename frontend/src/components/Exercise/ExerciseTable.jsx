@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import ExerciseRow from './ExerciseRow';
 import { FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 
-const ExerciseTable = ({ exercises, handleDelete }) => {
+const ExerciseTable = ({ exercises = [], handleDelete }) => {
     const [sortConfig, setSortConfig] = useState({ key: 'description', direction: 'ascending' });
 
-    const sortedExercises = sortExercises(exercises, sortConfig);
+    const sortedExercises = Array.isArray(exercises) ? sortExercises(exercises, sortConfig) : [];
 
     const requestSort = (key) => {
         setSortConfig((prevConfig) => ({

@@ -1,8 +1,21 @@
-# Fit-Track
+# 🏃‍♂️ Fit-Track
 
-Welcome to Fit-Track, your go-to exercise log-tracking application built with the MERN (MongoDB, Express, React+Vite) stack with Bootstrap CSS Framework. This guide will help you get started with contributing to our project.
+Welcome to **Fit-Track**, your go-to exercise log-tracking application built with the MERN (MongoDB, Express, React+Vite) stack with Bootstrap CSS Framework. Whether you're a beginner or a pro, your contribution is welcome! 🤍🤝
 
-## Tech Stack
+[![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/fit-track?style=flat-square)](https://github.com/narainkarthikv/fit-track/issues)
+[![GitHub forks](https://img.shields.io/github/forks/narainkarthikv/fit-track?style=flat-square)](https://github.com/narainkarthikv/fit-track/network)
+[![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/fit-track?style=flat-square)](https://github.com/narainkarthikv/fit-track/stargazers)
+[![MIT License](https://img.shields.io/github/license/narainkarthikv/fit-track?style=flat-square)](./MIT-LICENSE.txt)
+
+## 📚 About
+
+**Fit-Track** lets you:
+- Track and log your daily exercises and workouts
+- Monitor your fitness progress over time
+- View detailed exercise statistics and analytics
+- Join a community of fitness enthusiasts
+
+## 🛠️ Tech Stack
 
 <table>
     <tr>
@@ -19,14 +32,17 @@ Welcome to Fit-Track, your go-to exercise log-tracking application built with th
     </tr>
 </table>
 
-## Table of Contents
+## 📚 Table of Contents
 
+- [About](#about)
+- [Tech Stack](#tech-stack)
 - [Installation](#installation)
   - [Frontend](#frontend)
   - [Backend](#backend)
 - [Project Structure](#project-structure)
   - [Frontend](#frontend-1)
   - [Backend](#backend-1)
+- [Development Standards](#development-standards)
 - [Contributing](#contributing)
   - [Forking the Repository](#forking-the-repository)
   - [Cloning the Repository](#cloning-the-repository)
@@ -35,6 +51,7 @@ Welcome to Fit-Track, your go-to exercise log-tracking application built with th
   - [Committing Changes](#committing-changes)
   - [Pushing Changes](#pushing-changes)
   - [Creating a Pull Request](#creating-a-pull-request)
+- [Contributors](#contributors)
 - [License](#license)
 
 ## Installation
@@ -93,35 +110,78 @@ Welcome to Fit-Track, your go-to exercise log-tracking application built with th
 
 ### Frontend
 
-The `frontend` directory contains the React application.
+The `frontend` directory contains the React application:
 
-```
+```plaintext
 frontend/
-├── public/
+├── public/                 # Public assets and favicon
 ├── src/
-├───assets/
-│   └───lottie
-├───components/
-│   ├───common/
-│   ├───Exercise/
-│   ├───Heatmap/
-│   └───Navbar/
-├───pages/
-├───slices/
-├───store/
-└───utils/
+│   ├── assets/            # Static assets and Lottie animations
+│   │   ├── images/        # Image assets
+│   │   └── lottie/       # Lottie animation files
+│   ├── components/        # Reusable UI components
+│   │   ├── common/       # Shared components
+│   │   ├── Exercise/     # Exercise-related components
+│   │   ├── Heatmap/     # Heatmap visualization
+│   │   └── Navbar/      # Navigation components
+│   ├── pages/            # Application pages/routes
+│   ├── slices/           # Redux toolkit slices
+│   ├── store/            # Redux store configuration
+│   └── utils/            # Utility functions
+├── index.html            # HTML template
+├── package.json          # Project dependencies
+└── vite.config.js       # Vite configuration
 ```
 
 ### Backend
 
-The `backend` directory contains the Node.js server and Express application.
+The `backend` directory contains the Node.js server and Express application:
 
-```
+```plaintext
 backend/
-├── models/
-├── routes/
-└── server.js
+├── models/               # MongoDB Schema models
+│   ├── exercise.model.js # Exercise data model
+│   └── user.model.js    # User data model
+├── routes/              # API route handlers
+│   ├── exercises.js     # Exercise-related routes
+│   └── user.js         # User authentication routes
+├── package.json         # Backend dependencies
+└── server.js           # Express server setup
 ```
+
+## Development Standards
+
+### Code Style
+- We use ESLint and Prettier for code formatting and linting
+- Follow the established ESLint rules in both frontend and backend
+- Maximum line length is 100 characters
+- Use 2 spaces for indentation
+- Follow React best practices and hooks rules
+
+### Documentation
+- All components and functions must have JSDoc documentation
+- Include clear descriptions for API endpoints
+- Document complex business logic
+- Keep the README and API documentation up to date
+
+### Git Workflow
+- Create feature branches from `develop` using format: `feature/description`
+- Create bug fix branches using format: `fix/description`
+- Follow conventional commits specification
+- Submit PRs using the provided template
+- Squash commits before merging
+
+### Code Review Process
+- All PRs require at least one review
+- Address all comments and suggestions
+- Ensure CI checks pass before merging
+- Keep PRs focused and reasonably sized
+
+### Testing
+- Write unit tests for new features
+- Include API endpoint tests
+- Maintain test coverage above 80%
+- Test components in isolation
 
 ## Contributing
 
@@ -175,6 +235,10 @@ We welcome contributions! To contribute to Fit-Track, follow these steps:
 ### Creating a Pull Request
 
 9. Create a pull request from your forked repository to the main repository. Go to the "Pull Requests" tab on the main repository, and click "New Pull Request". Follow the instructions to create your pull request.
+
+## Contributors
+
+Thanks to all our contributors who have helped make Fit-Track better! Check out our [Contributors](https://github.com/narainkarthikv/fit-track/graphs/contributors) page.
 
 Let's build something great together and make Fit-Track the best it can be! ❤️🤝
 
