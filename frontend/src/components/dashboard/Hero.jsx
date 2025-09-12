@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import heroImg from '../../assets/images/f1.png';
 
-const Hero = ( isLoggedIn )=>{
+const Hero = ( {isLoggedIn} )=>{
 
 return( <section className="hero bg-dark text-white py-5" style={{ minHeight: '100vh' }}>
     <div className="container">

@@ -1,9 +1,8 @@
-import React from 'react';
 import Hero from '../components/dashboard/Hero';
 import Features from '../components/dashboard/Features';
 import ProgressShowcase from '../components/dashboard/ProgressShowcase';
 import Testimonials from '../components/dashboard/Testimonials';
-import CTA from '../components/dashboard/CTA';
+import Cta from '../components/dashboard/Cta';
 import Footer from '../components/dashboard/Footer';
 
 const DashBoard = () => {
@@ -14,7 +13,7 @@ const DashBoard = () => {
       <ProgressShowcase />
       <Testimonials />
       <div id="cta">
-        <CTA />
+        <Cta />
       </div>
       <Footer />
     </>
