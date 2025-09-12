@@ -14,9 +14,9 @@ describe('EmojiSection component', () => {
     const handleClick = vi.fn(); // func for test 
     render(<EmojiSection emoji="🏋️‍♀️" onClick={handleClick} />);
     
-    const div = screen.getByText('Feeling 🏋️‍♀️ today?').parentElement; // div principale
+    const div = screen.getByText('Feeling 🏋️‍♀️ today?').parentElement; // main div
     fireEvent.click(div); // click simulation
     
-    expect(handleClick).toHaveBeenCalledTimes(1); // verifica che sia stato chiamato
+    expect(handleClick).toHaveBeenCalledTimes(1); // call verification
   });
 });
