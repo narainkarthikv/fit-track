@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const Cta = ({isLoggedIn}) => {
+const CTA = ({isLoggedIn}) => {
   return (
     <section className="cta position-relative text-white text-center py-5">
         <div className="cta-overlay"></div>
@@ -23,8 +23,8 @@ const Cta = ({isLoggedIn}) => {
     </section>
 )};
 
-Cta.propTypes = {
+CTA.propTypes = {
     isLoggedIn: PropTypes.bool
 };
 
-export default Cta;
+export default CTA;
