@@ -1,8 +1,7 @@
-import React, { useState, useCallback } from 'react';
-import { Link, useNavigate, Navigate } from 'react-router-dom';
+import  { useState, useCallback } from 'react';
+import {Navigate } from 'react-router-dom';
 import { FaDumbbell, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa'; 
-import { BsEmojiSmile } from 'react-icons/bs'; 
-import { Form, Button, Container, Card, Spinner } from 'react-bootstrap';
+import { Form,  Container, Card } from 'react-bootstrap';
 import InputField from '../components/common/InputField';
 import HeaderSection from '../components/common/HeaderSection';
 import SubmitButton from '../components/common/SubmitButton';
@@ -11,6 +10,7 @@ import SignupLink from '../components/common/SignupLink';
 import Lottie from 'react-lottie';
 import animationData from '../assets/lottie/login-lottie.json';
 import Snackbar from '../components/common/Snackbar';
+import PropTypes from 'prop-types';
 
 const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -18,9 +18,11 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [emoji, setEmoji] = useState('🏋️‍♀️'); 
   const [showPassword, setShowPassword] = useState(false);
-  const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
+  
+  //must start with a value in order to have no errors
+  const [snackbar, setSnackbar] = useState({ show: false, message: '', type: 'success' });
   const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:4000'; 
-  const navigate = useNavigate();
+  
 
   const handleInputChange = useCallback((e) => {
     const { id, value } = e.target;
@@ -71,7 +73,7 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
     } finally {
       setIsSubmitting(false);
     }
-  }, [backendURL, credentials, navigate, setIsAuthenticated, setUserID]);
+  }, [backendURL, credentials,setIsAuthenticated, setUserID]);
 
   const onSubmit = useCallback(
     (e) => {
@@ -131,7 +133,7 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
                     value={credentials[field]}
                     onChange={handleInputChange}
                     Icon={getIcon(field)}
-                    appendIcon={field === 'password' ? (showPassword ? FaEyeSlash : FaEye) : null}
+                    AppendIcon={field === 'password' ? (showPassword ? FaEyeSlash : FaEye) : null}
                     onAppendIconClick={field === 'password' ? togglePasswordVisibility : null}
                     className="mb-3"
                   />
@@ -170,6 +172,11 @@ const getIcon = (field) => {
     default:
       return null;
   }
+};
+LoginPage.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  setIsAuthenticated: PropTypes.func.isRequired,
+  setUserID: PropTypes.func.isRequired,
 };
 
 export default LoginPage;

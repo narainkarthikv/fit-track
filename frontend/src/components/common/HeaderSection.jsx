@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 
 const HeaderSection = ({ title, icon }) => (
@@ -10,7 +9,7 @@ const HeaderSection = ({ title, icon }) => (
 
 HeaderSection.propTypes = {
   title: PropTypes.string.isRequired,
-  icon: PropTypes.node
+  icon: PropTypes.node,
 };
 
 export default HeaderSection;

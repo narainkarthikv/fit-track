@@ -1,12 +1,11 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  build: {
-    rollupOptions: {
-      external: ['lucide-react']
-    }
-  }
-})
+  test: {
+    environment: 'jsdom',
+    globals: true,       // describe/test/expect senza import
+    setupFiles: './src/__tests__/setupTests.jsx',
+  },
+});

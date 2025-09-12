@@ -1,10 +1,10 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import heroImg from '../../assets/images/f1.png';
 
-const Hero = ({ isLoggedIn }) => (
-  <section className="hero bg-dark text-white py-5" style={{ minHeight: '100vh' }}>
+const Hero = ( {isLoggedIn} )=>{
+
+return( <section className="hero bg-dark text-white py-5" style={{ minHeight: '100vh' }}>
     <div className="container">
       <div className="row align-items-center flex-column-reverse flex-md-row">
         {/* Left: Text */}
@@ -35,51 +35,10 @@ const Hero = ({ isLoggedIn }) => (
         </div>
       </div>
     </div>
-
-    <style>{`
-      .hero {
-        position: relative;
-        overflow: hidden;
-      }
-      .gradient-btn {
-        background: linear-gradient(135deg, #ffa500, #ff8c00);
-        border: none;
-        color: white;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
-      }
-      .gradient-btn:hover {
-        background: linear-gradient(135deg, #ff8c00, #ffa500);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);
-      }
-      .hero-img {
-        width: 100%;
-        max-width: 100%;
-        height: auto;
-        transition: all 0.3s ease-in-out;
-        filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
-      }
-      @media (min-width: 992px) {
-        .hero-img {
-          width: 120%;
-        }
-      }
-      @media (min-width: 1400px) {
-        .hero-img {
-          width: 170%;
-        }
-      }
-    `}</style>
-  </section>
-);
-
+  </section>)
+}
 Hero.propTypes = {
   isLoggedIn: PropTypes.bool
-};
-
-Hero.defaultProps = {
-  isLoggedIn: false
 };
 
 export default Hero;
