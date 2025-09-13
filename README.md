@@ -1,247 +1,233 @@
-# 🏃‍♂️ Fit-Track
+# 🏃‍♂️ Fit-Track  
 
-Welcome to **Fit-Track**, your go-to exercise log-tracking application built with the MERN (MongoDB, Express, React+Vite) stack with Bootstrap CSS Framework. Whether you're a beginner or a pro, your contribution is welcome! 🤍🤝
+> **Your all-in-one fitness log tracker built on the MERN stack**  
 
 [![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/fit-track?style=flat-square)](https://github.com/narainkarthikv/fit-track/issues)
 [![GitHub forks](https://img.shields.io/github/forks/narainkarthikv/fit-track?style=flat-square)](https://github.com/narainkarthikv/fit-track/network)
 [![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/fit-track?style=flat-square)](https://github.com/narainkarthikv/fit-track/stargazers)
 [![MIT License](https://img.shields.io/github/license/narainkarthikv/fit-track?style=flat-square)](./MIT-LICENSE.txt)
 
-## 📚 About
+---
 
-**Fit-Track** lets you:
-- Track and log your daily exercises and workouts
-- Monitor your fitness progress over time
-- View detailed exercise statistics and analytics
-- Join a community of fitness enthusiasts
+## 🌟 Why Fit-Track?  
 
-## 🛠️ Tech Stack
+Fit-Track is a MERN-stack app designed to help you **log workouts**, **track progress**, and **stay motivated**. Whether you’re a beginner or a pro, we welcome your contributions to make Fit-Track better for everyone.  
 
-<table>
-    <tr>
-     <td>Frontend</td>
-     <td><img src="https://skillicons.dev/icons?i=react,vite,bootstrap,redux" /></td>
-    </tr>
-    <tr>
-     <td>Backend</td>
-     <td><img src="https://skillicons.dev/icons?i=mongo,express" /></td>
-    </tr>
-    <tr>
-     <td>CI/CD</td>
-     <td><img src="https://skillicons.dev/icons?i=netlify,githubactions" /></td>
-    </tr>
-</table>
+✨ **Key Features:**  
+- Log & track your daily exercises  
+- Monitor your progress with charts & analytics  
+- Access motivational fitness quotes  
+- Join a growing open-source fitness community  
 
-## 📚 Table of Contents
+---
 
-- [About](#about)
-- [Tech Stack](#tech-stack)
+## 🛠️ Tech Stack  
+
+| Area       | Stack / Tools |
+|------------|---------------|
+| **Frontend** | React + Vite, Redux Toolkit, Bootstrap |
+| **Backend**  | Node.js, Express.js, MongoDB Atlas |
+| **CI/CD**    | Netlify (Frontend), GitHub Actions |
+
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=react,vite,bootstrap,redux,mongo,express,netlify,githubactions" />
+</p>
+
+---
+
+## 📑 Table of Contents  
+
 - [Installation](#installation)
-  - [Frontend](#frontend)
-  - [Backend](#backend)
+  - [Backend Setup](#backend-setup)
+  - [Frontend Setup](#frontend-setup)
 - [Project Structure](#project-structure)
-  - [Frontend](#frontend-1)
-  - [Backend](#backend-1)
+- [Environment Variables](#environment-variables)
 - [Development Standards](#development-standards)
 - [Contributing](#contributing)
-  - [Forking the Repository](#forking-the-repository)
-  - [Cloning the Repository](#cloning-the-repository)
-  - [Creating a Branch](#creating-a-branch)
-  - [Making Changes](#making-changes)
-  - [Committing Changes](#committing-changes)
-  - [Pushing Changes](#pushing-changes)
-  - [Creating a Pull Request](#creating-a-pull-request)
 - [Contributors](#contributors)
 - [License](#license)
 
-## Installation
+---
+
+## 🚀 Installation  
+
+### 1️⃣ Backend Setup  
+
+* Refer `.env.example` in `backend` directory.
+
+```bash
+cd backend
+npm install
+````
+
+* Create a `.env` file inside the `backend` directory:
+
+```bash
+# backend/.env
+ATLAS_URI=<your-mongodb-connection-string>
+```
+
+* Start the server:
+
+```bash
+node server.js
+# or use nodemon for live reload:
+nodemon server.js
+```
+
+### 2️⃣ Frontend Setup
+
+* Refer `.env.example` in `frontend` directory.
+
+```bash
+cd frontend
+npm install
+```
+
+* Create a `.env` file inside the `frontend` directory:
+
+```bash
+# frontend/.env
+VITE_SERVER_URL=<backend-server-url>
+VITE_APININJAS=<your-api-ninjas-key>
+```
+
+* Start the development server:
+
+```bash
+npm run dev
+```
+
+---
+
+## 🗂️ Project Structure
 
 ### Frontend
-
-1. Navigate to the `frontend` directory:
-   ```sh
-   cd frontend
-   ```
-2. Install the dependencies:
-   ```sh
-   npm install
-   ```
-3. Start the development server:
-   ```sh
-   npm run dev
-   ```
-
-### Backend
-
-1. Navigate to the `backend` directory:
-   ```sh
-   cd backend
-   ```
-2. Install the dependencies:
-   ```sh
-   npm install
-   ```
-3. Setup MongoDB Atlas:
-   1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) and create an account if you don't already have one.
-   2. Create a new cluster by following the prompts. [Mongo Atlas Cluster Creation Tutorial](https://www.youtube.com/watch?v=esKNjzDZItQ)
-   3. Once the cluster is created, go to the **Database Access** section and create a user with the necessary privileges.
-   4. Go to **Network Access** and allow your IP address (or allow access from anywhere if testing locally).
-   5. In the **Clusters** section, click **Connect**, then choose **Connect your application**. You'll see a connection string that looks like this:
-      ```
-      mongodb+srv://<username>:<password>@cluster0.mongodb.net/?retryWrites=true&w=majority
-      ```
-   6. Replace `<username>` and `<password>` with your actual MongoDB Atlas username and password. Copy the entire connection string.
-4. Add MongoDB ATLAS_URI to `.env` file:
-   - Create a `.env` file in the `backend` directory.
-   - Add the following line to the `.env` file, replacing `<your-mongodb-connection-string>` with the connection string you copied from MongoDB Atlas:
-     ```bash
-     ATLAS_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/fit-track?retryWrites=true&w=majority
-     ```
-5. Start the server:
-   ```sh
-   node server.js
-   ```
-   or if `nodemon` is installed for live updates of backend:
-   ```sh
-   nodemon server.js
-   ```
-
-## Project Structure
-
-### Frontend
-
-The `frontend` directory contains the React application:
 
 ```plaintext
 frontend/
-├── public/                 # Public assets and favicon
+├── public/                 
 ├── src/
-│   ├── assets/            # Static assets and Lottie animations
-│   │   ├── images/        # Image assets
-│   │   └── lottie/       # Lottie animation files
-│   ├── components/        # Reusable UI components
-│   │   ├── common/       # Shared components
-│   │   ├── Exercise/     # Exercise-related components
-│   │   ├── Heatmap/     # Heatmap visualization
-│   │   └── Navbar/      # Navigation components
-│   ├── pages/            # Application pages/routes
-│   ├── slices/           # Redux toolkit slices
-│   ├── store/            # Redux store configuration
-│   └── utils/            # Utility functions
-├── index.html            # HTML template
-├── package.json          # Project dependencies
-└── vite.config.js       # Vite configuration
+│   ├── assets/            
+│   │   ├── images/        
+│   │   └── lottie/        
+│   ├── components/        
+│   │   ├── common/       
+│   │   ├── Exercise/     
+│   │   ├── Heatmap/      
+│   │   └── Navbar/       
+│   ├── pages/            
+│   ├── slices/           
+│   ├── store/            
+│   └── utils/            
+├── index.html            
+├── package.json          
+└── vite.config.js       
 ```
 
 ### Backend
 
-The `backend` directory contains the Node.js server and Express application:
-
 ```plaintext
 backend/
-├── models/               # MongoDB Schema models
-│   ├── exercise.model.js # Exercise data model
-│   └── user.model.js    # User data model
-├── routes/              # API route handlers
-│   ├── exercises.js     # Exercise-related routes
-│   └── user.js         # User authentication routes
-├── package.json         # Backend dependencies
-└── server.js           # Express server setup
+├── models/               
+├── routes/                   
+├── package.json         
+└── server.js           
 ```
 
-## Development Standards
+---
 
-### Code Style
-- We use ESLint and Prettier for code formatting and linting
-- Follow the established ESLint rules in both frontend and backend
-- Maximum line length is 100 characters
-- Use 2 spaces for indentation
-- Follow React best practices and hooks rules
+## 🔑 Environment Variables
 
-### Documentation
-- All components and functions must have JSDoc documentation
-- Include clear descriptions for API endpoints
-- Document complex business logic
-- Keep the README and API documentation up to date
+| Directory    | Variable Name     | Description                                                                               |
+| ------------ | ----------------- | ----------------------------------------------------------------------------------------- |
+| **Backend**  | `ATLAS_URI`       | MongoDB Atlas connection string                                                           |
+| **Frontend** | `VITE_SERVER_URL` | URL where backend server is hosted (e.g., [http://localhost:5000](http://localhost:5000)) |
+|              | `VITE_APININJAS`  | API Ninjas key for Quotes API                                                             |
 
-### Git Workflow
-- Create feature branches from `develop` using format: `feature/description`
-- Create bug fix branches using format: `fix/description`
-- Follow conventional commits specification
-- Submit PRs using the provided template
-- Squash commits before merging
+---
 
-### Code Review Process
-- All PRs require at least one review
-- Address all comments and suggestions
-- Ensure CI checks pass before merging
-- Keep PRs focused and reasonably sized
+## 📝 Development Standards
 
-### Testing
-- Write unit tests for new features
-- Include API endpoint tests
-- Maintain test coverage above 80%
-- Test components in isolation
+* **Code Style:**
 
-## Contributing
+  * ESLint + Prettier for formatting and linting
+  * 2-space indentation, max line length 100 chars
+  * Follow React Hooks and Redux best practices
 
-We welcome contributions! To contribute to Fit-Track, follow these steps:
+* **Documentation:**
 
-### Forking the Repository
+  * JSDoc for components & functions
+  * Keep README and API docs updated
 
-1. Fork the repository by clicking the "Fork" button at the top right of the repository page on GitHub.
-   ![Forking the Repository](https://user-images.githubusercontent.com/github-fork-button.png)
+* **Git Workflow:**
 
-### Cloning the Repository
+  * Branch naming: `feature/description` or `fix/description`
+  * Follow [Conventional Commits](https://www.conventionalcommits.org/)
+  * PR template usage & squash commits
 
-2. Clone your forked repository to your local machine:
-   ```sh
-   git clone https://github.com/your-username/Fit-Track.git
-   ```
-3. Navigate to the project directory:
-   ```sh
-   cd Fit-Track
+* **Testing:**
+
+  * Unit tests for new features
+  * Test coverage ≥ 80%
+
+---
+
+## 🤝 Contributing
+
+We ❤️ contributions! Here’s how to get started:
+
+1. **Fork the repo** (click the Fork button at the top right).
+
+2. **Clone your fork:**
+
+   ```bash
+   git clone https://github.com/your-username/fit-track.git
+   cd fit-track
    ```
 
-### Creating a Branch
+3. **Create a new branch:**
 
-4. Create a new branch for your feature or bug fix (create a branch according to the issue working on):
-   ```sh
-   git switch -c your-branch-name
+   ```bash
+   git switch -c feature/your-feature-name
    ```
 
-### Making Changes
+4. **Make changes** in your editor of choice.
 
-5. Make your changes to the codebase. You can edit the files using your preferred code editor.
+5. **Stage & Commit:**
 
-### Committing Changes
-
-6. Add the changes to the staging area:
-   ```sh
+   ```bash
    git add .
-   ```
-7. Commit the changes with a descriptive message:
-   ```sh
-   git commit -m "Description of your changes"
+   git commit -m "feat: add new feature"
    ```
 
-### Pushing Changes
+6. **Push your branch:**
 
-8. Push the changes to your forked repository:
-   ```sh
-   git push origin your-branch-name
+   ```bash
+   git push origin feature/your-feature-name
    ```
 
-### Creating a Pull Request
+7. **Open a Pull Request** from your fork to the `develop` branch of the main repo.
 
-9. Create a pull request from your forked repository to the main repository. Go to the "Pull Requests" tab on the main repository, and click "New Pull Request". Follow the instructions to create your pull request.
+📌 *Tip: Keep your PRs small and focused to get faster reviews.*
 
-## Contributors
+---
 
-Thanks to all our contributors who have helped make Fit-Track better! Check out our [Contributors](https://github.com/narainkarthikv/fit-track/graphs/contributors) page.
+## 👥 Contributors
 
-Let's build something great together and make Fit-Track the best it can be! ❤️🤝
+Thanks to everyone who has helped make Fit-Track awesome! 💪
+Check out our [Contributors Page](https://github.com/narainkarthikv/fit-track/blob/main/Contributors.md).
 
-## License
+---
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/narainkarthikv/Fit-Track/blob/main/MIT-LICENSE.txt) file for details.
+## 📜 License
+
+This project is licensed under the MIT License.
+See the [LICENSE](https://github.com/narainkarthikv/fit-track/blob/main/MIT-LICENSE.txt) file for details.
+
+---
+
+### 💡 Final Thoughts
+
+We’re building **Fit-Track** as a collaborative fitness companion.
+Your code, your ideas, and your feedback make it stronger. Let’s build it together! 🏗️💚
