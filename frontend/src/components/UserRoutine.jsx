@@ -1,43 +1,127 @@
-import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
 import { updateTotalDays } from "../slices/userRoutineSlice";
+import React, { useEffect, useState } from "react";
+import { FaFire, FaCheckCircle } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import PropTypes from 'prop-types';
 
 const UserRoutine = ({ userID }) => {
+    const [dayCheck, setDayCheck] = useState([false, false, false, false, false, false, false]);
+    const [streak, setStreak] = useState(0);
+    const [weeklyStreakValue, setWeeklyStreakValue] = useState(0);
+    const [msg, setMsg] = useState("");
+    const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
     const dispatch = useDispatch();
-
-    // Retrieve dayCheck and totalDays from Redux store
-    const { dayCheck = [] } = useSelector((state) => state.userRoutine); // Default to empty array if undefined
-
-    // Weekdays array
     const weekdays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
-    // Function to handle button clicks for marking days
-    const onButtonClick = (index) => {
-        const updatedDayCheck = [...dayCheck];
-        updatedDayCheck[index] = !updatedDayCheck[index]; // Toggle day status
-
-        // Dispatch action to update dayCheck and totalDays in Redux
-        dispatch(updateTotalDays(userID, updatedDayCheck));
+    const weeklyStreak = (updatedDayCheck) => {
+        const todayIndex = new Date().getDay();
+        for (let index = 0; index < updatedDayCheck.length; index++) {
+            if (!updatedDayCheck[index]) {
+                setWeeklyStreakValue(index - 1);
+                if (index < todayIndex) setMsg("Streak Missed Mid-week 😢");
+                else setMsg("");
+                return;
+            }
+        }
+        setWeeklyStreakValue(todayIndex);
     };
 
+    useEffect(() => {
+        if (!userID) return;
+
+        const fetchData = async () => {
+            try {
+                const res = await fetch(`${backendURL}/api/user/streak/${userID}`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const data = await res.json();
+                setStreak(data.streakCount);
+                setDayCheck(data.dayCheck);
+                weeklyStreak(data.dayCheck);
+                dispatch(updateTotalDays(userID, data.dayCheck));
+            } catch (error) {
+                console.error("Fetch error:", error);
+            }
+        };
+
+        fetchData();
+    }, [userID, backendURL, dispatch]);
+
+    const today = new Date().getDay();
+
     return (
-        <div className="d-flex flex-column justify-content-center align-items-center">
-            <h5 className="font-weight-bold">User Weekly Routine</h5>
-            <div className="btn-group" role="group" aria-label="Day Buttons">
-                {dayCheck.length > 0 && dayCheck.map((day, index) => (
-                    <div key={index} className="d-flex flex-column align-items-center m-1">
-                        <button
-                            onClick={() => onButtonClick(index)}
-                            className={`btn rounded-pill d-flex ${day ? "btn-outline-success" : "btn-outline-danger"}`}
+        <div className="d-flex flex-column" style={{ minHeight: '300px' }}>
+            {/* Streak Card */}
+            <div className="bg-warning rounded-4 p-4 mb-4 text-center">
+                <div className="d-flex align-items-center justify-content-center gap-2 mb-1">
+                    <FaFire size={32} className="text-danger" />
+                    <span className="display-4 fw-bold text-dark">{streak}</span>
+                </div>
+                <p className="mb-0 text-dark fs-5">day streak!</p>
+            </div>
+
+            {/* Weekdays Section */}
+            <div className="d-flex flex-column mt-2">
+                {/* Weekday Labels */}
+                <div className="d-flex justify-content-between mb-3">
+                    {weekdays.map((day, index) => (
+                        <div
+                            key={index}
+                            className={`text-center position-relative ${
+                                index === today ? 'text-primary fw-bold' : 'text-light'
+                            }`}
+                            style={{ width: '40px' }}
                         >
-                            {day ? <FaCheckCircle /> : <FaTimesCircle />}
-                        </button>
-                        <small className="mt-1 font-weight-bold">{weekdays[index]}</small>
+                            {day}
+                            {dayCheck[index] && (
+                                <div className="position-absolute top-100 start-50 translate-middle">
+                                    <FaCheckCircle 
+                                        className="text-warning mt-2" 
+                                        size={16}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+
+                {/* Progress Bar */}
+                <div className="mb-3">
+                    <div className="progress bg-dark" style={{ height: '4px' }}>
+                        <div
+                            className="progress-bar bg-warning"
+                            role="progressbar"
+                            style={{
+                                width: `${(weeklyStreakValue / 6) * 100}%`,
+                                transition: 'width 0.5s ease-in-out'
+                            }}
+                            aria-valuenow={weeklyStreakValue}
+                            aria-valuemin="0"
+                            aria-valuemax="6"
+                        />
                     </div>
-                ))}
+                </div>
+
+                {/* Status Message */}
+                {msg && (
+                    <div className="mt-2 text-center p-2 rounded-3" 
+                         style={{ 
+                             backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                             border: '1px solid rgba(255, 193, 7, 0.2)'
+                         }}>
+                        <span className="text-warning">{msg}</span>
+                    </div>
+                )}
             </div>
         </div>
     );
+};
+
+UserRoutine.propTypes = {
+    userID: PropTypes.string.isRequired
 };
 
 export default UserRoutine;

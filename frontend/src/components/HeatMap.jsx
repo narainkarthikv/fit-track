@@ -9,7 +9,7 @@ import DetailsModal from "./Heatmap/DetailsModal";
 
 const HeatMap = ({ userID }) => {
     const dispatch = useDispatch();
-    const monthData = useSelector((state) => state.heatMap.monthData);
+    const monthData = useSelector((state) => state.heatMap.userMonthData?.[userID] || []);
     const status = useSelector((state) => state.heatMap.status);
 
     // Set the default month to the current month
