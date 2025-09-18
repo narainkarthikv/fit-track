@@ -19,7 +19,7 @@ const InputField = ({ id, name, type, placeholder, value, onChange, Icon, Append
       <div className='input-group'>
         {Icon && (
           <div className='input-group-prepend'>
-            <span className='input-group-text'>
+            <span data-testid="input-icon" className='input-group-text'>
               <Icon />
             </span>
           </div>
@@ -37,7 +37,7 @@ const InputField = ({ id, name, type, placeholder, value, onChange, Icon, Append
 
         {AppendIcon && (
           <div className='input-group-append'>
-            <span className='input-group-text' style={{ cursor: 'pointer' }} onClick={onAppendIconClick}>
+            <span className='input-group-text' data-testid="append-icon" style={{ cursor: 'pointer' }} onClick={onAppendIconClick}>
               <AppendIcon />
             </span>
           </div>
