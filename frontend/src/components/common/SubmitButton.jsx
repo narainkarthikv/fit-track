@@ -2,17 +2,24 @@ import PropTypes from 'prop-types';
 import { Button, Spinner } from 'react-bootstrap';
 
 const SubmitButton = ({ isSubmitting, text = 'Sign In' }) => (
-  <Button variant='danger' type='submit' block disabled={isSubmitting} aria-label={text}>
-    {isSubmitting ? (
-      <Spinner as='span' animation='border' size='sm' role='status' aria-hidden='true' />
-    ) : (
-      text
-    )}
-  </Button>
+<Button variant='danger' type='submit' disabled={isSubmitting} aria-label={text}>
+  {isSubmitting ? (
+    <Spinner
+     as='span'
+     animation='border'
+     size='sm'
+     role='status'
+     aria-hidden='true'
+     data-testid='submit-spinner'
+    />
+  ) : (
+     text
+  )}
+</Button>
 );
 
 SubmitButton.propTypes= {
-  isSubmitting : PropTypes.func.isRequired,
+  isSubmitting : PropTypes.bool.isRequired,
   text: PropTypes.string
 }
 
