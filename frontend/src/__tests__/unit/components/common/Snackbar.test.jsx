@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import Snackbar from '../components/common/Snackbar';
+import Snackbar from '../../../../components/common/Snackbar';
 
 describe('Snackbar component', () => {
   test('renders success message', () => {
