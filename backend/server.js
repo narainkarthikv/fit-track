@@ -31,9 +31,11 @@ process.on('SIGINT', () => {
 // Routes
 const exercisesRouter = require('./routes/exercises');
 const userRouter = require('./routes/user');
+const healthRouter = require('./routes/health');
 
 app.use('/api/exercises', exercisesRouter);
 app.use('/api/user', userRouter);
+app.use('/api/health', healthRouter);
 
 // Start server
 app.listen(port, () => {
