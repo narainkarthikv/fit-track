@@ -11,16 +11,16 @@ describe('Button component', () => {
   test('calls onClick when clicked', () => {
     const handleClick = vi.fn();
     render(<Button onClick={handleClick}>Click me</Button>);
-    
+
     const btn = screen.getByText('Click me');
     fireEvent.click(btn);
-    
+
     expect(handleClick).toHaveBeenCalled();
   });
 
   test('applies variant prop', () => {
     render(<Button variant="success">Click me</Button>);
     const btn = screen.getByText('Click me');
-    expect(btn).toHaveClass('btn-success'); // react-bootstrap 
+    expect(btn).toHaveClass('btn-success'); // react-bootstrap
   });
 });

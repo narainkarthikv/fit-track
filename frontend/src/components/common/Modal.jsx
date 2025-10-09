@@ -18,7 +18,7 @@ Modal.propTypes = {
   show: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   title: PropTypes.node,
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 
 export default Modal;

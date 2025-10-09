@@ -7,29 +7,33 @@ import { FaDumbbell } from 'react-icons/fa';
 import NotificationDropdown from './NotificationDropdown';
 import UserDropdown from './UserDropdown';
 
-const NavBar = ({ user, handleLogout, notifications, toggleNotificationReadStatus }) => (
-  <Navbar bg='dark' variant='dark' expand='lg' sticky='top' className="py-2">
-    <Container fluid className='d-flex justify-content-between align-items-center px-4'>
+const NavBar = ({
+  user,
+  handleLogout,
+  notifications,
+  toggleNotificationReadStatus,
+}) => (
+  <Navbar bg="dark" variant="dark" expand="lg" sticky="top" className="py-2">
+    <Container
+      fluid
+      className="d-flex justify-content-between align-items-center px-4"
+    >
       <LinkContainer to="dashboard">
         <Navbar.Brand className="d-flex align-items-center">
-          <FaDumbbell className='me-2' /> 
+          <FaDumbbell className="me-2" />
           <span className="fw-semibold">Fit-Track</span>
         </Navbar.Brand>
       </LinkContainer>
 
-      <Navbar.Toggle aria-controls='navbar-content' />
-      <Navbar.Collapse id='navbar-content' className='justify-content-end'>
-        <Nav className='gap-3 align-items-center'>
-          
+      <Navbar.Toggle aria-controls="navbar-content" />
+      <Navbar.Collapse id="navbar-content" className="justify-content-end">
+        <Nav className="gap-3 align-items-center">
           {/* User-related dropdowns */}
-          <NotificationDropdown 
-            notifications={notifications} 
-            toggleNotificationReadStatus={toggleNotificationReadStatus} 
+          <NotificationDropdown
+            notifications={notifications}
+            toggleNotificationReadStatus={toggleNotificationReadStatus}
           />
-          <UserDropdown 
-            user={user} 
-            handleLogout={handleLogout} 
-          />
+          <UserDropdown user={user} handleLogout={handleLogout} />
         </Nav>
       </Navbar.Collapse>
     </Container>
@@ -43,15 +47,15 @@ NavBar.propTypes = {
     PropTypes.shape({
       id: PropTypes.string,
       message: PropTypes.string,
-      read: PropTypes.bool
+      read: PropTypes.bool,
     })
   ),
-  toggleNotificationReadStatus: PropTypes.func
+  toggleNotificationReadStatus: PropTypes.func,
 };
 
 NavBar.defaultProps = {
   notifications: [],
-  toggleNotificationReadStatus: () => {}
+  toggleNotificationReadStatus: () => {},
 };
 
 export default NavBar;

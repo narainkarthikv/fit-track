@@ -1,6 +1,6 @@
-# 🏃‍♂️ Fit-Track  
+# 🏃‍♂️ Fit-Track
 
-> **Your all-in-one fitness log tracker built on the MERN stack**  
+> **Your all-in-one fitness log tracker built on the MERN stack**
 
 [![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/fit-track?style=flat-square)](https://github.com/narainkarthikv/fit-track/issues)
 [![GitHub forks](https://img.shields.io/github/forks/narainkarthikv/fit-track?style=flat-square)](https://github.com/narainkarthikv/fit-track/network)
@@ -9,25 +9,26 @@
 
 ---
 
-## 🌟 Why Fit-Track?  
+## 🌟 Why Fit-Track?
 
-Fit-Track is a MERN-stack app designed to help you **log workouts**, **track progress**, and **stay motivated**. Whether you’re a beginner or a pro, we welcome your contributions to make Fit-Track better for everyone.  
+Fit-Track is a MERN-stack app designed to help you **log workouts**, **track progress**, and **stay motivated**. Whether you’re a beginner or a pro, we welcome your contributions to make Fit-Track better for everyone.
 
-✨ **Key Features:**  
-- Log & track your daily exercises  
-- Monitor your progress with charts & analytics  
-- Access motivational fitness quotes  
-- Join a growing open-source fitness community  
+✨ **Key Features:**
+
+- Log & track your daily exercises
+- Monitor your progress with charts & analytics
+- Access motivational fitness quotes
+- Join a growing open-source fitness community
 
 ---
 
-## 🛠️ Tech Stack  
+## 🛠️ Tech Stack
 
-| Area       | Stack / Tools |
-|------------|---------------|
+| Area         | Stack / Tools                          |
+| ------------ | -------------------------------------- |
 | **Frontend** | React + Vite, Redux Toolkit, Bootstrap |
-| **Backend**  | Node.js, Express.js, MongoDB Atlas |
-| **CI/CD**    | Netlify (Frontend), GitHub Actions |
+| **Backend**  | Node.js, Express.js, MongoDB Atlas     |
+| **CI/CD**    | Netlify (Frontend), GitHub Actions     |
 
 <p align="center">
   <img src="https://skillicons.dev/icons?i=react,vite,bootstrap,redux,mongo,express,netlify,githubactions" />
@@ -35,7 +36,7 @@ Fit-Track is a MERN-stack app designed to help you **log workouts**, **track pro
 
 ---
 
-## 📑 Table of Contents  
+## 📑 Table of Contents
 
 - [Installation](#installation)
   - [Backend Setup](#backend-setup)
@@ -49,25 +50,25 @@ Fit-Track is a MERN-stack app designed to help you **log workouts**, **track pro
 
 ---
 
-## 🚀 Installation  
+## 🚀 Installation
 
-### 1️⃣ Backend Setup  
+### 1️⃣ Backend Setup
 
-* Refer `.env.example` in `backend` directory.
+- Refer `.env.example` in `backend` directory.
 
 ```bash
 cd backend
 npm install
-````
+```
 
-* Create a `.env` file inside the `backend` directory:
+- Create a `.env` file inside the `backend` directory:
 
 ```bash
 # backend/.env
 ATLAS_URI=<your-mongodb-connection-string>
 ```
 
-* Start the server:
+- Start the server:
 
 ```bash
 node server.js
@@ -77,14 +78,14 @@ nodemon server.js
 
 ### 2️⃣ Frontend Setup
 
-* Refer `.env.example` in `frontend` directory.
+- Refer `.env.example` in `frontend` directory.
 
 ```bash
 cd frontend
 npm install
 ```
 
-* Create a `.env` file inside the `frontend` directory:
+- Create a `.env` file inside the `frontend` directory:
 
 ```bash
 # frontend/.env
@@ -92,7 +93,7 @@ VITE_SERVER_URL=<backend-server-url>
 VITE_APININJAS=<your-api-ninjas-key>
 ```
 
-* Start the development server:
+- Start the development server:
 
 ```bash
 npm run dev
@@ -106,33 +107,33 @@ npm run dev
 
 ```plaintext
 frontend/
-├── public/                 
+├── public/
 ├── src/
-│   ├── assets/            
-│   │   ├── images/        
-│   │   └── lottie/        
-│   ├── components/        
-│   │   ├── common/       
-│   │   ├── Exercise/     
-│   │   ├── Heatmap/      
-│   │   └── Navbar/       
-│   ├── pages/            
-│   ├── slices/           
-│   ├── store/            
-│   └── utils/            
-├── index.html            
-├── package.json          
-└── vite.config.js       
+│   ├── assets/
+│   │   ├── images/
+│   │   └── lottie/
+│   ├── components/
+│   │   ├── common/
+│   │   ├── Exercise/
+│   │   ├── Heatmap/
+│   │   └── Navbar/
+│   ├── pages/
+│   ├── slices/
+│   ├── store/
+│   └── utils/
+├── index.html
+├── package.json
+└── vite.config.js
 ```
 
 ### Backend
 
 ```plaintext
 backend/
-├── models/               
-├── routes/                   
-├── package.json         
-└── server.js           
+├── models/
+├── routes/
+├── package.json
+└── server.js
 ```
 
 ---
@@ -149,27 +150,23 @@ backend/
 
 ## 📝 Development Standards
 
-* **Code Style:**
+- **Code Style:**
+  - ESLint + Prettier for formatting and linting
+  - 2-space indentation, max line length 100 chars
+  - Follow React Hooks and Redux best practices
 
-  * ESLint + Prettier for formatting and linting
-  * 2-space indentation, max line length 100 chars
-  * Follow React Hooks and Redux best practices
+- **Documentation:**
+  - JSDoc for components & functions
+  - Keep README and API docs updated
 
-* **Documentation:**
+- **Git Workflow:**
+  - Branch naming: `feature/description` or `fix/description`
+  - Follow [Conventional Commits](https://www.conventionalcommits.org/)
+  - PR template usage & squash commits
 
-  * JSDoc for components & functions
-  * Keep README and API docs updated
-
-* **Git Workflow:**
-
-  * Branch naming: `feature/description` or `fix/description`
-  * Follow [Conventional Commits](https://www.conventionalcommits.org/)
-  * PR template usage & squash commits
-
-* **Testing:**
-
-  * Unit tests for new features
-  * Test coverage ≥ 80%
+- **Testing:**
+  - Unit tests for new features
+  - Test coverage ≥ 80%
 
 ---
 
@@ -209,7 +206,7 @@ We ❤️ contributions! Here’s how to get started:
 
 7. **Open a Pull Request** from your fork to the `develop` branch of the main repo.
 
-📌 *Tip: Keep your PRs small and focused to get faster reviews.*
+📌 _Tip: Keep your PRs small and focused to get faster reviews._
 
 ---
 

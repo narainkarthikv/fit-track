@@ -21,7 +21,7 @@ describe('SubmitButton component', () => {
     render(<SubmitButton isSubmitting={true} />);
     const button = screen.getByRole('button', { name: /sign in/i });
     expect(button).toBeDisabled();
-    
+
     // Controlla spinner tramite data-testid
     const spinner = screen.getByTestId('submit-spinner');
     expect(spinner).toBeInTheDocument();

@@ -13,7 +13,10 @@ const Testimonials = () => {
           <div className="testimonial-track d-flex align-items-stretch">
             {/* Repeatable Cards */}
             {[...Array(6)].map((_, i) => (
-              <div className="testimonial-card p-4 me-4 rounded shadow bg-white" key={i}>
+              <div
+                className="testimonial-card p-4 me-4 rounded shadow bg-white"
+                key={i}
+              >
                 <FaUserCircle size={40} className="mb-3 text-warning" />
                 <p className="fst-italic">
                   {

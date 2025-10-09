@@ -12,6 +12,6 @@ vi.mock('react-lottie', () => {
 });
 
 // Optional global fetch mock
-globalThis.fetch = globalThis.fetch || (() =>
-  Promise.resolve({ json: () => Promise.resolve({}) })
-);
+globalThis.fetch =
+  globalThis.fetch ||
+  (() => Promise.resolve({ json: () => Promise.resolve({}) }));

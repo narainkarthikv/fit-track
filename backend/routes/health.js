@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     const healthInfo = {
       status: 'ok',
       uptime: Math.floor(process.uptime()),
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
 
     res.status(200).json(healthInfo);
@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
     res.status(500).json({
       status: 'error',
       message: 'Internal server error during health check',
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 });

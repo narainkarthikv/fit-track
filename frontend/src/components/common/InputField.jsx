@@ -2,7 +2,17 @@ import { useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-const InputField = ({ id, name, type, placeholder, value, onChange, Icon, AppendIcon, onAppendIconClick }) => {
+const InputField = ({
+  id,
+  name,
+  type,
+  placeholder,
+  value,
+  onChange,
+  Icon,
+  AppendIcon,
+  onAppendIconClick,
+}) => {
   const [inputValue, setInputValue] = useState(value || '');
 
   useEffect(() => {
@@ -15,11 +25,11 @@ const InputField = ({ id, name, type, placeholder, value, onChange, Icon, Append
   };
 
   return (
-    <Form.Group controlId={id} className='mb-3'>
-      <div className='input-group'>
+    <Form.Group controlId={id} className="mb-3">
+      <div className="input-group">
         {Icon && (
-          <div className='input-group-prepend'>
-            <span data-testid="input-icon" className='input-group-text'>
+          <div className="input-group-prepend">
+            <span data-testid="input-icon" className="input-group-text">
               <Icon />
             </span>
           </div>
@@ -36,8 +46,13 @@ const InputField = ({ id, name, type, placeholder, value, onChange, Icon, Append
         />
 
         {AppendIcon && (
-          <div className='input-group-append'>
-            <span className='input-group-text' data-testid="append-icon" style={{ cursor: 'pointer' }} onClick={onAppendIconClick}>
+          <div className="input-group-append">
+            <span
+              className="input-group-text"
+              data-testid="append-icon"
+              style={{ cursor: 'pointer' }}
+              onClick={onAppendIconClick}
+            >
               <AppendIcon />
             </span>
           </div>

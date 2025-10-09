@@ -7,12 +7,13 @@ const ProgressShowcase = () => {
       <div className="container">
         <h2 className="display-5 fw-bold text-white mb-3">See Your Progress</h2>
         <p className="lead text-light mb-5">
-          From <span className="fw-semibold text-warning">streaks</span> to <span className="fw-semibold text-warning">monthly insights</span>, 
+          From <span className="fw-semibold text-warning">streaks</span> to{' '}
+          <span className="fw-semibold text-warning">monthly insights</span>,
           visualize everything you need to stay motivated.
         </p>
-        <img 
-          src={graphImg} 
-          alt="Progress graph" 
+        <img
+          src={graphImg}
+          alt="Progress graph"
           className="progress-img img-fluid rounded shadow-lg"
         />
       </div>

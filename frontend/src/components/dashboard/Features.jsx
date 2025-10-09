@@ -1,6 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FaUserCircle, FaRunning, FaCalendarPlus, FaFire, FaChartLine } from 'react-icons/fa';
+import {
+  FaUserCircle,
+  FaRunning,
+  FaCalendarPlus,
+  FaFire,
+  FaChartLine,
+} from 'react-icons/fa';
 
 const Features = () => {
   return (
@@ -13,11 +19,19 @@ const Features = () => {
           {features.map((feature, idx) => (
             <div className="col-12 col-sm-6 col-lg-4 d-flex" key={idx}>
               <div className="feature-glass-card p-4 rounded-4 shadow-lg w-100 d-flex flex-column align-items-center h-100">
-                <div className={`icon-box mb-3 text-${feature.color}`} aria-label={feature.title} tabIndex={0}>
+                <div
+                  className={`icon-box mb-3 text-${feature.color}`}
+                  aria-label={feature.title}
+                  tabIndex={0}
+                >
                   {feature.icon}
                 </div>
-                <h5 className="fw-semibold mb-2 text-center">{feature.title}</h5>
-                <p className="text-muted text-center mb-0">{feature.description}</p>
+                <h5 className="fw-semibold mb-2 text-center">
+                  {feature.title}
+                </h5>
+                <p className="text-muted text-center mb-0">
+                  {feature.description}
+                </p>
               </div>
             </div>
           ))}
@@ -62,34 +76,37 @@ const Features = () => {
 const features = [
   {
     icon: <FaUserCircle />,
-    title: "Personalized Profiles",
-    description: "Customize your fitness experience with your own user dashboard.",
-    color: "primary"
+    title: 'Personalized Profiles',
+    description:
+      'Customize your fitness experience with your own user dashboard.',
+    color: 'primary',
   },
   {
     icon: <FaRunning />,
-    title: "Track Daily Workouts",
-    description: "Log your daily workouts and track progress consistently.",
-    color: "success"
+    title: 'Track Daily Workouts',
+    description: 'Log your daily workouts and track progress consistently.',
+    color: 'success',
   },
   {
     icon: <FaCalendarPlus />,
-    title: "Add New Exercises",
-    description: "Quickly add new exercises with custom inputs and goals.",
-    color: "warning"
+    title: 'Add New Exercises',
+    description: 'Quickly add new exercises with custom inputs and goals.',
+    color: 'warning',
   },
   {
     icon: <FaFire />,
-    title: "Maintain Streaks",
-    description: "Boost motivation with streak tracking and achievement badges.",
-    color: "danger"
+    title: 'Maintain Streaks',
+    description:
+      'Boost motivation with streak tracking and achievement badges.',
+    color: 'danger',
   },
   {
     icon: <FaChartLine />,
-    title: "Visualize Progress",
-    description: "Interactive graphs to show day-wise/month-wise exercise trends.",
-    color: "info"
-  }
+    title: 'Visualize Progress',
+    description:
+      'Interactive graphs to show day-wise/month-wise exercise trends.',
+    color: 'info',
+  },
 ];
 
 Features.propTypes = {};

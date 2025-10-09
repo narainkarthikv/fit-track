@@ -13,12 +13,13 @@ app.use(express.json());
 // Database connection
 const uri = process.env.ATLAS_URI;
 
-mongoose.connect(uri, {
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-})
-.then(() => console.log('Connected to MongoDB'))
-.catch(error => console.error('Error connecting to MongoDB:', error));
+mongoose
+  .connect(uri, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((error) => console.error('Error connecting to MongoDB:', error));
 
 // Graceful shutdown
 process.on('SIGINT', () => {
@@ -41,4 +42,3 @@ app.use('/api/health', healthRouter);
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
-

@@ -26,7 +26,11 @@ describe('SignupLink component', () => {
   test('renders custom text and link props', () => {
     render(
       <BrowserRouter>
-        <SignupLink text="Already have an account?" linkText="Log In" linkTo="/login" />
+        <SignupLink
+          text="Already have an account?"
+          linkText="Log In"
+          linkTo="/login"
+        />
       </BrowserRouter>
     );
 

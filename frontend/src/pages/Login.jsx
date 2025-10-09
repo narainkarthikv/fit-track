@@ -1,7 +1,13 @@
-import  { useState, useCallback } from 'react';
-import {Navigate } from 'react-router-dom';
-import { FaDumbbell, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa'; 
-import { Form,  Container, Card } from 'react-bootstrap';
+import { useState, useCallback } from 'react';
+import { Navigate } from 'react-router-dom';
+import {
+  FaDumbbell,
+  FaEnvelope,
+  FaLock,
+  FaEye,
+  FaEyeSlash,
+} from 'react-icons/fa';
+import { Form, Container, Card } from 'react-bootstrap';
 import InputField from '../components/common/InputField';
 import HeaderSection from '../components/common/HeaderSection';
 import SubmitButton from '../components/common/SubmitButton';
@@ -16,13 +22,16 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [emoji, setEmoji] = useState('🏋️‍♀️'); 
+  const [emoji, setEmoji] = useState('🏋️‍♀️');
   const [showPassword, setShowPassword] = useState(false);
-  
+
   //must start with a value in order to have no errors
-  const [snackbar, setSnackbar] = useState({ show: false, message: '', type: 'success' });
-  const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:4000'; 
-  
+  const [snackbar, setSnackbar] = useState({
+    show: false,
+    message: '',
+    type: 'success',
+  });
+  const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
   const handleInputChange = useCallback((e) => {
     const { id, value } = e.target;
@@ -59,7 +68,11 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
       const user = users.find((user) => user.email === credentials.email);
 
       if (user) {
-        setSnackbar({ show: true, message: 'Login successful!', type: 'success' });
+        setSnackbar({
+          show: true,
+          message: 'Login successful!',
+          type: 'success',
+        });
         setTimeout(() => {
           setIsAuthenticated(true);
           setUserID(user._id);
@@ -73,7 +86,7 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
     } finally {
       setIsSubmitting(false);
     }
-  }, [backendURL, credentials,setIsAuthenticated, setUserID]);
+  }, [backendURL, credentials, setIsAuthenticated, setUserID]);
 
   const onSubmit = useCallback(
     (e) => {
@@ -99,7 +112,7 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
   };
 
   if (isAuthenticated) {
-    return <Navigate to='/' />;
+    return <Navigate to="/" />;
   }
 
   const defaultOptions = {
@@ -107,47 +120,87 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
     autoplay: true,
     animationData: animationData,
     rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
+      preserveAspectRatio: 'xMidYMid slice',
+    },
   };
 
   return (
     <>
-      <Container fluid className='d-flex align-items-center justify-content-center vh-100 p-0'>
-        <div className='d-flex w-100 h-100'>
-          <div className='d-none d-md-flex align-items-center justify-content-center flex-grow-1' style={{ backgroundColor: '#ffffff', cursor: 'default' }}>
+      <Container
+        fluid
+        className="d-flex align-items-center justify-content-center vh-100 p-0"
+      >
+        <div className="d-flex w-100 h-100">
+          <div
+            className="d-none d-md-flex align-items-center justify-content-center flex-grow-1"
+            style={{ backgroundColor: '#ffffff', cursor: 'default' }}
+          >
             <Lottie options={defaultOptions} height={500} width={500} />
           </div>
-          <div className='d-flex align-items-center justify-content-center flex-grow-1'>
-            <Card className='p-5 bg-white rounded shadow-lg' style={{ width: '100%', maxWidth: '450px', border: '1px solid #ccc', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-              <Form onSubmit={onSubmit} aria-label='Login Form'>
-                <HeaderSection title='Fit-Track Login' icon={<FaDumbbell size={50} color='#ff6f61' />} />
+          <div className="d-flex align-items-center justify-content-center flex-grow-1">
+            <Card
+              className="p-5 bg-white rounded shadow-lg"
+              style={{
+                width: '100%',
+                maxWidth: '450px',
+                border: '1px solid #ccc',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+              }}
+            >
+              <Form onSubmit={onSubmit} aria-label="Login Form">
+                <HeaderSection
+                  title="Fit-Track Login"
+                  icon={<FaDumbbell size={50} color="#ff6f61" />}
+                />
 
                 {['email', 'password'].map((field, index) => (
                   <InputField
                     key={index}
                     id={field}
                     name={field}
-                    type={field === 'password' && !showPassword ? 'password' : 'text'}
+                    type={
+                      field === 'password' && !showPassword
+                        ? 'password'
+                        : 'text'
+                    }
                     placeholder={`Enter your ${field}`}
                     value={credentials[field]}
                     onChange={handleInputChange}
                     Icon={getIcon(field)}
-                    AppendIcon={field === 'password' ? (showPassword ? FaEyeSlash : FaEye) : null}
-                    onAppendIconClick={field === 'password' ? togglePasswordVisibility : null}
+                    AppendIcon={
+                      field === 'password'
+                        ? showPassword
+                          ? FaEyeSlash
+                          : FaEye
+                        : null
+                    }
+                    onAppendIconClick={
+                      field === 'password' ? togglePasswordVisibility : null
+                    }
                     className="mb-3"
                   />
                 ))}
 
                 <div className="d-flex justify-content-center">
-                  <SubmitButton isSubmitting={isSubmitting} className="w-100 mb-3" />
+                  <SubmitButton
+                    isSubmitting={isSubmitting}
+                    className="w-100 mb-3"
+                  />
                 </div>
 
-                {error && <div className='text-danger text-center mt-3' role='alert'>{error}</div>}
+                {error && (
+                  <div className="text-danger text-center mt-3" role="alert">
+                    {error}
+                  </div>
+                )}
 
                 <SignupLink className="text-center" />
 
-                <EmojiSection emoji={emoji} onClick={handleEmojiChange} className="text-center mt-3" />
+                <EmojiSection
+                  emoji={emoji}
+                  onClick={handleEmojiChange}
+                  className="text-center mt-3"
+                />
               </Form>
             </Card>
           </div>

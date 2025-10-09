@@ -1,10 +1,18 @@
-import React from "react";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import React from 'react';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 
-const ExerciseForm = ({ newExerciseData, handleChange, handleAdd, setFormVisible }) => (
+const ExerciseForm = ({
+  newExerciseData,
+  handleChange,
+  handleAdd,
+  setFormVisible,
+}) => (
   <tr>
     <td colSpan="4">
-      <Form onSubmit={handleAdd} className="d-flex justify-content-between align-items-center">
+      <Form
+        onSubmit={handleAdd}
+        className="d-flex justify-content-between align-items-center"
+      >
         <Row className="w-100">
           <Col xs={3}>
             <Form.Control
@@ -41,7 +49,9 @@ const ExerciseForm = ({ newExerciseData, handleChange, handleAdd, setFormVisible
             >
               Cancel
             </Button>
-            <Button type="submit" variant="outline-primary">Add</Button>
+            <Button type="submit" variant="outline-primary">
+              Add
+            </Button>
           </Col>
         </Row>
       </Form>
