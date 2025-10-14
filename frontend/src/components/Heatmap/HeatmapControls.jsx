@@ -28,7 +28,7 @@ const HeatmapControls = ({
       </div>
       <div>
         <Button variant="btn btn-outline-primary" onClick={handleAddExercise}>
-          Add Exercise
+          +
         </Button>
       </div>
     </div>

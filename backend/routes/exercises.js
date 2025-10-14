@@ -110,12 +110,10 @@ router.post('/:userId/track-exercise', async (req, res) => {
     }
 
     await exerciseData.save();
-    res
-      .status(201)
-      .json({
-        message: 'Exercise data updated successfully',
-        data: exerciseData.trackExercises,
-      });
+    res.status(201).json({
+      message: 'Exercise data updated successfully',
+      data: exerciseData.trackExercises,
+    });
   } catch (error) {
     console.error('Error updating exercise data:', error);
     res.status(500).json({ message: 'Error updating exercise data' });

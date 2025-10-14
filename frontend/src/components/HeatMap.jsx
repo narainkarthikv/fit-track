@@ -100,7 +100,7 @@ const HeatMap = ({ userID }) => {
   };
 
   return (
-    <div className="p-1 d-flex font-weight-bold flex-column justify-content-center">
+    <div className="d-flex font-weight-bold flex-column justify-content-center">
       <HeatmapControls
         selectedMonth={selectedMonth}
         setSelectedMonth={setSelectedMonth}
