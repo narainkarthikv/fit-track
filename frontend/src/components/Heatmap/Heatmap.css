@@ -1,0 +1,51 @@
+.react-calendar-heatmap {
+  width: 100%;
+  height: auto;
+}
+
+.react-calendar-heatmap .react-calendar-heatmap-small-text {
+  font-size: 5px;
+}
+
+.react-calendar-heatmap rect {
+  rx: 3;
+  ry: 3;
+  transition: all 0.2s ease;
+}
+
+.react-calendar-heatmap rect:hover {
+  stroke: #4A90E2;
+  stroke-width: 1;
+  filter: brightness(95%);
+}
+
+.react-calendar-heatmap .color-empty {
+  fill: #ebedf0;
+}
+
+.react-calendar-heatmap .color-scale-1 {
+  fill: #9BE9A8;
+}
+
+.react-calendar-heatmap .color-scale-2 {
+  fill: #40C463;
+}
+
+.react-calendar-heatmap .color-scale-3 {
+  fill: #30A14E;
+}
+
+.heatmap-container {
+  transition: all 0.3s ease;
+}
+
+.heatmap-container:hover {
+  transform: scale(1.01);
+}
+
+/* Custom loader animation */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.25rem;
+}

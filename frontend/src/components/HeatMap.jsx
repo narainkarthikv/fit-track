@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
+import './Heatmap/Heatmap.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMonthData, addExercise } from '../slices/heatMapSlice';
 import HeatmapControls from './Heatmap/HeatmapControls';
@@ -100,7 +101,7 @@ const HeatMap = ({ userID }) => {
   };
 
   return (
-    <div className="d-flex font-weight-bold flex-column justify-content-center">
+    <div className="d-flex font-weight-bold flex-column justify-content-center align-items-center p-4 bg-light rounded-3 shadow-sm">
       <HeatmapControls
         selectedMonth={selectedMonth}
         setSelectedMonth={setSelectedMonth}
@@ -108,7 +109,16 @@ const HeatMap = ({ userID }) => {
         months={months}
       />
 
-      <div className="w-50">{renderCalendarHeatmap()}</div>
+      <div className="heatmap-container position-relative my-4" style={{ width: '100%', maxWidth: '800px' }}>
+        {status === 'loading' ? (
+          <div className="position-absolute w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        ) : null}
+        {renderCalendarHeatmap()}
+      </div>
 
       <DetailsModal
         showModal={showModal}
