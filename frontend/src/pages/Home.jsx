@@ -20,7 +20,12 @@ const Home = ({ user }) => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(`${backendURL}/api/user/${user}`);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${backendURL}/api/user/${user}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`, // Send JWT token
+        },
+      });
         setUserDetails(response.data);
         console.log(response.data);
       } catch (err) {

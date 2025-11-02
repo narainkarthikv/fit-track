@@ -40,10 +40,14 @@ const UserRoutine = ({ userID }) => {
 
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem('token');
         const res = await fetch(`${backendURL}/api/user/streak/${userID}`, {
           method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        });
+          headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`, 
+    },
+  });
 
         const data = await res.json();
         setStreak(data.streakCount);

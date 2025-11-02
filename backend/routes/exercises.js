@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Exercise = require('../models/exercise.model');
+const verifyToken = require('../middleware/jwtAuth.js');
 
 router.get('/', async (req, res) => {
   try {
