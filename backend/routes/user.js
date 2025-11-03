@@ -4,6 +4,8 @@ const User = require('../models/user.model');
 const Exercise = require('../models/exercise.model');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const jwt = require('jsonwebtoken');
+const verifyToken = require('../middleware/jwtAuth.js')
 
 // Create a new user
 router.post('/add', async (req, res) => {
@@ -75,7 +77,7 @@ router.post('/login', async (req, res) => {
       //Was this user already active today? If yes, do nothing
 
       //1- Mark today's day of the week as true
-      const newDayCheck = user.dayCheck || [
+      let newDayCheck = user.dayCheck || [
         false,
         false,
         false,
@@ -106,7 +108,13 @@ router.post('/login', async (req, res) => {
       await user.save();
     }
 
-    res.status(200).json({ message: 'Login successful' });
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
+
+    res.status(200).json({ message: 'Login successful',token,user, });
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -114,7 +122,7 @@ router.post('/login', async (req, res) => {
 });
 
 //fetch streak info
-router.get('/streak/:userID', async (req, res) => {
+router.get('/streak/:userID',verifyToken, async (req, res) => {
   const { userID } = req.params;
 
   try {
@@ -144,7 +152,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get a user by ID
-router.get('/:userId', async (req, res) => {
+router.get('/:userId',verifyToken, async (req, res) => {
   const { userId } = req.params;
 
   try {

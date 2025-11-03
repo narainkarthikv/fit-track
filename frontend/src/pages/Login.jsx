@@ -49,10 +49,19 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
         body: JSON.stringify(credentials),
       });
 
+      const data = await loginResponse.json();
+
       if (!loginResponse.ok) {
         const errorData = await loginResponse.json();
         throw new Error(errorData.message || 'Login failed');
       }
+
+        if (data.token) {
+      localStorage.setItem('token', data.token);
+      console.log('Token saved:', data.token);
+    } else {
+      console.warn('No token received from backend');
+    }
 
       const userResponse = await fetch(`${backendURL}/api/user/`, {
         method: 'GET',
