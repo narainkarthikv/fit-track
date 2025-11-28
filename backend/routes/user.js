@@ -5,7 +5,7 @@ const Exercise = require('../models/exercise.model');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
-const verifyToken = require('../middleware/jwtAuth.js')
+const verifyToken = require('../middleware/jwtAuth.js');
 
 // Create a new user
 router.post('/add', async (req, res) => {
@@ -114,7 +114,7 @@ router.post('/login', async (req, res) => {
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
 
-    res.status(200).json({ message: 'Login successful',token,user, });
+    res.status(200).json({ message: 'Login successful', token, user });
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -122,7 +122,7 @@ router.post('/login', async (req, res) => {
 });
 
 //fetch streak info
-router.get('/streak/:userID',verifyToken, async (req, res) => {
+router.get('/streak/:userID', verifyToken, async (req, res) => {
   const { userID } = req.params;
 
   try {
@@ -152,7 +152,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get a user by ID
-router.get('/:userId',verifyToken, async (req, res) => {
+router.get('/:userId', verifyToken, async (req, res) => {
   const { userId } = req.params;
 
   try {

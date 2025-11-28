@@ -15,7 +15,9 @@ const DetailsModal = ({ showModal, handleClose, selectedValue }) => {
     return { color: 'secondary', text: 'No Exercise', icon: '💤' };
   };
 
-  const feedback = getFeedbackInfo(selectedValue ? selectedValue.count : defaultValue.count);
+  const feedback = getFeedbackInfo(
+    selectedValue ? selectedValue.count : defaultValue.count
+  );
 
   return (
     <Modal show={showModal} onHide={handleClose} centered size="sm">
@@ -25,7 +27,7 @@ const DetailsModal = ({ showModal, handleClose, selectedValue }) => {
           onClick={handleClose}
           aria-label="Close"
         />
-        
+
         <div className="text-center">
           <div className="mb-4">
             <div className="d-flex align-items-center justify-content-center gap-2 text-primary">

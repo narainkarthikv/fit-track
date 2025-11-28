@@ -8,4 +8,8 @@ export default defineConfig({
     globals: true, // describe/test/expect
     setupFiles: './src/__tests__/setupTests.jsx',
   },
+  server: {
+    host: '0.0.0.0',
+    port: 5173
+  }
 });

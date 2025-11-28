@@ -14,7 +14,7 @@
 }
 
 .react-calendar-heatmap rect:hover {
-  stroke: #4A90E2;
+  stroke: #4a90e2;
   stroke-width: 1;
   filter: brightness(95%);
 }
@@ -24,15 +24,15 @@
 }
 
 .react-calendar-heatmap .color-scale-1 {
-  fill: #9BE9A8;
+  fill: #9be9a8;
 }
 
 .react-calendar-heatmap .color-scale-2 {
-  fill: #40C463;
+  fill: #40c463;
 }
 
 .react-calendar-heatmap .color-scale-3 {
-  fill: #30A14E;
+  fill: #30a14e;
 }
 
 .heatmap-container {

@@ -109,7 +109,10 @@ const HeatMap = ({ userID }) => {
         months={months}
       />
 
-      <div className="heatmap-container position-relative my-4" style={{ width: '100%', maxWidth: '800px' }}>
+      <div
+        className="heatmap-container position-relative my-4"
+        style={{ width: '100%', maxWidth: '800px' }}
+      >
         {status === 'loading' ? (
           <div className="position-absolute w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75">
             <div className="spinner-border text-primary" role="status">

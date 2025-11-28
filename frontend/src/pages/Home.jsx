@@ -22,10 +22,10 @@ const Home = ({ user }) => {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.get(`${backendURL}/api/user/${user}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`, // Send JWT token
-        },
-      });
+          headers: {
+            Authorization: `Bearer ${token}`, // Send JWT token
+          },
+        });
         setUserDetails(response.data);
         console.log(response.data);
       } catch (err) {

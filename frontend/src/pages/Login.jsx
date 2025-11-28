@@ -56,12 +56,12 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
         throw new Error(errorData.message || 'Login failed');
       }
 
-        if (data.token) {
-      localStorage.setItem('token', data.token);
-      console.log('Token saved:', data.token);
-    } else {
-      console.warn('No token received from backend');
-    }
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        console.log('Token saved:', data.token);
+      } else {
+        console.warn('No token received from backend');
+      }
 
       const userResponse = await fetch(`${backendURL}/api/user/`, {
         method: 'GET',
