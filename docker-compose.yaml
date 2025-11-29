@@ -14,7 +14,7 @@ services:
       PORT: ${BACKEND_PORT}
       ATLAS_URI: ${ATLAS_URI}
     ports:
-      - "${BACKEND_PORT:-5000}:5000"
+      - '${BACKEND_PORT:-5000}:5000'
     volumes:
       - ./backend:/app
       - /app/node_modules
@@ -38,7 +38,7 @@ services:
       VITE_API_URL: ${VITE_API_URL}
       VITE_APININJAS: ${VITE_APININJAS}
     ports:
-      - "${FRONTEND_PORT:-5173}:5173"
+      - '${FRONTEND_PORT:-5173}:5173'
     volumes:
       - ./frontend:/app
       - /app/node_modules

@@ -219,7 +219,7 @@ The frontend will be available at `http://localhost:5173`
 
 ### Frontend
 
-```plaintext
+````plaintext
 frontend/
 ├── public/
 ├── src/
@@ -259,7 +259,7 @@ node server.js
 
 # Run tests
 npm test
-```
+````
 
 ### Frontend Scripts
 
@@ -292,13 +292,13 @@ npm test
 
 ### Git Workflow
 
-- **Branch Naming:** 
+- **Branch Naming:**
   - Features: `feature/description`
   - Bugs: `fix/description`
   - Docs: `docs/description`
   - Chores: `chore/description`
 
-- **Commits:** 
+- **Commits:**
   - Follow [Conventional Commits](https://www.conventionalcommits.org/)
   - Examples:
     - `feat: add user login functionality`
@@ -335,6 +335,7 @@ npm run lint -- --fix
 ```
 
 ---
+
 ## 👥 Contributors
 
 Thanks to everyone who has helped make Fit-Track awesome! 💪
@@ -393,7 +394,8 @@ We're building **Fit-Track** as a collaborative fitness companion. Your code, id
 Whether you're fixing a typo, improving performance, or building new features — **every contribution matters!** 🏗️💚
 
 Let's build the best fitness tracker together! 🚀
-```
+
+````
 
 **Hot reload not working:**
 ```bash
@@ -403,11 +405,12 @@ docker-compose up -d --build
 # Check file permissions
 ls -la backend/
 ls -la frontend/
-```
+````
 
 ### Local Development Issues
 
 **Port conflicts:**
+
 ```bash
 # Check what's using the port
 lsof -i :5000   # Backend
@@ -415,6 +418,7 @@ lsof -i :5173   # Frontend
 ```
 
 **Dependencies issues:**
+
 ```bash
 # Clear npm cache and reinstall
 npm cache clean --force
@@ -423,6 +427,7 @@ npm install
 ```
 
 **Build errors:**
+
 ```bash
 # Check Node.js version (should be 18+)
 node --version
@@ -434,14 +439,14 @@ npm run dev
 
 ---
 
-## 📝 Development Standards          | MongoDB Atlas or local MongoDB connection string (REQUIRED)     |
+## 📝 Development Standards | MongoDB Atlas or local MongoDB connection string (REQUIRED) |
 
 ### Frontend Environment Variables
 
-| Variable         | Default Value                | Description                                          |
-| ---------------- | ---------------------------- | ---------------------------------------------------- |
-| `VITE_API_URL`   | `http://localhost:5000/`     | Backend server URL                                   |
-| `VITE_APININJAS` | N/A                          | API Ninjas key for Quotes API (optional)             |
+| Variable         | Default Value            | Description                              |
+| ---------------- | ------------------------ | ---------------------------------------- |
+| `VITE_API_URL`   | `http://localhost:5000/` | Backend server URL                       |
+| `VITE_APININJAS` | N/A                      | API Ninjas key for Quotes API (optional) |
 
 ```plaintext
 backend/
