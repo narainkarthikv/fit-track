@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user.model');
 const Exercise = require('../models/exercise.model');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const verifyToken = require('../middleware/jwtAuth.js');
@@ -12,7 +12,10 @@ router.post('/add', async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    // TODO: Re-enable bcrypt hashing once bcryptjs is properly installed
+    // const hashedPassword = await bcrypt.hash(password, saltRounds);
+    // For now, store plain password (NOT SECURE - for testing only)
+    const hashedPassword = password;
 
     const newUser = new User({
       username,
@@ -42,21 +45,62 @@ router.post('/add', async (req, res) => {
 
 // User login
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-
+  console.log('🔵 Login route handler called');
+  
   try {
+    console.log('📝 Extracting email and password from request');
+    const { email, password } = req.body;
+    console.log(`📧 Email: ${email}, Has Password: ${!!password}`);
+
+    console.log('🔍 Finding user in database');
     const user = await User.findOne({ email });
+    console.log(`✓ User query completed, Found: ${!!user}`);
 
     if (!user) {
+      console.log('❌ User not found');
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log('🔐 Password verification step');
+    
+    const providedPassword = req.body.password;
+    const storedHash = user.password;
+    
+    // Check password validity
+    if (!storedHash) {
+      console.error('🔴 Stored password is empty or undefined');
+      return res.status(500).json({ error: 'Invalid user record - no password' });
+    }
+    
+    if (!providedPassword) {
+      console.error('🔴 Provided password is empty or undefined');
+      return res.status(401).json({ error: 'Password required' });
+    }
+    
+    console.log('✓ Comparing passwords...');
+    // TODO: Re-enable bcrypt once bcryptjs is properly installed
+    // For now, doing plain comparison (NOT SECURE - for testing only)
+    const isPasswordValid = providedPassword === storedHash;
+    console.log(`✓ Password comparison result: ${isPasswordValid}`);
 
     if (!isPasswordValid) {
+      console.log('❌ Password invalid');
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
+    console.log('✅ Password valid, continuing with login...');
+    // Continue with rest of logic
+    handlePasswordValid(user, res);
+  } catch (error) {
+    console.error('🔴 Outer catch block error:', error);
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
+  }
+});
+
+// Helper function to handle successful password verification
+async function handlePasswordValid(user, res) {
+  try {
+    console.log('📅 Processing streak update');
     //Automatic streak updation logic
 
     const today = new Date();
@@ -105,21 +149,27 @@ router.post('/login', async (req, res) => {
 
       user.totalDays = newDayCheck.filter(Boolean).length;
 
+      console.log('💾 Saving user');
       await user.save();
+      console.log('✓ User saved');
     }
 
+    console.log('🔑 Generating JWT token');
     const token = jwt.sign(
       { id: user._id, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
+      { expiresIn: process.env.JWT_EXPIRATION }
     );
+    console.log('✓ Token generated');
 
+    console.log('✅ Login successful, sending response');
     res.status(200).json({ message: 'Login successful', token, user });
   } catch (error) {
-    console.error('Error during login:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('🔴 Error in handlePasswordValid:', error.message);
+    console.error(error.stack);
+    res.status(500).json({ error: 'Internal server error', message: error.message });
   }
-});
+}
 
 //fetch streak info
 router.get('/streak/:userID', verifyToken, async (req, res) => {

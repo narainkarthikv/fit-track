@@ -134,10 +134,10 @@ docker-compose down -v
 docker-compose build --no-cache
 
 # Stop and remove all containers, networks, and orphans
-docker compose down --remove-orphans
+docker-compose down --remove-orphans
 
 # Restart all services defined in docker-compose.yml
-docker compose restart
+docker-compose restart
 
 # Execute commands in container
 docker-compose exec backend npm install

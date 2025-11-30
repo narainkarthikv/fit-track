@@ -43,22 +43,30 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
     setError('');
 
     try {
+      console.log(`Attempting login to: ${backendURL}/api/user/login`);
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
       const loginResponse = await fetch(`${backendURL}/api/user/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(credentials),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       const data = await loginResponse.json();
 
       if (!loginResponse.ok) {
-        const errorData = await loginResponse.json();
-        throw new Error(errorData.message || 'Login failed');
+        throw new Error(data.message || data.error || 'Login failed');
       }
 
       if (data.token) {
         localStorage.setItem('token', data.token);
-        console.log('Token saved:', data.token);
+        console.log('Token saved successfully');
       } else {
         console.warn('No token received from backend');
       }
@@ -66,11 +74,12 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
       const userResponse = await fetch(`${backendURL}/api/user/`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
       });
 
       if (!userResponse.ok) {
         const errorData = await userResponse.json();
-        throw new Error(errorData.message || 'Error fetching user details');
+        throw new Error(errorData.message || errorData.error || 'Error fetching user details');
       }
 
       const users = await userResponse.json();
@@ -90,7 +99,18 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
         throw new Error('User not found');
       }
     } catch (err) {
-      setError(err.message || 'Invalid user or password');
+      console.error('Login error:', err);
+      let errorMessage = 'Invalid user or password';
+      
+      if (err.name === 'AbortError') {
+        errorMessage = 'Request timeout - backend not responding';
+      } else if (err instanceof TypeError) {
+        errorMessage = 'Network error - check if backend is running';
+      } else {
+        errorMessage = err.message;
+      }
+      
+      setError(errorMessage);
       setSnackbar({ show: true, message: 'Login failed!', type: 'failure' });
     } finally {
       setIsSubmitting(false);
@@ -219,7 +239,7 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
         show={snackbar.show}
         message={snackbar.message}
         type={snackbar.type}
-        onClose={() => setSnackbar({ show: false, message: '', type: '' })}
+        onClose={() => setSnackbar({ show: false, message: '', type: 'success' })}
       />
     </>
   );
