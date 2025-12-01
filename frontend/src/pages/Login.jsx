@@ -44,7 +44,7 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
 
     try {
       console.log(`Attempting login to: ${backendURL}/api/user/login`);
-      
+
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
@@ -79,7 +79,9 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
 
       if (!userResponse.ok) {
         const errorData = await userResponse.json();
-        throw new Error(errorData.message || errorData.error || 'Error fetching user details');
+        throw new Error(
+          errorData.message || errorData.error || 'Error fetching user details'
+        );
       }
 
       const users = await userResponse.json();
@@ -101,7 +103,7 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
     } catch (err) {
       console.error('Login error:', err);
       let errorMessage = 'Invalid user or password';
-      
+
       if (err.name === 'AbortError') {
         errorMessage = 'Request timeout - backend not responding';
       } else if (err instanceof TypeError) {
@@ -109,7 +111,7 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
       } else {
         errorMessage = err.message;
       }
-      
+
       setError(errorMessage);
       setSnackbar({ show: true, message: 'Login failed!', type: 'failure' });
     } finally {
@@ -239,7 +241,9 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
         show={snackbar.show}
         message={snackbar.message}
         type={snackbar.type}
-        onClose={() => setSnackbar({ show: false, message: '', type: 'success' })}
+        onClose={() =>
+          setSnackbar({ show: false, message: '', type: 'success' })
+        }
       />
     </>
   );

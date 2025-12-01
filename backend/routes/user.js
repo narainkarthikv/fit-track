@@ -46,7 +46,7 @@ router.post('/add', async (req, res) => {
 // User login
 router.post('/login', async (req, res) => {
   console.log('🔵 Login route handler called');
-  
+
   try {
     console.log('📝 Extracting email and password from request');
     const { email, password } = req.body;
@@ -62,21 +62,23 @@ router.post('/login', async (req, res) => {
     }
 
     console.log('🔐 Password verification step');
-    
+
     const providedPassword = req.body.password;
     const storedHash = user.password;
-    
+
     // Check password validity
     if (!storedHash) {
       console.error('🔴 Stored password is empty or undefined');
-      return res.status(500).json({ error: 'Invalid user record - no password' });
+      return res
+        .status(500)
+        .json({ error: 'Invalid user record - no password' });
     }
-    
+
     if (!providedPassword) {
       console.error('🔴 Provided password is empty or undefined');
       return res.status(401).json({ error: 'Password required' });
     }
-    
+
     console.log('✓ Comparing passwords...');
     // TODO: Re-enable bcrypt once bcryptjs is properly installed
     // For now, doing plain comparison (NOT SECURE - for testing only)
@@ -167,7 +169,9 @@ async function handlePasswordValid(user, res) {
   } catch (error) {
     console.error('🔴 Error in handlePasswordValid:', error.message);
     console.error(error.stack);
-    res.status(500).json({ error: 'Internal server error', message: error.message });
+    res
+      .status(500)
+      .json({ error: 'Internal server error', message: error.message });
   }
 }
 

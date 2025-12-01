@@ -11,7 +11,7 @@ const corsOptions = {
   origin: function (origin, callback) {
     // Log all requests for debugging
     console.log(`CORS request from origin: ${origin}`);
-    
+
     // Allow requests with no origin (mobile apps, curl requests, etc.)
     if (!origin || origin === 'undefined') {
       return callback(null, true);
@@ -22,7 +22,7 @@ const corsOptions = {
       'http://localhost:3000',
       'http://localhost:5173',
       'http://127.0.0.1:5173',
-      'http://127.0.0.1:3000'
+      'http://127.0.0.1:3000',
     ];
 
     // Allow all Codespaces URLs (github.dev domain)
@@ -52,7 +52,9 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Request logging middleware for debugging
 app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} - Origin: ${req.get('origin')}`);
+  console.log(
+    `[${new Date().toISOString()}] ${req.method} ${req.path} - Origin: ${req.get('origin')}`
+  );
   next();
 });
 
@@ -111,9 +113,9 @@ app.use('/api/health', healthRouter);
 app.use((err, req, res, next) => {
   console.error('🔴 Request Error:', err.message);
   console.error(err.stack);
-  res.status(err.status || 500).json({ 
+  res.status(err.status || 500).json({
     error: err.message || 'Internal server error',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
