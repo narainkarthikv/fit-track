@@ -1,6 +1,6 @@
 import React from 'react';
-import { Modal, Row, Col } from 'react-bootstrap';
-import { FaCalendarAlt, FaDumbbell, FaTrophy, FaTimes } from 'react-icons/fa';
+import { Dialog, DialogContent, IconButton, Box, Typography, Stack, Chip } from '@mui/material';
+import { CalendarMonth, FitnessCenter, EmojiEvents, Close } from '@mui/icons-material';
 
 const DetailsModal = ({ showModal, handleClose, selectedValue }) => {
   const defaultValue = {
@@ -12,7 +12,7 @@ const DetailsModal = ({ showModal, handleClose, selectedValue }) => {
     if (count > 8) return { color: 'success', text: 'Excellent!', icon: '🏆' };
     if (count > 5) return { color: 'info', text: 'Good', icon: '💪' };
     if (count > 0) return { color: 'warning', text: 'Keep Going', icon: '🎯' };
-    return { color: 'secondary', text: 'No Exercise', icon: '💤' };
+    return { color: 'default', text: 'No Exercise', icon: '💤' };
   };
 
   const feedback = getFeedbackInfo(
@@ -20,49 +20,72 @@ const DetailsModal = ({ showModal, handleClose, selectedValue }) => {
   );
 
   return (
-    <Modal show={showModal} onHide={handleClose} centered size="sm">
-      <Modal.Body className="p-4">
-        <button
-          className="btn-close position-absolute top-0 end-0 m-3"
+    <Dialog open={showModal} onClose={handleClose} maxWidth="xs" fullWidth>
+      <DialogContent sx={{ p: 4, position: 'relative' }}>
+        <IconButton
           onClick={handleClose}
           aria-label="Close"
-        />
+          sx={{ position: 'absolute', top: 8, right: 8 }}
+        >
+          <Close />
+        </IconButton>
 
-        <div className="text-center">
-          <div className="mb-4">
-            <div className="d-flex align-items-center justify-content-center gap-2 text-primary">
-              <FaCalendarAlt className="fs-5" />
-              <h5 className="mb-0 fw-bold">
-                {selectedValue ? selectedValue.date : defaultValue.date}
-              </h5>
-            </div>
-          </div>
+        <Stack spacing={3} alignItems="center" sx={{ textAlign: 'center', mt: 2 }}>
+          <Stack direction="row" spacing={1} alignItems="center" sx={{ color: 'primary.main' }}>
+            <CalendarMonth />
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+              {selectedValue ? selectedValue.date : defaultValue.date}
+            </Typography>
+          </Stack>
 
-          <div className="bg-light rounded-4 p-4 mb-4">
-            <div className="d-flex align-items-center justify-content-center gap-2 mb-2">
-              <FaDumbbell className="text-primary" />
-              <span className="text-muted">Exercise Count</span>
-            </div>
-            <h2 className="mb-0 fw-bold text-primary">
+          <Box
+            sx={{
+              bgcolor: 'background.paper',
+              borderRadius: 3,
+              p: 3,
+              width: '100%',
+              border: '1px solid',
+              borderColor: 'divider',
+            }}
+          >
+            <Stack direction="row" spacing={1} alignItems="center" justifyContent="center" sx={{ mb: 1 }}>
+              <FitnessCenter color="primary" fontSize="small" />
+              <Typography variant="body2" color="text.secondary">
+                Exercise Count
+              </Typography>
+            </Stack>
+            <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main' }}>
               {selectedValue ? selectedValue.count : defaultValue.count}
-            </h2>
-          </div>
+            </Typography>
+          </Box>
 
-          <div className={`bg-${feedback.color} bg-opacity-10 rounded-4 p-4`}>
-            <div className="d-flex align-items-center justify-content-center gap-2 mb-2">
-              <FaTrophy className={`text-${feedback.color}`} />
-              <span className="text-muted">Status</span>
-            </div>
-            <div className="d-flex flex-column align-items-center">
-              <span className="display-4 mb-2">{feedback.icon}</span>
-              <h4 className={`fw-bold text-${feedback.color} mb-0`}>
-                {feedback.text}
-              </h4>
-            </div>
-          </div>
-        </div>
-      </Modal.Body>
-    </Modal>
+          <Box
+            sx={{
+              bgcolor: `${feedback.color}.light`,
+              borderRadius: 3,
+              p: 3,
+              width: '100%',
+              opacity: 0.9,
+            }}
+          >
+            <Stack direction="row" spacing={1} alignItems="center" justifyContent="center" sx={{ mb: 1 }}>
+              <EmojiEvents color={feedback.color} fontSize="small" />
+              <Typography variant="body2" color="text.secondary">
+                Status
+              </Typography>
+            </Stack>
+            <Stack spacing={1} alignItems="center">
+              <Typography variant="h2">{feedback.icon}</Typography>
+              <Chip
+                label={feedback.text}
+                color={feedback.color}
+                sx={{ fontWeight: 700, fontSize: '1rem' }}
+              />
+            </Stack>
+          </Box>
+        </Stack>
+      </DialogContent>
+    </Dialog>
   );
 };
 

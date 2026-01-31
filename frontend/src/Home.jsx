@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Grid, Box, Typography } from '@mui/material';
+import Card from './components/common/Card';
 import UserExperience from './components/UserExperience';
 import Quotes from './components/Quotes';
 import TotalDays from './components/TotalDays';
@@ -8,82 +9,59 @@ import ExerciseTable from './components/Exercise/ExerciseTable';
 import ExerciseForm from './components/Exercise/ExerciseForm';
 import CalendarSelector from './components/Heatmap/HeatmapControls';
 
-// Responsive homepage layout using Tailwind and Bootstrap
 const Home = () => {
   return (
-    <Container fluid className="px-2 md:px-8 py-4 transition-all duration-300">
+    <Container maxWidth="xl" sx={{ py: 4 }}>
       {/* Top Section: User XP, Quote, Year Progress */}
-      <Row className="gap-4 mb-4 flex flex-col lg:flex-row">
-        {/* User XP Card */}
-        <Col xs={12} lg={4} className="mb-4 lg:mb-0">
-          <Card className="shadow-lg rounded-xl h-full transition-all duration-300 hover:scale-[1.02]">
-            <Card.Body className="p-4">
-              {/* User XP Progress and Welcome */}
-              <UserExperience />
-            </Card.Body>
+      <Grid container spacing={3} sx={{ mb: 4 }}>
+        <Grid item xs={12} lg={4}>
+          <Card sx={{ height: '100%' }}>
+            <UserExperience />
           </Card>
-        </Col>
-        {/* Quote of the Day Card */}
-        <Col xs={12} md={6} lg={4} className="mb-4 lg:mb-0">
-          <Card className="shadow-lg rounded-xl h-full transition-all duration-300 hover:scale-[1.02]">
-            <Card.Body className="p-4 flex flex-col justify-center items-center">
-              <Quotes />
-            </Card.Body>
+        </Grid>
+        <Grid item xs={12} md={6} lg={4}>
+          <Card sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Quotes />
           </Card>
-        </Col>
-        {/* Year Workout Progress Card */}
-        <Col xs={12} md={6} lg={4}>
-          <Card className="shadow-lg rounded-xl h-full transition-all duration-300 hover:scale-[1.02]">
-            <Card.Body className="p-4">
-              <TotalDays />
-              <HeatMap />
-            </Card.Body>
+        </Grid>
+        <Grid item xs={12} md={6} lg={4}>
+          <Card sx={{ height: '100%' }}>
+            <TotalDays />
+            <HeatMap />
           </Card>
-        </Col>
-      </Row>
+        </Grid>
+      </Grid>
 
       {/* Middle Section: Streak Tracker & Calendar Selector */}
-      <Row className="gap-4 mb-4 flex flex-col md:flex-row">
-        {/* Day Streak Tracker */}
-        <Col xs={12} md={6} className="mb-4 md:mb-0">
-          <Card className="shadow-lg rounded-xl h-full transition-all duration-300 hover:scale-[1.02]">
-            <Card.Body className="p-4">
-              {/* Streak tracker component */}
-              <TotalDays />
-            </Card.Body>
+      <Grid container spacing={3} sx={{ mb: 4 }}>
+        <Grid item xs={12} md={6}>
+          <Card sx={{ height: '100%' }}>
+            <TotalDays />
           </Card>
-        </Col>
-        {/* Monthly Calendar Selector */}
-        <Col xs={12} md={6}>
-          <Card className="shadow-lg rounded-xl h-full transition-all duration-300 hover:scale-[1.02]">
-            <Card.Body className="p-4">
-              {/* Calendar selector component */}
-              <CalendarSelector />
-            </Card.Body>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card sx={{ height: '100%' }}>
+            <CalendarSelector />
           </Card>
-        </Col>
-      </Row>
+        </Grid>
+      </Grid>
 
       {/* Bottom Section: Exercise Table */}
-      <Row>
-        <Col xs={12}>
-          <Card className="shadow-lg rounded-xl transition-all duration-300 hover:scale-[1.01]">
-            <Card.Body className="p-4">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
-                <h2 className="text-lg md:text-xl font-semibold mb-2 md:mb-0">
-                  Exercises
-                </h2>
-                {/* Add Exercise Button */}
-                <ExerciseForm />
-              </div>
-              {/* Exercise Table: horizontally scrollable on mobile */}
-              <div className="overflow-x-auto transition-all duration-300">
-                <ExerciseTable />
-              </div>
-            </Card.Body>
+      <Grid container>
+        <Grid item xs={12}>
+          <Card>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: { md: 'center' }, justifyContent: 'space-between', mb: 2 }}>
+              <Typography variant="h5" sx={{ fontWeight: 600, mb: { xs: 2, md: 0 } }}>
+                Exercises
+              </Typography>
+              <ExerciseForm />
+            </Box>
+            <Box sx={{ overflowX: 'auto' }}>
+              <ExerciseTable />
+            </Box>
           </Card>
-        </Col>
-      </Row>
+        </Grid>
+      </Grid>
     </Container>
   );
 };

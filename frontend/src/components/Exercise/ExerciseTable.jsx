@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { Box, Table, TableContainer, Paper } from '@mui/material';
 import ExerciseRow from './ExerciseRow';
-import { FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
+import { UnfoldMore as SortIcon, ArrowUpward as SortUpIcon, ArrowDownward as SortDownIcon } from '@mui/icons-material';
 
-const ExerciseTable = ({ exercises = [], handleDelete }) => {
+const ExerciseTable = ({ exercises = [], handleDelete, formVisible, formComponent }) => {
   const [sortConfig, setSortConfig] = useState({
     key: 'description',
     direction: 'ascending',
@@ -25,21 +26,34 @@ const ExerciseTable = ({ exercises = [], handleDelete }) => {
   const getIcon = (key) => {
     if (sortConfig.key === key) {
       return sortConfig.direction === 'ascending' ? (
-        <FaSortUp />
+        <SortUpIcon sx={{ fontSize: 16, ml: 0.5 }} />
       ) : (
-        <FaSortDown />
+        <SortDownIcon sx={{ fontSize: 16, ml: 0.5 }} />
       );
     }
-    return <FaSort />;
+    return <SortIcon sx={{ fontSize: 16, ml: 0.5 }} />;
   };
 
   return (
-    <table className="table table-striped table-dark">
-      <TableHeader requestSort={requestSort} getIcon={getIcon} />
-      <tbody className="text-center">
-        <ExerciseRow exercises={sortedExercises} handleDelete={handleDelete} />
-      </tbody>
-    </table>
+    <TableContainer 
+      component={Paper} 
+      elevation={0}
+      sx={{ 
+        backgroundColor: 'transparent',
+        border: '1px solid',
+        borderColor: 'rgba(255, 255, 255, 0.08)',
+        borderRadius: '12px',
+        overflow: 'hidden',
+      }}
+    >
+      <Table size="small" sx={{ minWidth: 450 }}>
+        <TableHeader requestSort={requestSort} getIcon={getIcon} />
+        <tbody style={{ textAlign: 'center' }}>
+          <ExerciseRow exercises={sortedExercises} handleDelete={handleDelete} />
+          {formVisible && formComponent}
+        </tbody>
+      </Table>
+    </TableContainer>
   );
 };
 
@@ -66,18 +80,80 @@ const sortExercises = (exercises, sortConfig) => {
 
 const TableHeader = ({ requestSort, getIcon }) => {
   return (
-    <thead className="text-center">
-      <tr>
-        <th onClick={() => requestSort('description')}>
-          Description {getIcon('description')}
+    <thead>
+      <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+        <th 
+          onClick={() => requestSort('description')}
+          style={{ 
+            cursor: 'pointer',
+            padding: '16px 12px',
+            fontSize: '0.85rem',
+            fontWeight: 600,
+            color: 'rgba(255, 255, 255, 0.7)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            userSelect: 'none',
+            transition: 'color 0.2s ease',
+          }}
+          onMouseEnter={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.9)'}
+          onMouseLeave={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.7)'}
+        >
+          <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+            Description {getIcon('description')}
+          </Box>
         </th>
-        <th onClick={() => requestSort('duration')}>
-          Duration (minutes) {getIcon('duration')}
+        <th 
+          onClick={() => requestSort('duration')}
+          style={{ 
+            cursor: 'pointer',
+            padding: '16px 12px',
+            fontSize: '0.85rem',
+            fontWeight: 600,
+            color: 'rgba(255, 255, 255, 0.7)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            userSelect: 'none',
+            transition: 'color 0.2s ease',
+          }}
+          onMouseEnter={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.9)'}
+          onMouseLeave={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.7)'}
+        >
+          <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+            Duration {getIcon('duration')}
+          </Box>
         </th>
-        <th onClick={() => requestSort('completed')}>
-          Completed {getIcon('completed')}
+        <th 
+          onClick={() => requestSort('completed')}
+          style={{ 
+            cursor: 'pointer',
+            padding: '16px 12px',
+            fontSize: '0.85rem',
+            fontWeight: 600,
+            color: 'rgba(255, 255, 255, 0.7)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            userSelect: 'none',
+            transition: 'color 0.2s ease',
+          }}
+          onMouseEnter={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.9)'}
+          onMouseLeave={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.7)'}
+        >
+          <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+            Status {getIcon('completed')}
+          </Box>
         </th>
-        <th>Actions</th>
+        <th
+          style={{ 
+            padding: '16px 12px',
+            fontSize: '0.85rem',
+            fontWeight: 600,
+            color: 'rgba(255, 255, 255, 0.7)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+          }}
+        >
+          Actions
+        </th>
       </tr>
     </thead>
   );

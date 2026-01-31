@@ -6,34 +6,67 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-// CORS Configuration
+// CORS Configuration - Production Ready
 const corsOptions = {
   origin: function (origin, callback) {
-    // Log all requests for debugging
-    console.log(`CORS request from origin: ${origin}`);
+    const isDevelopment = process.env.NODE_ENV !== 'production';
+    
+    // Log requests in development
+    if (isDevelopment) {
+      console.log(`CORS request from origin: ${origin}`);
+    }
 
-    // Allow requests with no origin (mobile apps, curl requests, etc.)
+    // Allow requests with no origin (mobile apps, server-to-server, curl, Postman)
+    // In production, you might want to restrict this based on your use case
     if (!origin || origin === 'undefined') {
       return callback(null, true);
     }
 
-    // Allow localhost and development URLs
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:5173',
-      'http://127.0.0.1:5173',
-      'http://127.0.0.1:3000',
-    ];
+    // Build allowed origins list
+    const allowedOrigins = [];
 
-    // Allow all Codespaces URLs (github.dev domain)
-    const isCodespacesURL = origin.includes('.github.dev');
+    // Development origins
+    if (isDevelopment) {
+      allowedOrigins.push(
+        'http://localhost:3000',
+        'http://localhost:5173',
+        'http://127.0.0.1:5173',
+        'http://127.0.0.1:3000'
+      );
+    }
 
-    if (allowedOrigins.includes(origin) || isCodespacesURL) {
-      console.log(`✓ CORS allowed for: ${origin}`);
+    // Production origins from environment variables
+    // Format: FRONTEND_URL=https://fit-track.vercel.app,https://fit-track.netlify.app
+    const frontendUrls = process.env.FRONTEND_URL 
+      ? process.env.FRONTEND_URL.split(',').map(url => url.trim())
+      : [];
+    
+    allowedOrigins.push(...frontendUrls);
+
+    // GitHub Codespaces support (for development/preview)
+    const isCodespacesURL = origin.includes('.github.dev') || origin.includes('.githubpreview.dev');
+    
+    // Vercel preview deployments (branch previews)
+    const isVercelPreview = origin.includes('.vercel.app');
+    
+    // Netlify preview deployments (branch previews)
+    const isNetlifyPreview = origin.includes('.netlify.app');
+
+    // Check if origin is allowed
+    const isAllowed = 
+      allowedOrigins.includes(origin) || 
+      (isDevelopment && isCodespacesURL) ||
+      (process.env.ALLOW_VERCEL_PREVIEW === 'true' && isVercelPreview) ||
+      (process.env.ALLOW_NETLIFY_PREVIEW === 'true' && isNetlifyPreview);
+
+    if (isAllowed) {
+      if (isDevelopment) {
+        console.log(`✓ CORS allowed for: ${origin}`);
+      }
       callback(null, true);
     } else {
-      // Log rejected origins for debugging
-      console.log(`✗ CORS rejected origin: ${origin}`);
+      // Log rejected origins for security monitoring
+      console.warn(`⚠️  CORS rejected origin: ${origin}`);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -42,7 +75,8 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   exposedHeaders: ['Content-Length', 'X-JSON-Response'],
   optionsSuccessStatus: 200,
-  maxAge: 86400,
+  maxAge: 86400, // 24 hours cache for preflight requests
+  preflightContinue: false,
 };
 
 // Middleware

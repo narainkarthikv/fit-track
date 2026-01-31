@@ -1,18 +1,26 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Box, Typography } from '@mui/material';
 
 const HeaderSection = ({ title, icon }) => (
-  <div className="text-center mb-4">
-    {icon && React.cloneElement(icon, { 'data-testid': 'header-section-icon' })}
-    <h1
-      className="text-center mt-2"
-      style={{
-        color: '#ff6f61',
+  <Box sx={{ textAlign: 'center', mb: 4 }}>
+    {icon &&
+      React.cloneElement(icon, {
+        'data-testid': 'header-section-icon',
+        sx: { fontSize: 48, color: 'primary.main', mb: 1 },
+      })}
+    <Typography
+      variant="h3"
+      sx={{
+        color: 'primary.main',
+        fontWeight: 700,
+        letterSpacing: '0.5px',
       }}
+      data-testid="header-title"
     >
       {title}
-    </h1>
-  </div>
+    </Typography>
+  </Box>
 );
 
 HeaderSection.propTypes = {

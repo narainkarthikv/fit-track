@@ -1,19 +1,49 @@
 import PropTypes from 'prop-types';
-import { Modal as BootstrapModal, Button } from 'react-bootstrap';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import { IconButton } from '@mui/material';
 
 const Modal = ({ show, handleClose, title, children }) => (
-  <BootstrapModal show={show} onHide={handleClose}>
-    <BootstrapModal.Header closeButton>
-      <BootstrapModal.Title>{title}</BootstrapModal.Title>
-    </BootstrapModal.Header>
-    <BootstrapModal.Body>{children}</BootstrapModal.Body>
-    <BootstrapModal.Footer>
-      <Button variant="secondary" onClick={handleClose}>
+  <Dialog
+    open={show}
+    onClose={handleClose}
+    maxWidth="sm"
+    fullWidth
+    PaperProps={{
+      sx: {
+        backgroundColor: '#1a1a1a',
+        backgroundImage: 'none',
+      },
+    }}
+  >
+    <DialogTitle
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        fontWeight: 700,
+      }}
+    >
+      {title}
+      <IconButton onClick={handleClose} size="small">
+        <CloseIcon />
+      </IconButton>
+    </DialogTitle>
+    <DialogContent sx={{ py: 3 }}>{children}</DialogContent>
+    <DialogActions>
+      <Button onClick={handleClose} variant="outlined">
         Close
       </Button>
-    </BootstrapModal.Footer>
-  </BootstrapModal>
+    </DialogActions>
+  </Dialog>
 );
+
 Modal.propTypes = {
   show: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,

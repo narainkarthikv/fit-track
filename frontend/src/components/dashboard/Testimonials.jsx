@@ -1,88 +1,128 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { FaUserCircle } from 'react-icons/fa';
+import { Box, Container, Typography, Card, CardContent, Avatar } from '@mui/material';
+import { AccountCircle } from '@mui/icons-material';
 
 const Testimonials = () => {
+  const testimonials = [
+    { quote: "Simple to use, helps me stay accountable.", name: 'Sarah M.' },
+    { quote: "Nice to see my workout patterns over time.", name: 'James K.' },
+    { quote: "Does what it needs to do without the fluff.", name: 'Priya R.' },
+    { quote: "The streak feature keeps me showing up.", name: 'Mike T.' },
+    { quote: "Clean interface, easy logging. Works for me.", name: 'Emma L.' },
+    { quote: "Good for tracking progress without overthinking.", name: 'Alex D.' },
+  ];
+
   return (
-    <section id="testimonials" className="py-5 bg-light">
-      <div className="container text-center">
-        <h2 className="mb-5 fw-bold">Success Stories</h2>
+    <Box
+      component="section"
+      id="testimonials"
+      sx={{
+        py: { xs: 8, md: 10 },
+        backgroundColor: 'background.paper',
+      }}
+    >
+      <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
+        <Typography
+          variant="h2"
+          component="h2"
+          sx={{
+            mb: 2,
+            fontWeight: 700,
+            fontSize: { xs: '2rem', md: '2.75rem' },
+            letterSpacing: '-0.01em',
+          }}
+        >
+          What people say
+        </Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            mb: { xs: 5, md: 6 },
+            color: 'text.secondary',
+            fontSize: { xs: '1rem', md: '1.05rem' },
+            fontWeight: 400,
+          }}
+        >
+          Honest feedback from real users
+        </Typography>
 
-        {/* Carousel Container */}
-        <div className="testimonial-carousel position-relative overflow-hidden">
-          <div className="testimonial-track d-flex align-items-stretch">
-            {/* Repeatable Cards */}
-            {[...Array(6)].map((_, i) => (
-              <div
-                className="testimonial-card p-4 me-4 rounded shadow bg-white"
-                key={i}
+        <Box
+          sx={{
+            overflow: 'hidden',
+            '&:hover .scrolling-wrapper': {
+              animationPlayState: 'paused',
+            },
+          }}
+        >
+          <Box
+            className="scrolling-wrapper"
+            sx={{
+              display: 'flex',
+              gap: 3,
+              animation: 'scroll 45s linear infinite',
+              '@keyframes scroll': {
+                '0%': { transform: 'translateX(0)' },
+                '100%': { transform: 'translateX(-50%)' },
+              },
+            }}
+          >
+            {[...testimonials, ...testimonials].map((testimonial, index) => (
+              <Card
+                key={index}
+                sx={{
+                  minWidth: { xs: 260, md: 300 },
+                  maxWidth: { xs: 260, md: 300 },
+                  flexShrink: 0,
+                  height: '100%',
+                  backgroundColor: 'background.default',
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  borderRadius: 2,
+                }}
               >
-                <FaUserCircle size={40} className="mb-3 text-warning" />
-                <p className="fst-italic">
-                  {
-                    [
-                      `"Fit-Track helped me stay on track and lose 8kg in 3 months!"`,
-                      `"The app keeps me consistent. Love it!"`,
-                      `"Best app for tracking gym routines!"`,
-                      `"I've never been this consistent with my workouts before!"`,
-                      `"Progress charts keep me motivated every day!"`,
-                      `"Personalized profiles make it feel like my own space!"`,
-                    ][i % 6]
-                  }
-                </p>
-                <footer className="blockquote-footer mt-2 fw-semibold">
-                  {
-                    [
-                      'Riya, CrossFit Enthusiast',
-                      'Arjun, Runner',
-                      'Neha, Yoga Trainer',
-                      'Rahul, Gym Rat',
-                      'Sanya, Fitness Coach',
-                      'Aman, Beginner',
-                    ][i % 6]
-                  }
-                </footer>
-              </div>
+                <CardContent sx={{ textAlign: 'left', p: 2.5 }}>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      mb: 2,
+                      color: 'text.primary',
+                      lineHeight: 1.6,
+                      fontSize: '0.875rem',
+                    }}
+                  >
+                    "{testimonial.quote}"
+                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+                    <Avatar
+                      sx={{
+                        width: 32,
+                        height: 32,
+                        bgcolor: 'primary.main',
+                        fontSize: '0.8125rem',
+                        fontWeight: 600,
+                      }}
+                    >
+                      {testimonial.name.charAt(0)}
+                    </Avatar>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontWeight: 600,
+                        color: 'text.primary',
+                        fontSize: '0.8125rem',
+                      }}
+                    >
+                      {testimonial.name}
+                    </Typography>
+                  </Box>
+                </CardContent>
+              </Card>
             ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Inline Style for Animation */}
-      <style>{`
-        .testimonial-carousel {
-          overflow: hidden;
-        }
-
-        .testimonial-track {
-          display: flex;
-          gap: 1.5rem;
-          animation: scroll-left 40s linear infinite;
-          width: max-content;
-        }
-
-        .testimonial-card {
-          min-width: 300px;
-          max-width: 300px;
-          flex-shrink: 0;
-        }
-
-        @keyframes scroll-left {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-
-        @media (max-width: 768px) {
-          .testimonial-card {
-            min-width: 250px;
-            max-width: 250px;
-          }
-        }
-      `}</style>
-    </section>
+          </Box>
+        </Box>
+      </Container>
+    </Box>
   );
 };
-
-Testimonials.propTypes = {};
 
 export default Testimonials;

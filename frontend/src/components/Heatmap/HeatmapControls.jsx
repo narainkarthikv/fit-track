@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Form } from 'react-bootstrap';
-import { FaCalendarPlus } from 'react-icons/fa';
+import { Button, FormControl, InputLabel, Select, MenuItem, Box, Stack, Typography } from '@mui/material';
+import { AddCircleOutline } from '@mui/icons-material';
 
 const HeatmapControls = ({
   selectedMonth,
@@ -9,36 +9,51 @@ const HeatmapControls = ({
   months,
 }) => {
   return (
-    <div className="d-flex flex-wrap justify-content-between align-items-center w-100 gap-3 bg-white p-3 rounded-3 shadow-sm">
-      <div className="d-flex align-items-center gap-3">
-        <Form.Group className="mb-0">
-          <Form.Label className="text-muted small mb-1" htmlFor="selectMonth">
-            Month
-          </Form.Label>
-          <Form.Select
-            id="selectMonth"
-            className="form-select-sm border-0 shadow-none fw-bold"
-            style={{ minWidth: '150px', backgroundColor: '#f8f9fa' }}
-            value={selectedMonth}
-            onChange={(e) => setSelectedMonth(e.target.value)}
-          >
-            {months.map((month) => (
-              <option key={month} value={month}>
-                {month}
-              </option>
-            ))}
-          </Form.Select>
-        </Form.Group>
-      </div>
+    <Box
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        gap: 2,
+        bgcolor: 'background.paper',
+        p: 2,
+        borderRadius: 2,
+        boxShadow: 1,
+      }}
+    >
+      <FormControl size="small" sx={{ minWidth: 150 }}>
+        <InputLabel id="select-month-label">Month</InputLabel>
+        <Select
+          labelId="select-month-label"
+          id="selectMonth"
+          value={selectedMonth}
+          label="Month"
+          onChange={(e) => setSelectedMonth(e.target.value)}
+          sx={{ fontWeight: 600 }}
+        >
+          {months.map((month) => (
+            <MenuItem key={month} value={month}>
+              {month}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       <Button
-        variant="primary"
-        className="d-flex align-items-center gap-2 rounded-pill shadow-sm"
+        variant="contained"
+        startIcon={<AddCircleOutline />}
         onClick={handleAddExercise}
+        sx={{ borderRadius: 8 }}
       >
-        <FaCalendarPlus />
-        <span className="d-none d-sm-inline">Add Exercise</span>
+        <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+          Add Exercise
+        </Box>
+        <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
+          Add
+        </Box>
       </Button>
-    </div>
+    </Box>
   );
 };
 

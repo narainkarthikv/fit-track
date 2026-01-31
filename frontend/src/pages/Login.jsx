@@ -1,18 +1,27 @@
 import { useState, useCallback } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link as RouterLink } from 'react-router-dom';
 import {
-  FaDumbbell,
-  FaEnvelope,
-  FaLock,
-  FaEye,
-  FaEyeSlash,
-} from 'react-icons/fa';
-import { Form, Container, Card } from 'react-bootstrap';
-import InputField from '../components/common/InputField';
-import HeaderSection from '../components/common/HeaderSection';
-import SubmitButton from '../components/common/SubmitButton';
-import EmojiSection from '../components/common/EmojiSection';
-import SignupLink from '../components/common/SignupLink';
+  FitnessCenter as FaDumbbell,
+  Email as FaEnvelope,
+  Lock as FaLock,
+  Visibility as FaEye,
+  VisibilityOff as FaEyeSlash,
+  EmojiEmotions,
+} from '@mui/icons-material';
+import {
+  Container,
+  Card,
+  CardContent,
+  Box,
+  Grid,
+  Typography,
+  Alert,
+  Stack,
+  TextField,
+  Button,
+  InputAdornment,
+  IconButton,
+} from '@mui/material';
 import Lottie from 'react-lottie';
 import animationData from '../assets/lottie/login-lottie.json';
 import Snackbar from '../components/common/Snackbar';
@@ -22,10 +31,7 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [emoji, setEmoji] = useState('🏋️‍♀️');
   const [showPassword, setShowPassword] = useState(false);
-
-  //must start with a value in order to have no errors
   const [snackbar, setSnackbar] = useState({
     show: false,
     message: '',
@@ -34,8 +40,8 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
   const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
   const handleInputChange = useCallback((e) => {
-    const { id, value } = e.target;
-    setCredentials((prev) => ({ ...prev, [id]: value }));
+    const { name, value } = e.target;
+    setCredentials((prev) => ({ ...prev, [name]: value }));
   }, []);
 
   const handleLogin = useCallback(async () => {
@@ -46,7 +52,7 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
       console.log(`Attempting login to: ${backendURL}/api/user/login`);
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
 
       const loginResponse = await fetch(`${backendURL}/api/user/login`, {
         method: 'POST',
@@ -67,8 +73,6 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
       if (data.token) {
         localStorage.setItem('token', data.token);
         console.log('Token saved successfully');
-      } else {
-        console.warn('No token received from backend');
       }
 
       const userResponse = await fetch(`${backendURL}/api/user/`, {
@@ -85,7 +89,7 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
       }
 
       const users = await userResponse.json();
-      const user = users.find((user) => user.email === credentials.email);
+      const user = users.find((u) => u.email === credentials.email);
 
       if (user) {
         setSnackbar({
@@ -133,11 +137,6 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
     [credentials, handleLogin]
   );
 
-  const handleEmojiChange = useCallback(() => {
-    const fitnessEmojis = ['💪', '🏃‍♂️', '🤸‍♀️', '🚴‍♂️', '🏋️‍♀️', '🤾‍♂️', '🏊‍♂️'];
-    setEmoji(fitnessEmojis[Math.floor(Math.random() * fitnessEmojis.length)]);
-  }, []);
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -157,86 +156,196 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
 
   return (
     <>
-      <Container
-        fluid
-        className="d-flex align-items-center justify-content-center vh-100 p-0"
+      <Box
+        sx={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'background.default',
+        }}
       >
-        <div className="d-flex w-100 h-100">
-          <div
-            className="d-none d-md-flex align-items-center justify-content-center flex-grow-1"
-            style={{ backgroundColor: '#ffffff', cursor: 'default' }}
-          >
-            <Lottie options={defaultOptions} height={500} width={500} />
-          </div>
-          <div className="d-flex align-items-center justify-content-center flex-grow-1">
-            <Card
-              className="p-5 bg-white rounded shadow-lg"
-              style={{
-                width: '100%',
-                maxWidth: '450px',
-                border: '1px solid #ccc',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+          <Grid container spacing={4} alignItems="center">
+            {/* Left Side - Animation */}
+            <Grid
+              item
+              xs={12}
+              md={6}
+              sx={{
+                display: { xs: 'none', md: 'flex' },
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
-              <Form onSubmit={onSubmit} aria-label="Login Form">
-                <HeaderSection
-                  title="Fit-Track Login"
-                  icon={<FaDumbbell size={50} color="#ff6f61" />}
-                />
+              <Box>
+                <Lottie options={defaultOptions} height={450} width={450} />
+              </Box>
+            </Grid>
 
-                {['email', 'password'].map((field, index) => (
-                  <InputField
-                    key={index}
-                    id={field}
-                    name={field}
-                    type={
-                      field === 'password' && !showPassword
-                        ? 'password'
-                        : 'text'
-                    }
-                    placeholder={`Enter your ${field}`}
-                    value={credentials[field]}
-                    onChange={handleInputChange}
-                    Icon={getIcon(field)}
-                    AppendIcon={
-                      field === 'password'
-                        ? showPassword
-                          ? FaEyeSlash
-                          : FaEye
-                        : null
-                    }
-                    onAppendIconClick={
-                      field === 'password' ? togglePasswordVisibility : null
-                    }
-                    className="mb-3"
-                  />
-                ))}
+            {/* Right Side - Form */}
+            <Grid item xs={12} md={6}>
+              <Card
+                  elevation={0}
+                  sx={{
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
+                    backdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.18)',
+                    borderRadius: '24px',
+                    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <CardContent sx={{ p: { xs: 3, sm: 5 } }}>
+                    {/* Header */}
+                    <Box sx={{ textAlign: 'center', mb: 4 }}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          mb: 2,
+                        }}
+                      >
+                        <FaDumbbell
+                          sx={{
+                            fontSize: 48,
+                            color: 'primary.main',
+                          }}
+                        />
+                      </Box>
+                      <Typography
+                        variant="h4"
+                        sx={{
+                          fontWeight: 700,
+                          color: 'text.primary',
+                          mb: 1,
+                        }}
+                      >
+                        Fit-Track Login
+                      </Typography>
+                    </Box>
 
-                <div className="d-flex justify-content-center">
-                  <SubmitButton
-                    isSubmitting={isSubmitting}
-                    className="w-100 mb-3"
-                  />
-                </div>
+                    <Box component="form" onSubmit={onSubmit}>
+                      <Stack spacing={3}>
+                        {/* Email Field */}
+                        <TextField
+                          fullWidth
+                          id="email"
+                          name="email"
+                          type="email"
+                          placeholder="Enter your email"
+                          value={credentials.email}
+                          onChange={handleInputChange}
+                          required
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <FaEnvelope sx={{ color: 'text.secondary' }} />
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
 
-                {error && (
-                  <div className="text-danger text-center mt-3" role="alert">
-                    {error}
-                  </div>
-                )}
+                        {/* Password Field */}
+                        <TextField
+                          fullWidth
+                          id="password"
+                          name="password"
+                          type={showPassword ? 'text' : 'password'}
+                          placeholder="Enter your password"
+                          value={credentials.password}
+                          onChange={handleInputChange}
+                          required
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <FaLock sx={{ color: 'text.secondary' }} />
+                              </InputAdornment>
+                            ),
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  onClick={togglePasswordVisibility}
+                                  edge="end"
+                                  sx={{ color: 'text.secondary' }}
+                                >
+                                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
 
-                <SignupLink className="text-center" />
+                        {/* Error Message */}
+                        {error && (
+                          <Alert severity="error">
+                            {error}
+                          </Alert>
+                        )}
 
-                <EmojiSection
-                  emoji={emoji}
-                  onClick={handleEmojiChange}
-                  className="text-center mt-3"
-                />
-              </Form>
-            </Card>
-          </div>
-        </div>
-      </Container>
+                        {/* Submit Button */}
+                        <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          disabled={isSubmitting}
+                          sx={{
+                            py: 1.5,
+                          }}
+                        >
+                          {isSubmitting ? 'Signing In...' : 'Sign In'}
+                        </Button>
+
+                        {/* Signup Link */}
+                        <Box sx={{ textAlign: 'center', mt: 2 }}>
+                          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                            New to Fit-Track?{' '}
+                            <Typography
+                              component={RouterLink}
+                              to="/signup"
+                              sx={{
+                                color: 'primary.main',
+                                textDecoration: 'none',
+                                fontWeight: 600,
+                                '&:hover': {
+                                  textDecoration: 'underline',
+                                },
+                              }}
+                            >
+                              Sign Up Now
+                            </Typography>
+                          </Typography>
+                        </Box>
+
+                        {/* Motivational Section */}
+                        <Box
+                          sx={{
+                            textAlign: 'center',
+                            mt: 3,
+                            pt: 3,
+                            borderTop: '1px solid',
+                            borderColor: 'divider',
+                          }}
+                        >
+                          <EmojiEmotions sx={{ fontSize: 32, color: 'primary.main', mb: 1 }} />
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              color: 'text.secondary',
+                            }}
+                          >
+                            Feeling 💪 today?
+                          </Typography>
+                        </Box>
+                      </Stack>
+                    </Box>
+                  </CardContent>
+                </Card>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+
       <Snackbar
         show={snackbar.show}
         message={snackbar.message}
@@ -249,16 +358,6 @@ const LoginPage = ({ isAuthenticated, setIsAuthenticated, setUserID }) => {
   );
 };
 
-const getIcon = (field) => {
-  switch (field) {
-    case 'email':
-      return FaEnvelope;
-    case 'password':
-      return FaLock;
-    default:
-      return null;
-  }
-};
 LoginPage.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   setIsAuthenticated: PropTypes.func.isRequired,

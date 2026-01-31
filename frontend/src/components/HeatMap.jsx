@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import './Heatmap/Heatmap.css';
@@ -10,10 +10,13 @@ import DetailsModal from './Heatmap/DetailsModal';
 
 const HeatMap = ({ userID }) => {
   const dispatch = useDispatch();
-  const monthData = useSelector(
-    (state) => state.heatMap.userMonthData?.[userID] || []
-  );
+  const userMonthData = useSelector((state) => state.heatMap.userMonthData);
   const status = useSelector((state) => state.heatMap.status);
+  
+  const monthData = useMemo(
+    () => userMonthData?.[userID] || [],
+    [userMonthData, userID]
+  );
 
   // Set the default month to the current month
   const [selectedMonth, setSelectedMonth] = useState(() =>

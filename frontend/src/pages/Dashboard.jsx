@@ -1,7 +1,7 @@
 import Hero from '../components/dashboard/Hero';
 import Features from '../components/dashboard/Features';
 import ProgressShowcase from '../components/dashboard/ProgressShowcase';
-import Testimonials from '../components/dashboard/Testimonials';
+// import Testimonials from '../components/dashboard/Testimonials';
 import CTA from '../components/dashboard/CTA';
 import Footer from '../components/dashboard/Footer';
 
@@ -11,7 +11,7 @@ const DashBoard = () => {
       <Hero />
       <Features />
       <ProgressShowcase />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <div id="cta">
         <CTA />
       </div>

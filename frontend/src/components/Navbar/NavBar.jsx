@@ -1,44 +1,130 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Navbar, Nav, Container } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-import { FaDumbbell } from 'react-icons/fa';
-
+import { Link as RouterLink } from 'react-router-dom';
+import {
+  AppBar,
+  Toolbar,
+  Container,
+  Box,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import { FitnessCenter as FaDumbbell, Menu as MenuIcon } from '@mui/icons-material';
 import NotificationDropdown from './NotificationDropdown';
 import UserDropdown from './UserDropdown';
 
 const NavBar = ({
   user,
   handleLogout,
-  notifications,
-  toggleNotificationReadStatus,
-}) => (
-  <Navbar bg="dark" variant="dark" expand="lg" sticky="top" className="py-2">
-    <Container
-      fluid
-      className="d-flex justify-content-between align-items-center px-4"
-    >
-      <LinkContainer to="dashboard">
-        <Navbar.Brand className="d-flex align-items-center">
-          <FaDumbbell className="me-2" />
-          <span className="fw-semibold">Fit-Track</span>
-        </Navbar.Brand>
-      </LinkContainer>
+  notifications = [],
+  toggleNotificationReadStatus = () => {},
+}) => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-      <Navbar.Toggle aria-controls="navbar-content" />
-      <Navbar.Collapse id="navbar-content" className="justify-content-end">
-        <Nav className="gap-3 align-items-center">
-          {/* User-related dropdowns */}
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const drawer = (
+    <Box sx={{ width: 250, p: 2 }}>
+      <List>
+        <ListItem>
           <NotificationDropdown
             notifications={notifications}
             toggleNotificationReadStatus={toggleNotificationReadStatus}
           />
+        </ListItem>
+        <ListItem>
           <UserDropdown user={user} handleLogout={handleLogout} />
-        </Nav>
-      </Navbar.Collapse>
-    </Container>
-  </Navbar>
-);
+        </ListItem>
+      </List>
+    </Box>
+  );
+
+  return (
+    <>
+      <AppBar position="sticky" elevation={0}>
+        <Container maxWidth="lg">
+          <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
+            {/* Logo */}
+            <Box
+              component={RouterLink}
+              to="dashboard"
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                textDecoration: 'none',
+                color: 'inherit',
+                fontWeight: 700,
+                fontSize: '1.25rem',
+                '&:hover': {
+                  opacity: 0.8,
+                },
+              }}
+            >
+              <FaDumbbell sx={{ fontSize: '1.5rem', color: 'primary.main' }} />
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 700,
+                  color: 'text.primary',
+                }}
+              >
+                Fit-Track
+              </Typography>
+            </Box>
+
+            {/* Desktop Navigation */}
+            {!isMobile && (
+              <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                <NotificationDropdown
+                  notifications={notifications}
+                  toggleNotificationReadStatus={toggleNotificationReadStatus}
+                />
+                <UserDropdown user={user} handleLogout={handleLogout} />
+              </Box>
+            )}
+
+            {/* Mobile Navigation */}
+            {isMobile && (
+              <IconButton
+                color="inherit"
+                aria-label="toggle navigation"
+                onClick={handleDrawerToggle}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
+          </Toolbar>
+        </Container>
+      </AppBar>
+
+      {/* Mobile Drawer */}
+      {isMobile && (
+        <Drawer
+          anchor="right"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          PaperProps={{
+            sx: {
+              backgroundColor: '#1a1a1a',
+            },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      )}
+    </>
+  );
+};
 
 NavBar.propTypes = {
   user: PropTypes.string.isRequired,
@@ -51,11 +137,6 @@ NavBar.propTypes = {
     })
   ),
   toggleNotificationReadStatus: PropTypes.func,
-};
-
-NavBar.defaultProps = {
-  notifications: [],
-  toggleNotificationReadStatus: () => {},
 };
 
 export default NavBar;

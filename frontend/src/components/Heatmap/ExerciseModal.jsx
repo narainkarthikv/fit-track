@@ -1,6 +1,6 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { FaSave, FaTimes } from 'react-icons/fa';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton, Box } from '@mui/material';
+import { Save as SaveIcon, Close as CloseIcon } from '@mui/icons-material';
 import ExerciseForm from './ExerciseForm';
 
 const ExerciseModal = ({
@@ -13,44 +13,44 @@ const ExerciseModal = ({
   setNewExerciseCount,
 }) => {
   return (
-    <Modal show={showAddModal} onHide={handleClose} centered backdrop="static">
-      <Modal.Header className="border-0 pb-0">
-        <Modal.Title className="text-primary fw-bold">Add Exercise</Modal.Title>
-        <Button
-          variant="link"
-          className="p-0 ms-auto text-muted"
-          onClick={handleClose}
-          aria-label="Close"
-        >
-          <FaTimes />
-        </Button>
-      </Modal.Header>
-      <Modal.Body className="pt-2">
+    <Dialog 
+      open={showAddModal} 
+      onClose={handleClose} 
+      maxWidth="sm" 
+      fullWidth
+    >
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box sx={{ fontWeight: 700, color: 'primary.main' }}>Add Exercise</Box>
+        <IconButton onClick={handleClose} size="small" aria-label="Close">
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent>
         <ExerciseForm
           exerciseDate={exerciseDate}
           setExerciseDate={setExerciseDate}
           newExerciseCount={newExerciseCount}
           setNewExerciseCount={setNewExerciseCount}
         />
-      </Modal.Body>
-      <Modal.Footer className="border-0 pt-0">
+      </DialogContent>
+      <DialogActions sx={{ px: 3, pb: 2 }}>
         <Button
-          variant="outline-secondary"
-          className="rounded-pill px-4"
+          variant="outlined"
           onClick={handleClose}
+          sx={{ borderRadius: 8, px: 3 }}
         >
           Cancel
         </Button>
         <Button
-          variant="primary"
-          className="rounded-pill px-4 d-flex align-items-center gap-2"
+          variant="contained"
           onClick={handleSubmitExercise}
+          startIcon={<SaveIcon />}
+          sx={{ borderRadius: 8, px: 3 }}
         >
-          <FaSave />
           Save Exercise
         </Button>
-      </Modal.Footer>
-    </Modal>
+      </DialogActions>
+    </Dialog>
   );
 };
 

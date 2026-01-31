@@ -23,18 +23,20 @@ const exercisesSlice = createSlice({
       state.status = 'failed';
     },
     addExerciseSuccess: (state, action) => {
-      const { userID, newExercise } = action.payload;
+      const { userID, data } = action.payload;
       if (!state.userExercises[userID]) {
         state.userExercises[userID] = [];
       }
-      state.userExercises[userID].push(newExercise);
+      state.userExercises[userID].push(data);
       state.status = 'succeeded';
     },
     deleteExerciseSuccess: (state, action) => {
-      const { userID, excerciseId } = action.payload;
-      state.exercises = state.exercises.filter(
-        (exercise) => exercise._id !== action.payload
-      );
+      const { userID, exerciseId } = action.payload;
+      if (state.userExercises[userID]) {
+        state.userExercises[userID] = state.userExercises[userID].filter(
+          (exercise) => exercise._id !== exerciseId
+        );
+      }
       state.status = 'succeeded';
     },
     setStatus: (state, action) => {

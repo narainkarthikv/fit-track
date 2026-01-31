@@ -1,22 +1,22 @@
 import PropTypes from 'prop-types';
-import { Button, Spinner } from 'react-bootstrap';
+import { Button, CircularProgress } from '@mui/material';
 
 const SubmitButton = ({ isSubmitting, text = 'Sign In' }) => (
   <Button
-    variant="danger"
+    variant="contained"
     type="submit"
     disabled={isSubmitting}
+    fullWidth
+    size="large"
+    sx={{
+      py: 1.5,
+      fontSize: '1.1rem',
+      fontWeight: 600,
+    }}
     aria-label={text}
   >
     {isSubmitting ? (
-      <Spinner
-        as="span"
-        animation="border"
-        size="sm"
-        role="status"
-        aria-hidden="true"
-        data-testid="submit-spinner"
-      />
+      <CircularProgress size={24} sx={{ color: 'inherit' }} data-testid="submit-spinner" />
     ) : (
       text
     )}
