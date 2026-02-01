@@ -18,7 +18,7 @@ const UserRoutine = ({ userID }) => {
   const [streak, setStreak] = useState(0);
   const [weeklyStreakValue, setWeeklyStreakValue] = useState(0);
   const [msg, setMsg] = useState('');
-  const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+  const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   const dispatch = useDispatch();
   const weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];

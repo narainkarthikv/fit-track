@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
 
-const CTA = ({ isLoggedIn }) => {
+const CTA = ({ isLoggedIn, onGetStartedClick }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -75,24 +75,44 @@ const CTA = ({ isLoggedIn }) => {
             No commitments, just simple workout tracking.
           </Typography>
 
-          <Button
-            component={RouterLink}
-            to={isLoggedIn ? 'dashboard' : 'signup'}
-            variant="contained"
-            size="large"
-            endIcon={<ArrowForward />}
-            sx={{
-              px: 4,
-              py: 1.75,
-              fontSize: '1rem',
-              boxShadow: `0 4px 14px 0 ${alpha(theme.palette.primary.main, 0.25)}`,
-              '&:hover': {
-                boxShadow: `0 6px 20px 0 ${alpha(theme.palette.primary.main, 0.35)}`,
-              },
-            }}
-          >
-            {isLoggedIn ? 'Go to Dashboard' : 'Get Started Free'}
-          </Button>
+          {isLoggedIn ? (
+            <Button
+              component={RouterLink}
+              to="dashboard"
+              variant="contained"
+              size="large"
+              endIcon={<ArrowForward />}
+              sx={{
+                px: 4,
+                py: 1.75,
+                fontSize: '1rem',
+                boxShadow: `0 4px 14px 0 ${alpha(theme.palette.primary.main, 0.25)}`,
+                '&:hover': {
+                  boxShadow: `0 6px 20px 0 ${alpha(theme.palette.primary.main, 0.35)}`,
+                },
+              }}
+            >
+              Go to Dashboard
+            </Button>
+          ) : (
+            <Button
+              onClick={onGetStartedClick}
+              variant="contained"
+              size="large"
+              endIcon={<ArrowForward />}
+              sx={{
+                px: 4,
+                py: 1.75,
+                fontSize: '1rem',
+                boxShadow: `0 4px 14px 0 ${alpha(theme.palette.primary.main, 0.25)}`,
+                '&:hover': {
+                  boxShadow: `0 6px 20px 0 ${alpha(theme.palette.primary.main, 0.35)}`,
+                },
+              }}
+            >
+              Get Started Free
+            </Button>
+          )}
         </Box>
       </Container>
     </Box>
@@ -101,6 +121,7 @@ const CTA = ({ isLoggedIn }) => {
 
 CTA.propTypes = {
   isLoggedIn: PropTypes.bool,
+  onGetStartedClick: PropTypes.func,
 };
 
 export default CTA;

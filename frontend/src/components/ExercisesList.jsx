@@ -60,18 +60,7 @@ const ExercisesList = ({ userID }) => {
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Typography 
-        variant="h6" 
-        sx={{ 
-          mb: 2, 
-          fontWeight: 600,
-          color: 'text.primary',
-          fontSize: '1.1rem'
-        }}
-      >
-        Today's Exercises
-      </Typography>
-      
+
       <Box sx={{ 
         flexGrow: 1, 
         minHeight: '380px', 

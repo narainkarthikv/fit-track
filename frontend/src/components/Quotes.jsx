@@ -1,8 +1,31 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Skeleton, alpha, useTheme } from '@mui/material';
 import { FormatQuote } from '@mui/icons-material';
 
 const Quotes = ({ quote }) => {
+  const theme = useTheme();
+
+  // Loading state
+  if (!quote) {
+    return (
+      <Box sx={{ 
+        display: 'flex', 
+        flexDirection: 'column',
+        gap: 2,
+        height: '100%',
+        justifyContent: 'center',
+        width: '100%',
+      }}>
+        <Skeleton variant="text" width="60%" height={24} />
+        <Skeleton variant="text" width="100%" height={32} />
+        <Skeleton variant="text" width="90%" height={32} />
+        <Skeleton variant="text" width="40%" height={20} sx={{ mt: 1 }} />
+      </Box>
+    );
+  }
+
+  const { quote: text, author, work } = quote;
+
   return (
     <Box sx={{ 
       display: 'flex', 
@@ -11,19 +34,22 @@ const Quotes = ({ quote }) => {
       height: '100%',
       justifyContent: 'center',
       position: 'relative',
+      width: '100%',
     }}>
+      {/* Opening Quote Mark */}
       <FormatQuote 
         sx={{ 
           position: 'absolute',
-          top: -8,
-          left: -8,
-          fontSize: 48,
-          color: 'primary.main',
-          opacity: 0.2,
+          top: -12,
+          left: -12,
+          fontSize: 56,
+          color: theme.palette.primary.main,
+          opacity: 0.15,
           transform: 'rotate(180deg)',
         }} 
       />
       
+      {/* Quote Label */}
       <Typography 
         variant="body2" 
         sx={{ 
@@ -34,31 +60,71 @@ const Quotes = ({ quote }) => {
           letterSpacing: '1px',
         }}
       >
-        Quote of the Day
+        Daily Inspiration
       </Typography>
       
+      {/* Quote Text */}
       <Typography 
         sx={{ 
-          fontSize: '1rem',
-          lineHeight: 1.6,
-          color: 'primary.light',
-          fontStyle: 'italic',
+          fontSize: { xs: '0.95rem', md: '1.05rem' },
+          lineHeight: 1.7,
+          color: 'text.primary',
           fontWeight: 500,
+          position: 'relative',
+          zIndex: 1,
+          mb: 1,
+        }}
+      >
+        "{text}"
+      </Typography>
+      
+      {/* Author and Work Attribution */}
+      <Box 
+        sx={{ 
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 0.5,
           position: 'relative',
           zIndex: 1,
         }}
       >
-        "{quote}"
-      </Typography>
+        {author && (
+          <Typography
+            variant="body2"
+            sx={{
+              color: alpha(theme.palette.primary.main, 0.9),
+              fontWeight: 600,
+              fontSize: '0.875rem',
+              fontStyle: 'italic',
+            }}
+          >
+            — {author}
+          </Typography>
+        )}
+        {work && (
+          <Typography
+            variant="caption"
+            sx={{
+              color: 'text.secondary',
+              fontSize: '0.75rem',
+              fontStyle: 'italic',
+              ml: 1.5,
+            }}
+          >
+            {work}
+          </Typography>
+        )}
+      </Box>
       
+      {/* Closing Quote Mark */}
       <FormatQuote 
         sx={{ 
           position: 'absolute',
-          bottom: -8,
-          right: -8,
-          fontSize: 48,
-          color: 'primary.main',
-          opacity: 0.2,
+          bottom: -12,
+          right: -12,
+          fontSize: 56,
+          color: theme.palette.primary.main,
+          opacity: 0.15,
         }} 
       />
     </Box>

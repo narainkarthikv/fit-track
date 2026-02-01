@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
+import axios from 'axios';
 import {
   AppBar,
   Toolbar,
@@ -17,6 +18,7 @@ import {
 import { FitnessCenter as FaDumbbell, Menu as MenuIcon } from '@mui/icons-material';
 import NotificationDropdown from './NotificationDropdown';
 import UserDropdown from './UserDropdown';
+import EditProfileModal from '../profile/EditProfileModal';
 
 const NavBar = ({
   user,
@@ -25,11 +27,50 @@ const NavBar = ({
   toggleNotificationReadStatus = () => {},
 }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [editProfileOpen, setEditProfileOpen] = useState(false);
+  const [userDetails, setUserDetails] = useState({ username: '', email: '' });
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${backendURL}/api/user/${user}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUserDetails({
+          username: response.data.username,
+          email: response.data.email,
+        });
+      } catch (err) {
+        console.error('Error fetching user details:', err);
+      }
+    };
+
+    if (user) {
+      fetchUserDetails();
+    }
+  }, [user, backendURL]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleEditProfileClick = () => {
+    setEditProfileOpen(true);
+    setMobileOpen(false);
+  };
+
+  const handleProfileUpdated = (updatedData) => {
+    setUserDetails(prev => ({
+      ...prev,
+      username: updatedData.username,
+      email: updatedData.email,
+    }));
   };
 
   const drawer = (
@@ -42,7 +83,11 @@ const NavBar = ({
           />
         </ListItem>
         <ListItem>
-          <UserDropdown user={user} handleLogout={handleLogout} />
+          <UserDropdown 
+            user={user} 
+            handleLogout={handleLogout}
+            onEditProfileClick={handleEditProfileClick}
+          />
         </ListItem>
       </List>
     </Box>
@@ -89,7 +134,11 @@ const NavBar = ({
                   notifications={notifications}
                   toggleNotificationReadStatus={toggleNotificationReadStatus}
                 />
-                <UserDropdown user={user} handleLogout={handleLogout} />
+                <UserDropdown 
+                  user={user} 
+                  handleLogout={handleLogout}
+                  onEditProfileClick={handleEditProfileClick}
+                />
               </Box>
             )}
 
@@ -122,6 +171,16 @@ const NavBar = ({
           {drawer}
         </Drawer>
       )}
+
+      {/* Edit Profile Modal */}
+      <EditProfileModal
+        open={editProfileOpen}
+        onClose={() => setEditProfileOpen(false)}
+        userId={user}
+        currentUsername={userDetails.username}
+        currentEmail={userDetails.email}
+        onProfileUpdated={handleProfileUpdated}
+      />
     </>
   );
 };

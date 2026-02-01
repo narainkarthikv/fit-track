@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -9,26 +9,14 @@ import {
 import PropTypes from 'prop-types';
 import NavBar from './components/Navbar/NavBar';
 import Home from './pages/Home';
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
 import DashBoard from './pages/Dashboard';
 
 // Private Route wrapper component
 const PrivateRoute = ({ isLoggedIn, children }) => {
-  return isLoggedIn ? children : <Navigate to="login" />;
+  return isLoggedIn ? children : <Navigate to="/" replace />;
 };
 
 PrivateRoute.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  children: PropTypes.node.isRequired,
-};
-
-// Public Route wrapper component
-const PublicRoute = ({ isLoggedIn, children }) => {
-  return !isLoggedIn ? children : <Navigate to="dashboard" />;
-};
-
-PublicRoute.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired,
 };
@@ -38,70 +26,72 @@ const App = () => {
   const [userID, setUserID] = useState('');
   const navigate = useNavigate();
 
+  // Check for existing session on mount
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const storedUserId = localStorage.getItem('userId');
+    if (token && storedUserId) {
+      setIsLoggedIn(true);
+      setUserID(storedUserId);
+    }
+  }, []);
+
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserID('');
-    navigate('login');
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    navigate('/');
+  };
+
+  const handleAuthSuccess = (userId) => {
+    setIsLoggedIn(true);
+    setUserID(userId);
+    localStorage.setItem('userId', userId);
+    navigate('/dashboard');
   };
 
   return (
     <div className="App">
       {/* Only render NavBar if user is logged in */}
-      {isLoggedIn && <NavBar user={userID} handleLogout={handleLogout} />}
+      {isLoggedIn && (
+        <NavBar 
+          user={userID} 
+          handleLogout={handleLogout}
+          userDetails={{ userId: userID }}
+        />
+      )}
 
       <Routes>
-        {/* Public routes */}
+        {/* Landing Page - Public route */}
         <Route
-          path=""
+          path="/"
           element={
-            <PublicRoute isLoggedIn={isLoggedIn}>
-              <DashBoard isLoggedIn={isLoggedIn} />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="login"
-          element={
-            <PublicRoute isLoggedIn={isLoggedIn}>
-              <Login
-                isAuthenticated={isLoggedIn}
-                setIsAuthenticated={setIsLoggedIn}
-                setUserID={setUserID}
+            !isLoggedIn ? (
+              <DashBoard 
+                isLoggedIn={false} 
+                onAuthSuccess={handleAuthSuccess}
               />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="signup"
-          element={
-            <PublicRoute isLoggedIn={isLoggedIn}>
-              <SignUp />
-            </PublicRoute>
+            ) : (
+              <Navigate to="/dashboard" replace />
+            )
           }
         />
 
-        {/* Private routes */}
+        {/* Dashboard - Private route */}
         <Route
-          path="dashboard"
+          path="/dashboard"
           element={
             <PrivateRoute isLoggedIn={isLoggedIn}>
               <Home user={userID} />
             </PrivateRoute>
           }
         />
-        <Route
-          path="profile/edit"
-          element={
-            <PrivateRoute isLoggedIn={isLoggedIn}>
-              <SignUp />
-            </PrivateRoute>
-          }
-        />
 
-        {/* Redirect undefined routes to root */}
+        {/* Redirect all undefined routes */}
         <Route
           path="*"
-          element={<Navigate to={isLoggedIn ? 'dashboard' : ''} />}
+          element={<Navigate to={isLoggedIn ? '/dashboard' : '/'} replace />}
         />
       </Routes>
     </div>

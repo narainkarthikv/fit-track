@@ -24,7 +24,7 @@ const gradientShift = keyframes`
   50% { background-position: 100% 50%; }
 `;
 
-const Hero = ({ isLoggedIn }) => {
+const Hero = ({ isLoggedIn, onGetStartedClick }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -150,27 +150,50 @@ const Hero = ({ isLoggedIn }) => {
               </Stack>
 
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 2 }}>
-                <Button
-                  component={RouterLink}
-                  to={isLoggedIn ? '/dashboard' : '/signup'}
-                  variant="contained"
-                  size="large"
-                  endIcon={<ArrowForward />}
-                  sx={{
-                    px: 4.5,
-                    py: 1.75,
-                    fontSize: '1rem',
-                    fontWeight: 600,
-                    boxShadow: `0 4px 14px 0 ${alpha(theme.palette.primary.main, 0.3)}`,
-                    '&:hover': {
-                      transform: 'translateY(-2px)',
-                      boxShadow: `0 6px 20px 0 ${alpha(theme.palette.primary.main, 0.4)}`,
-                    },
-                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                  }}
-                >
-                  {isLoggedIn ? 'Go to Dashboard' : 'Start Tracking'}
-                </Button>
+                {isLoggedIn ? (
+                  <Button
+                    component={RouterLink}
+                    to="/dashboard"
+                    variant="contained"
+                    size="large"
+                    endIcon={<ArrowForward />}
+                    sx={{
+                      px: 4.5,
+                      py: 1.75,
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      boxShadow: `0 4px 14px 0 ${alpha(theme.palette.primary.main, 0.3)}`,
+                      '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: `0 6px 20px 0 ${alpha(theme.palette.primary.main, 0.4)}`,
+                      },
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    }}
+                  >
+                    Go to Dashboard
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={onGetStartedClick}
+                    variant="contained"
+                    size="large"
+                    endIcon={<ArrowForward />}
+                    sx={{
+                      px: 4.5,
+                      py: 1.75,
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      boxShadow: `0 4px 14px 0 ${alpha(theme.palette.primary.main, 0.3)}`,
+                      '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: `0 6px 20px 0 ${alpha(theme.palette.primary.main, 0.4)}`,
+                      },
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    }}
+                  >
+                    Start Tracking
+                  </Button>
+                )}
                 <Button
                   href="#features"
                   variant="outlined"
@@ -202,6 +225,7 @@ const Hero = ({ isLoggedIn }) => {
 
 Hero.propTypes = {
   isLoggedIn: PropTypes.bool,
+  onGetStartedClick: PropTypes.func,
 };
 
 export default Hero;

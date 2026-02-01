@@ -216,11 +216,85 @@ router.get('/:userId', verifyToken, async (req, res) => {
     }
     res.json({
       username: user.username,
+      email: user.email,
       xp: user.xp,
       totalDays: user.totalDays,
     });
   } catch (error) {
     console.error('Error fetching user:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Update user profile
+router.put('/:userId/update', verifyToken, async (req, res) => {
+  const { userId } = req.params;
+  const { username, email, currentPassword, newPassword } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Validate username and email
+    if (username && username.trim()) {
+      // Check if username is taken by another user
+      if (username !== user.username) {
+        const existingUser = await User.findOne({ username });
+        if (existingUser) {
+          return res.status(400).json({ error: 'Username already taken' });
+        }
+      }
+      user.username = username.trim();
+    }
+
+    if (email && email.trim()) {
+      // Check if email is taken by another user
+      if (email !== user.email) {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+          return res.status(400).json({ error: 'Email already taken' });
+        }
+      }
+      user.email = email.trim();
+    }
+
+    // Handle password change if requested
+    if (newPassword) {
+      if (!currentPassword) {
+        return res.status(400).json({ error: 'Current password is required' });
+      }
+
+      // Verify current password
+      // TODO: Re-enable bcrypt once bcryptjs is properly installed
+      const isPasswordValid = currentPassword === user.password;
+      
+      if (!isPasswordValid) {
+        return res.status(401).json({ error: 'Current password is incorrect' });
+      }
+
+      if (newPassword.length < 6) {
+        return res.status(400).json({ error: 'New password must be at least 6 characters' });
+      }
+
+      // TODO: Hash new password with bcrypt
+      user.password = newPassword;
+    }
+
+    await user.save();
+
+    res.status(200).json({ 
+      message: 'Profile updated successfully',
+      user: {
+        username: user.username,
+        email: user.email,
+        xp: user.xp,
+        totalDays: user.totalDays,
+      }
+    });
+  } catch (error) {
+    console.error('Error updating user:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });

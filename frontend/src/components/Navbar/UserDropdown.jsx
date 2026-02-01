@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   IconButton,
   Menu,
@@ -14,9 +13,8 @@ import {
 } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 
-const UserDropdown = ({ user, handleLogout }) => {
+const UserDropdown = ({ user, handleLogout, onEditProfileClick }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const navigate = useNavigate();
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -28,8 +26,10 @@ const UserDropdown = ({ user, handleLogout }) => {
   };
 
   const handleEditProfile = () => {
-    navigate(`/${user}/edit`);
     handleClose();
+    if (onEditProfileClick) {
+      onEditProfileClick();
+    }
   };
 
   const handleLogoutClick = () => {
@@ -83,6 +83,7 @@ const UserDropdown = ({ user, handleLogout }) => {
 UserDropdown.propTypes = {
   user: PropTypes.string.isRequired,
   handleLogout: PropTypes.func.isRequired,
+  onEditProfileClick: PropTypes.func,
 };
 
 export default UserDropdown;
