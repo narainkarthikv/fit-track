@@ -1,30 +1,24 @@
-import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import NavBar from './components/Navbar/NavBar';
 import Home from './pages/Home';
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
 import DashBoard from './pages/Dashboard';
 
 // Private Route wrapper component
 const PrivateRoute = ({ isLoggedIn, children }) => {
-  return isLoggedIn ? children : <Navigate to="login" />;
+  return isLoggedIn ? children : <Navigate to="/" replace />;
 };
 
 PrivateRoute.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  children: PropTypes.node.isRequired
-};
-
-// Public Route wrapper component
-const PublicRoute = ({ isLoggedIn, children }) => {
-  return !isLoggedIn ? children : <Navigate to="dashboard" />;
-};
-
-PublicRoute.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 const App = () => {
@@ -32,58 +26,73 @@ const App = () => {
   const [userID, setUserID] = useState('');
   const navigate = useNavigate();
 
+  // Check for existing session on mount
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const storedUserId = localStorage.getItem('userId');
+    if (token && storedUserId) {
+      setIsLoggedIn(true);
+      setUserID(storedUserId);
+    }
+  }, []);
+
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserID('');
-    navigate('login');
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    navigate('/');
+  };
+
+  const handleAuthSuccess = (userId) => {
+    setIsLoggedIn(true);
+    setUserID(userId);
+    localStorage.setItem('userId', userId);
+    navigate('/dashboard');
   };
 
   return (
-    <div className='App'>
+    <div className="App">
       {/* Only render NavBar if user is logged in */}
       {isLoggedIn && (
         <NavBar 
           user={userID} 
           handleLogout={handleLogout}
+          userDetails={{ userId: userID }}
         />
       )}
-      
+
       <Routes>
-        {/* Public routes */}
-        <Route path="" element={
-          <PublicRoute isLoggedIn={isLoggedIn}>
-            <DashBoard isLoggedIn={isLoggedIn} />
-          </PublicRoute>
-        } />
-        <Route path="login" element={
-          <PublicRoute isLoggedIn={isLoggedIn}>
-            <Login 
-              isAuthenticated={isLoggedIn}
-              setIsAuthenticated={setIsLoggedIn}
-              setUserID={setUserID}
-            />
-          </PublicRoute>
-        } />
-        <Route path="signup" element={
-          <PublicRoute isLoggedIn={isLoggedIn}>
-            <SignUp />
-          </PublicRoute>
-        } />
+        {/* Landing Page - Public route */}
+        <Route
+          path="/"
+          element={
+            !isLoggedIn ? (
+              <DashBoard 
+                isLoggedIn={false} 
+                onAuthSuccess={handleAuthSuccess}
+              />
+            ) : (
+              <Navigate to="/dashboard" replace />
+            )
+          }
+        />
 
-        {/* Private routes */}
-        <Route path="dashboard" element={
-          <PrivateRoute isLoggedIn={isLoggedIn}>
-            <Home user={userID} />
-          </PrivateRoute>
-        } />
-        <Route path="profile/edit" element={
-          <PrivateRoute isLoggedIn={isLoggedIn}>
-            <SignUp />
-          </PrivateRoute>
-        } />
+        {/* Dashboard - Private route */}
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <Home user={userID} />
+            </PrivateRoute>
+          }
+        />
 
-        {/* Redirect undefined routes to root */}
-        <Route path="*" element={<Navigate to={isLoggedIn ? "dashboard" : ""} />} />
+        {/* Redirect all undefined routes */}
+        <Route
+          path="*"
+          element={<Navigate to={isLoggedIn ? '/dashboard' : '/'} replace />}
+        />
       </Routes>
     </div>
   );

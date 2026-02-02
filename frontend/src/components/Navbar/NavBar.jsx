@@ -1,40 +1,189 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Navbar, Nav, Container } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-import { FaDumbbell } from 'react-icons/fa';
-
+import { Link as RouterLink } from 'react-router-dom';
+import axios from 'axios';
+import {
+  AppBar,
+  Toolbar,
+  Container,
+  Box,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import { FitnessCenter as FaDumbbell, Menu as MenuIcon } from '@mui/icons-material';
 import NotificationDropdown from './NotificationDropdown';
 import UserDropdown from './UserDropdown';
+import EditProfileModal from '../profile/EditProfileModal';
 
-const NavBar = ({ user, handleLogout, notifications, toggleNotificationReadStatus }) => (
-  <Navbar bg='dark' variant='dark' expand='lg' sticky='top' className="py-2">
-    <Container fluid className='d-flex justify-content-between align-items-center px-4'>
-      <LinkContainer to="dashboard">
-        <Navbar.Brand className="d-flex align-items-center">
-          <FaDumbbell className='me-2' /> 
-          <span className="fw-semibold">Fit-Track</span>
-        </Navbar.Brand>
-      </LinkContainer>
+const NavBar = ({
+  user,
+  handleLogout,
+  notifications = [],
+  toggleNotificationReadStatus = () => {},
+}) => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [editProfileOpen, setEditProfileOpen] = useState(false);
+  const [userDetails, setUserDetails] = useState({ username: '', email: '' });
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-      <Navbar.Toggle aria-controls='navbar-content' />
-      <Navbar.Collapse id='navbar-content' className='justify-content-end'>
-        <Nav className='gap-3 align-items-center'>
-          
-          {/* User-related dropdowns */}
-          <NotificationDropdown 
-            notifications={notifications} 
-            toggleNotificationReadStatus={toggleNotificationReadStatus} 
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${backendURL}/api/user/${user}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUserDetails({
+          username: response.data.username,
+          email: response.data.email,
+        });
+      } catch (err) {
+        console.error('Error fetching user details:', err);
+      }
+    };
+
+    if (user) {
+      fetchUserDetails();
+    }
+  }, [user, backendURL]);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const handleEditProfileClick = () => {
+    setEditProfileOpen(true);
+    setMobileOpen(false);
+  };
+
+  const handleProfileUpdated = (updatedData) => {
+    setUserDetails(prev => ({
+      ...prev,
+      username: updatedData.username,
+      email: updatedData.email,
+    }));
+  };
+
+  const drawer = (
+    <Box sx={{ width: 250, p: 2 }}>
+      <List>
+        <ListItem>
+          <NotificationDropdown
+            notifications={notifications}
+            toggleNotificationReadStatus={toggleNotificationReadStatus}
           />
+        </ListItem>
+        <ListItem>
           <UserDropdown 
             user={user} 
-            handleLogout={handleLogout} 
+            handleLogout={handleLogout}
+            onEditProfileClick={handleEditProfileClick}
           />
-        </Nav>
-      </Navbar.Collapse>
-    </Container>
-  </Navbar>
-);
+        </ListItem>
+      </List>
+    </Box>
+  );
+
+  return (
+    <>
+      <AppBar position="sticky" elevation={0}>
+        <Container maxWidth="lg">
+          <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
+            {/* Logo */}
+            <Box
+              component={RouterLink}
+              to="dashboard"
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                textDecoration: 'none',
+                color: 'inherit',
+                fontWeight: 700,
+                fontSize: '1.25rem',
+                '&:hover': {
+                  opacity: 0.8,
+                },
+              }}
+            >
+              <FaDumbbell sx={{ fontSize: '1.5rem', color: 'primary.main' }} />
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 700,
+                  color: 'text.primary',
+                }}
+              >
+                Fit-Track
+              </Typography>
+            </Box>
+
+            {/* Desktop Navigation */}
+            {!isMobile && (
+              <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                <NotificationDropdown
+                  notifications={notifications}
+                  toggleNotificationReadStatus={toggleNotificationReadStatus}
+                />
+                <UserDropdown 
+                  user={user} 
+                  handleLogout={handleLogout}
+                  onEditProfileClick={handleEditProfileClick}
+                />
+              </Box>
+            )}
+
+            {/* Mobile Navigation */}
+            {isMobile && (
+              <IconButton
+                color="inherit"
+                aria-label="toggle navigation"
+                onClick={handleDrawerToggle}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
+          </Toolbar>
+        </Container>
+      </AppBar>
+
+      {/* Mobile Drawer */}
+      {isMobile && (
+        <Drawer
+          anchor="right"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          PaperProps={{
+            sx: {
+              backgroundColor: '#1a1a1a',
+            },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      )}
+
+      {/* Edit Profile Modal */}
+      <EditProfileModal
+        open={editProfileOpen}
+        onClose={() => setEditProfileOpen(false)}
+        userId={user}
+        currentUsername={userDetails.username}
+        currentEmail={userDetails.email}
+        onProfileUpdated={handleProfileUpdated}
+      />
+    </>
+  );
+};
 
 NavBar.propTypes = {
   user: PropTypes.string.isRequired,
@@ -43,15 +192,10 @@ NavBar.propTypes = {
     PropTypes.shape({
       id: PropTypes.string,
       message: PropTypes.string,
-      read: PropTypes.bool
+      read: PropTypes.bool,
     })
   ),
-  toggleNotificationReadStatus: PropTypes.func
-};
-
-NavBar.defaultProps = {
-  notifications: [],
-  toggleNotificationReadStatus: () => {}
+  toggleNotificationReadStatus: PropTypes.func,
 };
 
 export default NavBar;

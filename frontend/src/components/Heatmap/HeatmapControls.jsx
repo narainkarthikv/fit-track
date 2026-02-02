@@ -1,29 +1,60 @@
-import React from "react";
-import { Button } from "react-bootstrap";
+import React from 'react';
+import { Button, FormControl, InputLabel, Select, MenuItem, Box, Stack, Typography } from '@mui/material';
+import { AddCircleOutline } from '@mui/icons-material';
 
-const HeatmapControls = ({ selectedMonth, setSelectedMonth, handleAddExercise, months }) => {
-    return (
-        <div className="d-flex justify-content-between m-3">
-            <div className="d-flex">
-                <label className="mr-2 mt-2" htmlFor="selectMonth">Select Month:</label>
-                <select
-                    id="selectMonth"
-                    className="form-control w-auto form-select rounded-1"
-                    value={selectedMonth}
-                    onChange={(e) => setSelectedMonth(e.target.value)}
-                >
-                    {months.map((month) => (
-                        <option key={month} value={month}>
-                            {month}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            <div>
-                <Button variant="btn btn-outline-primary" onClick={handleAddExercise}>Add Exercise</Button>
-            </div>
-        </div>
-    );
+const HeatmapControls = ({
+  selectedMonth,
+  setSelectedMonth,
+  handleAddExercise,
+  months,
+}) => {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        gap: 2,
+        bgcolor: 'background.paper',
+        p: 2,
+        borderRadius: 2,
+        boxShadow: 1,
+      }}
+    >
+      <FormControl size="small" sx={{ minWidth: 150 }}>
+        <InputLabel id="select-month-label">Month</InputLabel>
+        <Select
+          labelId="select-month-label"
+          id="selectMonth"
+          value={selectedMonth}
+          label="Month"
+          onChange={(e) => setSelectedMonth(e.target.value)}
+          sx={{ fontWeight: 600 }}
+        >
+          {months.map((month) => (
+            <MenuItem key={month} value={month}>
+              {month}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <Button
+        variant="contained"
+        startIcon={<AddCircleOutline />}
+        onClick={handleAddExercise}
+        sx={{ borderRadius: 8 }}
+      >
+        <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+          Add Exercise
+        </Box>
+        <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
+          Add
+        </Box>
+      </Button>
+    </Box>
+  );
 };
 
 export default HeatmapControls;

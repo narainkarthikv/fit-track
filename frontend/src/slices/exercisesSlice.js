@@ -14,7 +14,7 @@ const exercisesSlice = createSlice({
   initialState,
   reducers: {
     fetchExercisesSuccess: (state, action) => {
-      const { userID , data}=action.payload;
+      const { userID, data } = action.payload;
       state.userExercises[userID] = data;
       state.status = 'succeeded';
     },
@@ -23,16 +23,20 @@ const exercisesSlice = createSlice({
       state.status = 'failed';
     },
     addExerciseSuccess: (state, action) => {
-      const { userID , newExercise}=action.payload;
-      if(!state.userExercises[userID]){
-        state.userExercises[userID]=[];
+      const { userID, data } = action.payload;
+      if (!state.userExercises[userID]) {
+        state.userExercises[userID] = [];
       }
-      state.userExercises[userID].push(newExercise);
+      state.userExercises[userID].push(data);
       state.status = 'succeeded';
     },
     deleteExerciseSuccess: (state, action) => {
-      const { userID , excerciseId}= action.payload;
-      state.exercises = state.exercises.filter(exercise => exercise._id !== action.payload);
+      const { userID, exerciseId } = action.payload;
+      if (state.userExercises[userID]) {
+        state.userExercises[userID] = state.userExercises[userID].filter(
+          (exercise) => exercise._id !== exerciseId
+        );
+      }
       state.status = 'succeeded';
     },
     setStatus: (state, action) => {
@@ -41,30 +45,37 @@ const exercisesSlice = createSlice({
   },
 });
 
-export const fetchExercises = (userID) => async dispatch => {
+export const fetchExercises = (userID) => async (dispatch) => {
   dispatch(setStatus('loading'));
   try {
-    const response = await axios.get(`${backendURL}/api/exercises/${userID}/exercises_list`);
-    dispatch(fetchExercisesSuccess({ userID, data:response.data.Exercises}));
+    const response = await axios.get(
+      `${backendURL}/api/exercises/${userID}/exercises_list`
+    );
+    dispatch(fetchExercisesSuccess({ userID, data: response.data.Exercises }));
   } catch (error) {
     dispatch(fetchExercisesFailure(error.toString()));
   }
 };
 
-export const addExercise = (userID, newExerciseData) => async dispatch => {
+export const addExercise = (userID, newExerciseData) => async (dispatch) => {
   try {
-    const response = await axios.post(`${backendURL}/api/exercises/${userID}/add`, newExerciseData);
-    dispatch(addExerciseSuccess({userID,data:response.data.newExercise})); // Assuming the API returns the newly added exercise
+    const response = await axios.post(
+      `${backendURL}/api/exercises/${userID}/add`,
+      newExerciseData
+    );
+    dispatch(addExerciseSuccess({ userID, data: response.data.newExercise })); // Assuming the API returns the newly added exercise
   } catch (error) {
     console.error('Error adding exercise:', error);
     dispatch(fetchExercisesFailure(error.toString())); // Handle errors correctly
   }
 };
 
-export const deleteExercise = (userID, exerciseId) => async dispatch => {
+export const deleteExercise = (userID, exerciseId) => async (dispatch) => {
   try {
-    await axios.delete(`${backendURL}/api/exercises/${userID}/exercises_list/${exerciseId}`);
-    dispatch(deleteExerciseSuccess({userID,exerciseId}));
+    await axios.delete(
+      `${backendURL}/api/exercises/${userID}/exercises_list/${exerciseId}`
+    );
+    dispatch(deleteExerciseSuccess({ userID, exerciseId }));
   } catch (error) {
     console.error('Error deleting exercise:', error);
     dispatch(fetchExercisesFailure(error.toString())); // Handle errors correctly

@@ -1,20 +1,11 @@
-import  { useEffect, useState } from 'react';
-import { Toast, ToastContainer, ProgressBar } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import { Snackbar as MuiSnackbar, Alert, Box, LinearProgress } from '@mui/material';
 import Lottie from 'react-lottie';
 import successAnimation from '../../assets/lottie/success-lottie.json';
 import failureAnimation from '../../assets/lottie/failure-lottie.json';
 import PropTypes from 'prop-types';
 
 const Snackbar = ({ show, message, type, onClose }) => {
-  const defaultOptions = {
-    loop: false,
-    autoplay: true,
-    animationData: type === 'success' ? successAnimation : failureAnimation,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
-  };
-
   const [progress, setProgress] = useState(100);
 
   useEffect(() => {
@@ -22,7 +13,7 @@ const Snackbar = ({ show, message, type, onClose }) => {
       setProgress(100);
       const timer = setTimeout(onClose, 3000);
       const interval = setInterval(() => {
-        setProgress(prev => prev - 1);
+        setProgress((prev) => Math.max(prev - 1, 0));
       }, 30);
       return () => {
         clearTimeout(timer);
@@ -31,27 +22,56 @@ const Snackbar = ({ show, message, type, onClose }) => {
     }
   }, [show, onClose]);
 
+  const defaultOptions = {
+    loop: false,
+    autoplay: true,
+    animationData: type === 'success' ? successAnimation : failureAnimation,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
+
   return (
-      <ToastContainer position="top-end" className="m-2 custom-toast-container">
-        <Toast show={show} onClose={onClose} bg={type === 'success' ? 'success' : 'danger'} className="custom-toast" autohide delay={3000}>
-          <Toast.Body className="d-flex align-items-center justify-content-center custom-toast-body">
-            <Lottie options={defaultOptions} height={50} width={50} />
-            <span className="text-bold custom-toast-message">{message}</span>
-            <div className="ms-auto custom-toast-timer">
-              <ProgressBar now={progress} className="custom-toast-progress" style={{ height: '5px', width: '50px' }} />
-            </div>
-            <button type="button" className="btn-close ms-2 custom-toast-close" aria-label="Close" onClick={onClose}></button>
-          </Toast.Body>
-        </Toast>
-      </ToastContainer>
+    <MuiSnackbar
+      open={show}
+      autoHideDuration={3000}
+      onClose={onClose}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    >
+      <Alert
+        onClose={onClose}
+        severity={type === 'success' ? 'success' : 'error'}
+        variant="filled"
+        sx={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+        }}
+      >
+        <Box sx={{ width: 50, height: 50 }}>
+          <Lottie options={defaultOptions} height={50} width={50} />
+        </Box>
+        <Box sx={{ flex: 1 }}>
+          <span style={{ fontWeight: 600 }}>{message}</span>
+          <LinearProgress
+            variant="determinate"
+            value={progress}
+            sx={{
+              mt: 1,
+              height: 3,
+            }}
+          />
+        </Box>
+      </Alert>
+    </MuiSnackbar>
   );
 };
-
 
 Snackbar.propTypes = {
   show: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(['success', 'failure']).isRequired,
+  type: PropTypes.oneOf(['success', 'failure', 'error']).isRequired,
   onClose: PropTypes.func.isRequired,
 };
 

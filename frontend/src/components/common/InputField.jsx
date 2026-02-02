@@ -1,8 +1,22 @@
 import { useState, useEffect } from 'react';
-import { Form } from 'react-bootstrap';
+import { TextField, InputAdornment } from '@mui/material';
 import PropTypes from 'prop-types';
 
-const InputField = ({ id, name, type, placeholder, value, onChange, Icon, AppendIcon, onAppendIconClick }) => {
+const InputField = ({
+  id,
+  name,
+  type = 'text',
+  placeholder,
+  value,
+  onChange,
+  Icon,
+  AppendIcon,
+  onAppendIconClick,
+  error = false,
+  helperText = '',
+  fullWidth = true,
+  required = false,
+}) => {
   const [inputValue, setInputValue] = useState(value || '');
 
   useEffect(() => {
@@ -15,35 +29,38 @@ const InputField = ({ id, name, type, placeholder, value, onChange, Icon, Append
   };
 
   return (
-    <Form.Group controlId={id} className='mb-3'>
-      <div className='input-group'>
-        {Icon && (
-          <div className='input-group-prepend'>
-            <span data-testid="input-icon" className='input-group-text'>
-              <Icon />
-            </span>
-          </div>
-        )}
-
-        <Form.Control
-          type={type}
-          name={name}
-          placeholder={placeholder}
-          value={inputValue}
-          onChange={handleChange}
-          required
-          autoComplete={name === 'password' ? 'current-password' : 'off'}
-        />
-
-        {AppendIcon && (
-          <div className='input-group-append'>
-            <span className='input-group-text' data-testid="append-icon" style={{ cursor: 'pointer' }} onClick={onAppendIconClick}>
-              <AppendIcon />
-            </span>
-          </div>
-        )}
-      </div>
-    </Form.Group>
+    <TextField
+      id={id}
+      name={name}
+      type={type}
+      placeholder={placeholder}
+      value={inputValue}
+      onChange={handleChange}
+      fullWidth={fullWidth}
+      required={required}
+      error={error}
+      helperText={helperText}
+      autoComplete={name === 'password' ? 'current-password' : 'off'}
+      data-testid={`input-field-${id}`}
+      InputProps={{
+        startAdornment: Icon ? (
+          <InputAdornment position="start" data-testid="input-icon">
+            <Icon />
+          </InputAdornment>
+        ) : null,
+        endAdornment: AppendIcon ? (
+          <InputAdornment
+            position="end"
+            onClick={onAppendIconClick}
+            style={{ cursor: 'pointer' }}
+            data-testid="append-icon"
+          >
+            <AppendIcon />
+          </InputAdornment>
+        ) : null,
+      }}
+      sx={{ mb: 2 }}
+    />
   );
 };
 
@@ -57,6 +74,10 @@ InputField.propTypes = {
   Icon: PropTypes.elementType,
   AppendIcon: PropTypes.elementType,
   onAppendIconClick: PropTypes.func,
+  error: PropTypes.bool,
+  helperText: PropTypes.string,
+  fullWidth: PropTypes.bool,
+  required: PropTypes.bool,
 };
 
 export default InputField;

@@ -1,16 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const Exercise = require('../models/exercise.model');
+const verifyToken = require('../middleware/jwtAuth.js');
 
 router.get('/', async (req, res) => {
   try {
     const ExerciseData = await Exercise.find({});
     if (!ExerciseData) {
-      return res.status(404).json({ error: 'Exercise data not found for this ID.' });
+      return res
+        .status(404)
+        .json({ error: 'Exercise data not found for this ID.' });
     }
     return res.json(ExerciseData);
-  } 
-  catch (error) {
+  } catch (error) {
     console.error('Error fetching exercise data:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
@@ -21,7 +23,9 @@ router.get('/:userId/exercises_list', async (req, res) => {
   try {
     const exerciseData = await Exercise.findOne({ userId: userId });
     if (!exerciseData) {
-      return res.status(404).json({ error: 'Exercise data not found for this userId.' });
+      return res
+        .status(404)
+        .json({ error: 'Exercise data not found for this userId.' });
     }
     return res.json(exerciseData);
   } catch (error) {
@@ -32,14 +36,16 @@ router.get('/:userId/exercises_list', async (req, res) => {
 
 router.post('/:userId/add', async (req, res) => {
   const { userId } = req.params;
-  const { description, duration, exerciseCheck } = req.body; 
+  const { description, duration, exerciseCheck } = req.body;
 
   try {
     const exercisesData = await Exercise.findOne({ userId: userId });
     if (!exercisesData) {
-      return res.status(404).json({ message: 'Exercise data not found for this userId.' });
+      return res
+        .status(404)
+        .json({ message: 'Exercise data not found for this userId.' });
     }
-    exercisesData.Exercises.push({ description, duration, exerciseCheck }); 
+    exercisesData.Exercises.push({ description, duration, exerciseCheck });
     await exercisesData.save();
     res.status(201).json(exercisesData);
   } catch (error) {
@@ -53,11 +59,17 @@ router.delete('/:userId/exercises_list/:exerciseId', async (req, res) => {
   try {
     const exerciseData = await Exercise.findOne({ userId: userId });
     if (!exerciseData) {
-      return res.status(404).json({ message: 'Exercise data not found for this userId.' });
+      return res
+        .status(404)
+        .json({ message: 'Exercise data not found for this userId.' });
     }
-    const exerciseToRemove = exerciseData.Exercises.find(exercise => exercise._id == exerciseId); 
+    const exerciseToRemove = exerciseData.Exercises.find(
+      (exercise) => exercise._id == exerciseId
+    );
     if (!exerciseToRemove) {
-      return res.status(404).json({ message: 'Exercise not found in exercise data.' });
+      return res
+        .status(404)
+        .json({ message: 'Exercise not found in exercise data.' });
     }
     exerciseData.Exercises.pull({ _id: exerciseId });
     await exerciseData.save();
@@ -70,17 +82,21 @@ router.delete('/:userId/exercises_list/:exerciseId', async (req, res) => {
 
 router.post('/:userId/track-exercise', async (req, res) => {
   const { userId } = req.params;
-  const { date, count } = req.body; 
+  const { date, count } = req.body;
 
   try {
     const exerciseData = await Exercise.findOne({ userId: userId });
     if (!exerciseData) {
-      return res.status(404).json({ message: 'Exercise data not found for this userId.' });
+      return res
+        .status(404)
+        .json({ message: 'Exercise data not found for this userId.' });
     }
 
     // Always update the exercise for the given date or add a new entry without restriction
     const existingEntryIndex = exerciseData.trackExercises.findIndex(
-      entry => entry.date.toISOString().split('T')[0] === new Date(date).toISOString().split('T')[0]
+      (entry) =>
+        entry.date.toISOString().split('T')[0] ===
+        new Date(date).toISOString().split('T')[0]
     );
 
     if (existingEntryIndex !== -1) {
@@ -95,7 +111,10 @@ router.post('/:userId/track-exercise', async (req, res) => {
     }
 
     await exerciseData.save();
-    res.status(201).json({ message: 'Exercise data updated successfully', data: exerciseData.trackExercises });
+    res.status(201).json({
+      message: 'Exercise data updated successfully',
+      data: exerciseData.trackExercises,
+    });
   } catch (error) {
     console.error('Error updating exercise data:', error);
     res.status(500).json({ message: 'Error updating exercise data' });
@@ -113,25 +132,25 @@ router.get('/:userId/data/:month', async (req, res) => {
 
     // Find exercises within the date range
     const exerciseData = await Exercise.aggregate([
-      { 
-        $unwind: "$trackExercises" 
+      {
+        $unwind: '$trackExercises',
       },
       {
         $match: {
-          "trackExercises.date": {
+          'trackExercises.date': {
             $gte: startDate,
             $lt: new Date(endDate.getTime() + 24 * 60 * 60 * 1000), // inclusive of last day
           },
-          userId: userId
-        }
+          userId: userId,
+        },
       },
       {
         $project: {
           _id: 0,
-          date: "$trackExercises.date",
-          count: "$trackExercises.totalExercises",
-        }
-      }
+          date: '$trackExercises.date',
+          count: '$trackExercises.totalExercises',
+        },
+      },
     ]);
 
     // If data is found, send it; otherwise, return an empty array

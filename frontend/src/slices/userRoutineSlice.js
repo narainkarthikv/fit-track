@@ -14,19 +14,18 @@ const userRoutineSlice = createSlice({
   initialState,
   reducers: {
     setDayCheck: (state, action) => {
-      const { userID , dayCheck}=action.payload;
-      if(!state.userRoutineData[userID]) 
-      {
-        state.userRoutineData[userID]={};
+      const { userID, dayCheck } = action.payload;
+      if (!state.userRoutineData[userID]) {
+        state.userRoutineData[userID] = {};
       }
-      state.userRoutineData[userID].dayCheck= dayCheck;
+      state.userRoutineData[userID].dayCheck = dayCheck;
     },
     updateTotalDaysSuccess: (state, action) => {
-      const {userID , totalDays}=action.payload;
-      if(!state.userRoutineData[userID]) {
-        state.userRoutineData[userID]={};
+      const { userID, totalDays } = action.payload;
+      if (!state.userRoutineData[userID]) {
+        state.userRoutineData[userID] = {};
       }
-      state.userRoutineData[userID].totalDays= totalDays;
+      state.userRoutineData[userID].totalDays = totalDays;
       state.status = 'succeeded';
     },
     updateTotalDaysFailure: (state, action) => {
@@ -39,26 +38,32 @@ const userRoutineSlice = createSlice({
   },
 });
 
-export const { setDayCheck, updateTotalDaysSuccess, updateTotalDaysFailure, setStatus } = userRoutineSlice.actions;
+export const {
+  setDayCheck,
+  updateTotalDaysSuccess,
+  updateTotalDaysFailure,
+  setStatus,
+} = userRoutineSlice.actions;
 
-export const updateTotalDays = (userID, updatedDayCheck) => async (dispatch) => {
-  dispatch(setStatus('loading'));
-  try {
-    const url = `${backendURL}/api/user/${userID}/updateTotalDays`;
-    console.log(url); // Verify URL
-   
-    // Make the API call
-   const response = await axios.post(url  ,{ dayCheck: updatedDayCheck  });
-    
-    // Extract updated totalDays from the response
-    const { totalDays } = response.data;
+export const updateTotalDays =
+  (userID, updatedDayCheck) => async (dispatch) => {
+    dispatch(setStatus('loading'));
+    try {
+      const url = `${backendURL}/api/user/${userID}/updateTotalDays`;
+      console.log(url); // Verify URL
 
-    dispatch(setDayCheck({ userID ,dayCheck:updatedDayCheck}));
-    dispatch(updateTotalDaysSuccess({ userID, totalDays}));
-  } catch (error) {
-    console.error('Error in updateTotalDays:', error);
-    dispatch(updateTotalDaysFailure(error.toString()));
-  }
-};
+      // Make the API call
+      const response = await axios.post(url, { dayCheck: updatedDayCheck });
+
+      // Extract updated totalDays from the response
+      const { totalDays } = response.data;
+
+      dispatch(setDayCheck({ userID, dayCheck: updatedDayCheck }));
+      dispatch(updateTotalDaysSuccess({ userID, totalDays }));
+    } catch (error) {
+      console.error('Error in updateTotalDays:', error);
+      dispatch(updateTotalDaysFailure(error.toString()));
+    }
+  };
 
 export default userRoutineSlice.reducer;
