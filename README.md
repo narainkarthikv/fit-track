@@ -1,128 +1,71 @@
+![License](https://img.shields.io/github/license/narainkarthikv/fit-track)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Last Commit](https://img.shields.io/github/last-commit/narainkarthikv/fit-track)
+[![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/fit-track)](https://github.com/narainkarthikv/fit-track/issues)
+[![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/fit-track)](https://github.com/narainkarthikv/fit-track/stargazers)
+
 # 🏃‍♂️ Fit-Track
 
-> **Your all-in-one fitness log tracker built on the MERN stack**
+**Your complete fitness journey companion built with the MERN stack.**
 
-[![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/fit-track?style=flat-square)](https://github.com/narainkarthikv/fit-track/issues)
-[![GitHub forks](https://img.shields.io/github/forks/narainkarthikv/fit-track?style=flat-square)](https://github.com/narainkarthikv/fit-track/network)
-[![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/fit-track?style=flat-square)](https://github.com/narainkarthikv/fit-track/stargazers)
-[![MIT License](https://img.shields.io/github/license/narainkarthikv/fit-track?style=flat-square)](./MIT-LICENSE.txt)
+Fit-Track is a powerful, open-source fitness logging application that helps you track workouts, visualize progress, and stay motivated. Built with modern web technologies and designed for fitness enthusiasts of all levels.
 
----
+## ✨ Features
 
-## 🌟 Why Fit-Track?
+- **📊 Exercise Logging**: Track unlimited exercises with reps, sets, and weight
+- **🗓️ Activity Heatmap**: Visual calendar showing your workout consistency
+- **📈 Progress Analytics**: Charts and statistics to monitor your fitness journey
+- **💪 Workout Routines**: Create and manage custom workout plans
+- **💬 Daily Motivation**: Inspirational fitness quotes to keep you going
+- **👤 User Profiles**: Personalized dashboard with your fitness data
+- **🌙 Modern UI**: Clean, responsive design with Material-UI components
+- **🔐 Secure Authentication**: JWT-based user authentication and authorization
+- **📱 Mobile Responsive**: Works seamlessly on desktop, tablet, and mobile
+- **🐳 Docker Ready**: One-command setup with Docker Compose
 
-Fit-Track is a MERN-stack app designed to help you **log workouts**, **track progress**, and **stay motivated**. Whether you’re a beginner or a pro, we welcome your contributions to make Fit-Track better for everyone.
-
-✨ **Key Features:**
-
-- Log & track your daily exercises
-- Monitor your progress with charts & analytics
-- Access motivational fitness quotes
-- Join a growing open-source fitness community
-
----
-
-## 🛠️ Tech Stack
-
-| Area         | Stack / Tools                          |
-| ------------ | -------------------------------------- |
-| **Frontend** | React + Vite, Redux Toolkit, Bootstrap |
-| **Backend**  | Node.js, Express.js, MongoDB Atlas     |
-| **CI/CD**    | Netlify (Frontend), GitHub Actions     |
-
-<p align="center">
-  <img src="https://skillicons.dev/icons?i=react,vite,bootstrap,redux,mongo,express,netlify,githubactions" />
-</p>
-
----
-
-## 📑 Table of Contents
-
-- [Quick Start with Docker](#quick-start-with-docker)
-- [Local Installation](#local-installation)
-  - [Backend Setup](#backend-setup)
-  - [Frontend Setup](#frontend-setup)
-- [Project Structure](#project-structure)
-- [Environment Variables](#environment-variables)
-- [Development Standards](#development-standards)
-- [Available Scripts](#available-scripts)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [Contributors](#contributors)
-- [License](#license)
-
----
-
-## 🐳 Quick Start with Docker
-
-Get the entire development environment running in seconds using Docker and Docker Compose.
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- [Docker](https://docs.docker.com/get-docker/) (v20.10+)
-- [Docker Compose](https://docs.docker.com/compose/install/) (v2.0+)
+- **Node.js** 18.0.0 or higher
+- **npm** 9.0.0 or higher
+- **MongoDB Atlas** account (or local MongoDB)
+- **Docker** & **Docker Compose** (optional, for containerized setup)
 
-### Steps
+### 🐳 Quick Start with Docker (Recommended)
 
-1. **Clone the repository:**
+Get the entire application running in seconds:
 
 ```bash
+# Clone the repository
 git clone https://github.com/narainkarthikv/fit-track.git
 cd fit-track
-```
 
-2. **Configure environment variables:**
-
-```bash
+# Configure environment variables
 cp .env.example .env
-```
+# Edit .env with your MongoDB URI and API keys
 
-Edit `.env` and update the following variables:
-
-```bash
-# Backend Configuration
-NODE_ENV=development
-BACKEND_PORT=5000
-JWT_SECRET=your-secret-key-here
-JWT_EXPIRATION=7d
-
-# MongoDB Connection String
-ATLAS_URI=<your-mongodb-atlas-connection-string>
-
-# Frontend Configuration
-FRONTEND_PORT=5173
-VITE_API_URL=http://localhost:5000/
-VITE_APININJAS=<your-api-ninjas-key>
-```
-
-3. **Start the application:**
-
-```bash
-# Build and start all services
+# Start all services
 docker-compose up -d --build
 
 # View logs
 docker-compose logs -f
 ```
 
-4. **Access the application:**
-
+**Access the application:**
 - **Frontend**: http://localhost:5173
 - **Backend API**: http://localhost:5000
-- **API Health Check**: http://localhost:5000/api/health
+- **Health Check**: http://localhost:5000/api/health
 
-### Useful Docker Commands
+**Useful Docker Commands:**
 
 ```bash
 # View running containers
 docker-compose ps
 
-#View logs for docker-compose
-docker-compose logs -f
-
 # View logs for specific service
-docker-compose logs -f backend    # Backend logs
-docker-compose logs -f frontend   # Frontend logs
+docker-compose logs -f backend
+docker-compose logs -f frontend
 
 # Stop services
 docker-compose stop
@@ -133,10 +76,7 @@ docker-compose down -v
 # Rebuild images
 docker-compose build --no-cache
 
-# Stop and remove all containers, networks, and orphans
-docker-compose down --remove-orphans
-
-# Restart all services defined in docker-compose.yml
+# Restart services
 docker-compose restart
 
 # Execute commands in container
@@ -144,11 +84,9 @@ docker-compose exec backend npm install
 docker-compose exec frontend npm install
 ```
 
----
+### 📦 Local Installation
 
-## 🚀 Local Installation
-
-### 1️⃣ Backend Setup
+#### 1️⃣ Backend Setup
 
 ```bash
 # Navigate to backend directory
@@ -157,19 +95,18 @@ cd backend
 # Install dependencies
 npm install
 
-# Create .env file
+# Create environment file
 cp ../.env.example .env
 ```
 
-Update `backend/.env` with your configuration:
+Configure `backend/.env`:
 
 ```bash
-# backend/.env
 NODE_ENV=development
 PORT=5000
 JWT_SECRET=your-secret-key-here
 JWT_EXPIRATION=7d
-ATLAS_URI=<your-mongodb-atlas-connection-string>
+ATLAS_URI=mongodb+srv://username:password@cluster.mongodb.net/fittrack
 ```
 
 Start the server:
@@ -182,9 +119,7 @@ npm run dev
 node server.js
 ```
 
-The backend server will be available at `http://localhost:5000`
-
-### 2️⃣ Frontend Setup
+#### 2️⃣ Frontend Setup
 
 ```bash
 # Navigate to frontend directory
@@ -193,16 +128,15 @@ cd frontend
 # Install dependencies
 npm install
 
-# Create .env file
+# Create environment file
 cp ../.env.example .env
 ```
 
-Update `frontend/.env` with your configuration:
+Configure `frontend/.env`:
 
 ```bash
-# frontend/.env
 VITE_API_URL=http://localhost:5000/
-VITE_APININJAS=<your-api-ninjas-key>
+VITE_APININJAS=your-api-ninjas-key-here
 ```
 
 Start the development server:
@@ -211,340 +145,458 @@ Start the development server:
 npm run dev
 ```
 
-The frontend will be available at `http://localhost:5173`
+The application will be available at **http://localhost:5173**
 
----
-
-## 🗂️ Project Structure
+## 🛠️ Tech Stack
 
 ### Frontend
+- **React 18** - Modern UI library
+- **Vite** - Lightning-fast build tool
+- **Redux Toolkit** - State management
+- **Material-UI** - Component library
+- **Emotion** - CSS-in-JS styling
+- **React Router** - Client-side routing
+- **Axios** - HTTP client
+- **React Calendar Heatmap** - Activity visualization
+- **Lottie** - Animation library
+- **Vitest** - Testing framework
 
-````plaintext
+### Backend
+- **Node.js** - JavaScript runtime
+- **Express.js** - Web framework
+- **MongoDB** - NoSQL database
+- **Mongoose** - ODM for MongoDB
+- **JWT** - Authentication
+- **bcryptjs** - Password hashing
+- **CORS** - Cross-origin resource sharing
+
+### DevOps
+- **Docker** - Containerization
+- **Docker Compose** - Multi-container orchestration
+- **GitHub Actions** - CI/CD pipelines
+- **Netlify/Vercel** - Frontend deployment
+
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=react,vite,redux,materialui,nodejs,express,mongodb,docker,github" alt="Tech Stack" />
+</p>
+
+## 📁 Project Structure
+
+### Frontend Structure
+
+```
 frontend/
 ├── public/
+│   └── _redirects              # Netlify routing configuration
 ├── src/
 │   ├── assets/
-│   │   ├── images/
-│   │   └── lottie/
+│   │   └── lottie/            # Animation files
 │   ├── components/
-│   │   ├── common/
-│   │   ├── Exercise/
-│   │   ├── Heatmap/
-│   │   └── Navbar/
+│   │   ├── auth/              # Authentication components
+│   │   │   └── AuthModal.jsx
+│   │   ├── common/            # Reusable UI components
+│   │   │   ├── Button.jsx
+│   │   │   ├── Card.jsx
+│   │   │   ├── InputField.jsx
+│   │   │   ├── Modal.jsx
+│   │   │   └── Snackbar.jsx
+│   │   ├── dashboard/         # Landing page components
+│   │   │   ├── Hero.jsx
+│   │   │   ├── Features.jsx
+│   │   │   └── Footer.jsx
+│   │   ├── Exercise/          # Exercise management
+│   │   │   ├── Exercise.jsx
+│   │   │   ├── ExerciseForm.jsx
+│   │   │   └── ExerciseTable.jsx
+│   │   ├── Heatmap/           # Activity heatmap
+│   │   │   ├── Heatmap.css
+│   │   │   ├── HeatmapControls.jsx
+│   │   │   └── ExerciseModal.jsx
+│   │   ├── Navbar/            # Navigation
+│   │   │   ├── NavBar.jsx
+│   │   │   └── UserDropdown.jsx
+│   │   └── profile/           # User profile
+│   │       └── EditProfileModal.jsx
 │   ├── pages/
-│   ├── slices/
+│   │   ├── Dashboard.jsx      # Main app page
+│   │   └── Home.jsx           # Landing page
+│   ├── slices/                # Redux slices
+│   │   ├── exercisesSlice.js
+│   │   ├── heatMapSlice.js
+│   │   └── userRoutineSlice.js
 │   ├── store/
+│   │   └── store.js           # Redux store configuration
+│   ├── theme/
+│   │   └── theme.js           # Material-UI theme
+│   ├── App.jsx                # Root component
+│   └── main.jsx               # Entry point
+├── Dockerfile
+├── package.json
+└── vite.config.js
+```
+
+### Backend Structure
+
+```
+backend/
+├── models/
+│   ├── user.model.js          # User schema & methods
+│   └── exercise.model.js      # Exercise schema
+├── routes/
+│   ├── user.js                # User authentication & profile
+│   ├── exercises.js           # Exercise CRUD operations
+│   └── health.js              # Health check endpoint
+├── middleware/
+│   └── jwtAuth.js             # JWT verification middleware
+├── server.js                  # Express app & server config
+├── Dockerfile
+└── package.json
+```
+
 ## 🔑 Environment Variables
 
-### Backend Environment Variables
+### Backend Configuration
 
-| Variable          | Default Value | Description                                                     |
-| ----------------- | -------------- | --------------------------------------------------------------- |
-| `NODE_ENV`        | `development`  | Node.js environment (development/production)                    |
-| `PORT`            | `5000`         | Backend server port                                             |
----
+Create a `.env` file in the root directory:
 
-## 📜 Available Scripts
+```bash
+# Server Configuration
+NODE_ENV=development
+PORT=5000
 
-### Backend Scripts
+# JWT Authentication
+JWT_SECRET=your-super-secret-jwt-key-change-this
+JWT_EXPIRATION=7d
+
+# Database
+ATLAS_URI=mongodb+srv://username:password@cluster.mongodb.net/fittrack?retryWrites=true&w=majority
+
+# Docker Configuration
+BACKEND_PORT=5000
+FRONTEND_PORT=5173
+```
+
+### Frontend Configuration
+
+Frontend environment variables (included in root `.env`):
+
+```bash
+# API Configuration
+VITE_API_URL=http://localhost:5000/
+
+# External APIs (Optional)
+VITE_APININJAS=your-api-ninjas-key-for-quotes
+```
+
+### Getting API Keys
+
+1. **MongoDB Atlas** (Required):
+   - Sign up at [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)
+   - Create a cluster
+   - Get connection string from "Connect" → "Connect your application"
+   - Replace `<username>`, `<password>`, and database name
+
+2. **API Ninjas** (Optional - for motivational quotes):
+   - Sign up at [api-ninjas.com](https://api-ninjas.com/)
+   - Get free API key from dashboard
+   - Add to `VITE_APININJAS` in `.env`
+
+## 🧪 Development
+
+### Available Scripts
+
+#### Backend
 
 ```bash
 cd backend
 
-# Development mode with hot reload (nodemon)
+# Development mode with hot reload
 npm run dev
 
 # Production mode
 node server.js
 
-# Run tests
+# Run tests (to be implemented)
 npm test
-````
-
-### Frontend Scripts
-
-```bash
-### Code Style
-
-- **Formatting & Linting:**
-  - ESLint + Prettier for all code
-  - 2-space indentation
-  - Max line length: 100 characters
-  - Use semicolons
-
-- **Frontend:**
-  - Follow React Hooks best practices
-  - Use Redux Toolkit for state management
-  - Functional components only
-  - Props validation with PropTypes
-
-- **Backend:**
-  - RESTful API design principles
-  - Proper error handling and validation
-  - Use async/await instead of callbacks
-  - Add JSDoc comments for endpoints
-
-- **Documentation:**
-  - JSDoc for functions and components
-  - Comments for complex logic
-  - Keep README updated
-  - Document API endpoints
-
-### Git Workflow
-
-- **Branch Naming:**
-  - Features: `feature/description`
-  - Bugs: `fix/description`
-  - Docs: `docs/description`
-  - Chores: `chore/description`
-
-- **Commits:**
-  - Follow [Conventional Commits](https://www.conventionalcommits.org/)
-  - Examples:
-    - `feat: add user login functionality`
-    - `fix: resolve JWT validation error`
-    - `docs: update installation guide`
-    - `refactor: optimize database queries`
-
-- **Pull Requests:**
-  - Keep PRs focused and small
-  - Link related issues
-  - Provide clear description
-  - Request reviews from maintainers
-
-### Testing (Need to be implemented in the upcoming days)
-
-- **Coverage:** Aim for ≥ 80% test coverage
-- **Unit Tests:** Test individual functions/components
-- **Integration Tests:** Test component interactions
-- **E2E Tests:** Test critical user flows
-- **Tools:**
-  - Frontend: Vitest + React Testing Library
-  - Backend: Jest (recommended)
-
-### Code Review Checklist
-
-- [ ] Code follows project style guidelines
-- [ ] Changes are well-documented
-- [ ] Tests added/updated
-- [ ] No console logs in production code
-- [ ] No breaking changes (or documented)
-- [ ] Performance impact assessed
-# Fix linting issues
-npm run lint -- --fix
 ```
 
----
+#### Frontend
+
+```bash
+cd frontend
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Run linter
+npm run lint
+
+# Fix linting issues
+npm run lint -- --fix
+
+# Run tests
+npm test
+```
+
+### Code Style Guidelines
+
+- **Formatting**: ESLint + Prettier (2-space indentation)
+- **Max Line Length**: 100 characters
+- **React**: Functional components with hooks
+- **State Management**: Redux Toolkit
+- **Styling**: Material-UI with Emotion
+- **API Calls**: Axios with async/await
+- **Error Handling**: Try-catch blocks with proper error messages
+- **Commits**: Follow [Conventional Commits](https://www.conventionalcommits.org/)
+  - `feat: add exercise deletion feature`
+  - `fix: resolve JWT expiration bug`
+  - `docs: update installation guide`
+  - `refactor: optimize heatmap rendering`
+
+### API Endpoints
+
+#### Authentication
+
+```
+POST   /api/user/register       # Register new user
+POST   /api/user/login          # Login user
+GET    /api/user/profile        # Get user profile (protected)
+PUT    /api/user/profile        # Update user profile (protected)
+```
+
+#### Exercises
+
+```
+GET    /api/exercises           # Get all user exercises (protected)
+POST   /api/exercises           # Create new exercise (protected)
+GET    /api/exercises/:id       # Get exercise by ID (protected)
+PUT    /api/exercises/:id       # Update exercise (protected)
+DELETE /api/exercises/:id       # Delete exercise (protected)
+```
+
+#### Health Check
+
+```
+GET    /api/health              # Check API status
+```
+
+## 🤝 Contributing
+
+We welcome contributions from the community! Here's how to get started:
+
+### Ways to Contribute
+
+- 🐛 **Fix bugs** and improve stability
+- ✨ **Add features** that enhance the fitness tracking experience
+- 📚 **Improve documentation** and tutorials
+- 🎨 **Enhance UI/UX** and accessibility
+- ⚡ **Optimize performance** and code quality
+- 🧪 **Add tests** to increase coverage
+- 🌍 **Add translations** for internationalization
+
+### Contribution Workflow
+
+1. **Fork the repository** and clone it locally
+2. **Create a branch** for your feature:
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. **Make your changes** and commit with descriptive messages:
+   ```bash
+   git commit -m "feat: add workout streak counter"
+   ```
+4. **Push to your fork**:
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+5. **Open a Pull Request** to the `develop` branch
+6. **Respond to feedback** from maintainers
+
+### Branch Naming Convention
+
+- Features: `feature/description`
+- Bug fixes: `fix/description`
+- Documentation: `docs/description`
+- Refactoring: `refactor/description`
+- Chores: `chore/description`
+
+### Pull Request Guidelines
+
+- Keep PRs focused on a single feature/fix
+- Link related issues in the PR description
+- Add screenshots for UI changes
+- Ensure all tests pass
+- Update documentation if needed
+- Request review from maintainers
+
+**Good First Issues**: Look for issues labeled `good first issue` to get started!
+
+For detailed guidelines, see [CONTRIBUTING.md](./CONTRIBUTING.md)
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+#### Docker Issues
+
+**Containers won't start:**
+```bash
+# Check Docker daemon is running
+docker ps
+
+# View detailed logs
+docker-compose logs -f
+
+# Remove old containers and rebuild
+docker-compose down -v
+docker-compose up -d --build
+```
+
+**Port conflicts:**
+```bash
+# Check what's using the ports
+lsof -i :5000   # Backend
+lsof -i :5173   # Frontend
+
+# Or kill processes on those ports
+kill -9 $(lsof -ti:5000)
+kill -9 $(lsof -ti:5173)
+```
+
+**Hot reload not working:**
+```bash
+# Rebuild without cache
+docker-compose up -d --build --no-cache
+
+# Check file permissions
+ls -la backend/
+ls -la frontend/
+```
+
+#### Local Development Issues
+
+**MongoDB connection failed:**
+- Verify `ATLAS_URI` is correct in `.env`
+- Check MongoDB Atlas IP whitelist (allow 0.0.0.0/0 for development)
+- Ensure database user has read/write permissions
+
+**Frontend can't connect to backend:**
+- Verify `VITE_API_URL` in frontend `.env`
+- Check backend is running on correct port
+- Verify CORS is enabled in `server.js`
+
+**Dependencies issues:**
+```bash
+# Clear npm cache and reinstall
+npm cache clean --force
+rm -rf node_modules package-lock.json
+npm install
+```
+
+**Build errors:**
+```bash
+# Check Node.js version (should be 18+)
+node --version
+
+# Clear Vite cache
+rm -rf .vite node_modules/.vite
+npm run dev
+```
+
+**JWT authentication fails:**
+- Ensure `JWT_SECRET` is set in backend `.env`
+- Check token is included in request headers
+- Verify token hasn't expired
+
+### Getting Help
+
+- 📖 Check the [documentation](./CONTRIBUTING.md)
+- 🐛 [Report bugs](https://github.com/narainkarthikv/fit-track/issues)
+- 💬 [Ask questions](https://github.com/narainkarthikv/fit-track/discussions)
+- 💡 [Request features](https://github.com/narainkarthikv/fit-track/issues)
+
+## 📖 Documentation
+
+- [Contributing Guide](./CONTRIBUTING.md) - How to contribute
+- [Code of Conduct](./CODE_OF_CONDUCT.md) - Community guidelines
+- [Contributors](./Contributors.md) - Our amazing contributors
+- [License](./MIT-LICENSE.txt) - MIT License details
 
 ## 👥 Contributors
 
 Thanks to everyone who has helped make Fit-Track awesome! 💪
 
 <a href="https://github.com/narainkarthikv/fit-track/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=narainkarthikv/fit-track" />
+  <img src="https://contrib.rocks/image?repo=narainkarthikv/fit-track" alt="Contributors" />
 </a>
 
-See the [Contributors Page](https://github.com/narainkarthikv/fit-track/blob/main/Contributors.md) for the full list.
-
-### How to Add Yourself
-
-When your PR is merged, add yourself to the `Contributors.md` file following the format in that file.
-
----
+See the [Contributors Page](./Contributors.md) for the full list.
 
 ## 📜 License
 
-This project is licensed under the **MIT License**.
-
-See the [LICENSE](https://github.com/narainkarthikv/fit-track/blob/main/MIT-LICENSE.txt) file for full details.
+This project is licensed under the **MIT License** - see [MIT-LICENSE.txt](./MIT-LICENSE.txt) for details.
 
 **Summary:** You are free to use, modify, and distribute this software for any purpose, including commercial use.
 
----
+## 💬 Community & Support
 
-## 📚 Additional Resources
+- **Issues**: [Report bugs or request features](https://github.com/narainkarthikv/fit-track/issues)
+- **Discussions**: [Ask questions and share ideas](https://github.com/narainkarthikv/fit-track/discussions)
+- **Pull Requests**: [Contribute code improvements](https://github.com/narainkarthikv/fit-track/pulls)
 
-- [Contributing Guide](CONTRIBUTING.md)
+## 🌟 Show Your Support
 
----
+If Fit-Track helps you on your fitness journey:
+
+- ⭐ Star the repository
+- 🐛 Report issues you encounter
+- 💡 Share your feature ideas
+- 🤝 Contribute code or documentation
+- 📢 Tell others about the project
+- 💬 Join discussions and help others
 
 ## 🔗 Links
 
-- **Website:** [fit-track.vercel.app](https://fit-track.vercel.app/)
-- **Issues:** [GitHub Issues](https://github.com/narainkarthikv/fit-track/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/narainkarthikv/fit-track/discussions)
+- **Live Demo**: [fit-track.vercel.app](https://wisdomfox-fit-track.netlify.app/)
+- **Repository**: [github.com/narainkarthikv/fit-track](https://github.com/narainkarthikv/fit-track)
+- **Issues**: [github.com/narainkarthikv/fit-track/issues](https://github.com/narainkarthikv/fit-track/issues)
+- **Discussions**: [github.com/narainkarthikv/fit-track/discussions](https://github.com/narainkarthikv/fit-track/discussions)
+
+Want to help build these features? Check out our [Contributing Guide](./CONTRIBUTING.md)!
+
+## 💻 Development Setup Tips
+
+### Recommended VS Code Extensions
+
+- **ESLint** - Code linting
+- **Prettier** - Code formatting
+- **ES7+ React/Redux** - React snippets
+- **Docker** - Docker support
+- **MongoDB for VS Code** - Database management
+- **GitLens** - Git integration
+- **Thunder Client** - API testing
+
+### Recommended Tools
+
+- **MongoDB Compass** - GUI for MongoDB
+- **Postman** or **Insomnia** - API testing
+- **React Developer Tools** - Browser extension
+- **Redux DevTools** - Browser extension
+
+## 🙏 Acknowledgments
+
+- Thanks to all our [contributors](./Contributors.md) who have helped build Fit-Track
+- Built with amazing open-source technologies
+- Inspired by the fitness and developer communities
 
 ---
 
-## 🙏 Support
+**Built with ❤️ by the Wisdom Fox community**
 
-If you find Fit-Track helpful:
-
-- ⭐ Give us a star on GitHub
-- 🐛 Report bugs and suggest features through [Issues](https://github.com/narainkarthikv/fit-track/issues)
-- 💬 Join discussions and help other contributors
-- 📢 Share Fit-Track with your network
-
----
-
-## 💡 Final Thoughts
-
-We're building **Fit-Track** as a collaborative fitness companion. Your code, ideas, and feedback make it stronger every day.
-
-Whether you're fixing a typo, improving performance, or building new features — **every contribution matters!** 🏗️💚
-
-Let's build the best fitness tracker together! 🚀
-
-````
-
-**Hot reload not working:**
-```bash
-# Rebuild without cache
-docker-compose up -d --build
-
-# Check file permissions
-ls -la backend/
-ls -la frontend/
-````
-
-### Local Development Issues
-
-**Port conflicts:**
-
-```bash
-# Check what's using the port
-lsof -i :5000   # Backend
-lsof -i :5173   # Frontend
-```
-
-**Dependencies issues:**
-
-```bash
-# Clear npm cache and reinstall
-npm cache clean --force
-rm -rf node_modules
-npm install
-```
-
-**Build errors:**
-
-```bash
-# Check Node.js version (should be 18+)
-node --version
-
-# Clear Vite cache
-rm -rf .vite
-npm run dev
-```
-
----
-
-## 📝 Development Standards | MongoDB Atlas or local MongoDB connection string (REQUIRED) |
-
-### Frontend Environment Variables
-
-| Variable         | Default Value            | Description                              |
-| ---------------- | ------------------------ | ---------------------------------------- |
-| `VITE_API_URL`   | `http://localhost:5000/` | Backend server URL                       |
-| `VITE_APININJAS` | N/A                      | API Ninjas key for Quotes API (optional) |
-
-```plaintext
-backend/
-├── models/
-├── routes/
-├── package.json
-└── server.js
-```
-
----
-
-## 🔑 Environment Variables
-
-| Directory    | Variable Name     | Description                                                                               |
-| ------------ | ----------------- | ----------------------------------------------------------------------------------------- |
-| **Backend**  | `ATLAS_URI`       | MongoDB Atlas connection string                                                           |
-| **Frontend** | `VITE_SERVER_URL` | URL where backend server is hosted (e.g., [http://localhost:5000](http://localhost:5000)) |
-|              | `VITE_APININJAS`  | API Ninjas key for Quotes API                                                             |
-
----
-
-## 📝 Development Standards
-
-- **Code Style:**
-  - ESLint + Prettier for formatting and linting
-  - 2-space indentation, max line length 100 chars
-  - Follow React Hooks and Redux best practices
-
-- **Documentation:**
-  - JSDoc for components & functions
-  - Keep README and API docs updated
-
-- **Git Workflow:**
-  - Branch naming: `feature/description` or `fix/description`
-  - Follow [Conventional Commits](https://www.conventionalcommits.org/)
-  - PR template usage & squash commits
-
-- **Testing:**
-  - Unit tests for new features
-  - Test coverage ≥ 80%
-
----
-
-## 🤝 Contributing
-
-We ❤️ contributions! Here’s how to get started:
-
-1. **Fork the repo** (click the Fork button at the top right).
-
-2. **Clone your fork:**
-
-   ```bash
-   git clone https://github.com/your-username/fit-track.git
-   cd fit-track
-   ```
-
-3. **Create a new branch:**
-
-   ```bash
-   git switch -c feature/your-feature-name
-   ```
-
-4. **Make changes** in your editor of choice.
-
-5. **Stage & Commit:**
-
-   ```bash
-   git add .
-   git commit -m "feat: add new feature"
-   ```
-
-6. **Push your branch:**
-
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-7. **Open a Pull Request** from your fork to the `develop` branch of the main repo.
-
-📌 _Tip: Keep your PRs small and focused to get faster reviews._
-
----
-
-## 👥 Contributors
-
-Thanks to everyone who has helped make Fit-Track awesome! 💪
-Check out our [Contributors Page](https://github.com/narainkarthikv/fit-track/blob/main/Contributors.md).
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License.
-See the [LICENSE](https://github.com/narainkarthikv/fit-track/blob/main/MIT-LICENSE.txt) file for details.
-
----
-
-### 💡 Final Thoughts
-
-We’re building **Fit-Track** as a collaborative fitness companion.
-Your code, your ideas, and your feedback make it stronger. Let’s build it together! 🏗️💚
+*Let's build the best fitness tracker together! 🚀*
