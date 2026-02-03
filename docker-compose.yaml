@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Backend Service (Node.js + Express)
   backend:

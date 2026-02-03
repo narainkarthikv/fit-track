@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { getAuthConfig } from '../utils/api';
 
 const backendURL = import.meta.env.VITE_API_URL;
 
@@ -44,7 +45,8 @@ export const fetchMonthData = (userID, selectedMonth) => async (dispatch) => {
   dispatch(setStatus('loading'));
   try {
     const response = await axios.get(
-      `${backendURL}/api/exercises/${userID}/data/${selectedMonth}`
+      `${backendURL}/api/exercises/${userID}/data/${selectedMonth}`,
+      getAuthConfig()
     );
     dispatch(fetchMonthDataSuccess({ userID, data: response.data }));
   } catch (error) {
@@ -58,7 +60,8 @@ export const addExercise = (userID, newExerciseData) => async (dispatch) => {
   try {
     await axios.post(
       `${backendURL}/api/exercises/${userID}/track-exercise`,
-      newExerciseData
+      newExerciseData,
+      getAuthConfig()
     );
     const selectedMonth = new Date(newExerciseData.date).toLocaleString(
       'default',
@@ -67,7 +70,8 @@ export const addExercise = (userID, newExerciseData) => async (dispatch) => {
 
     // Fetch updated month data after adding exercise
     const updatedMonthResponse = await axios.get(
-      `${backendURL}/api/exercises/${userID}/data/${new Date(newExerciseData.date).toLocaleString('default', { month: 'long' })}`
+      `${backendURL}/api/exercises/${userID}/data/${selectedMonth}`,
+      getAuthConfig()
     );
 
     // Dispatch success with updated month data

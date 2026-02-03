@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Dialog,
@@ -14,9 +14,11 @@ import {
   Alert,
   LinearProgress,
   useTheme,
+  useMediaQuery,
   alpha,
   Tabs,
   Tab,
+  Chip,
 } from '@mui/material';
 import {
   DirectionsRun as FaRunning,
@@ -28,14 +30,78 @@ import {
   VisibilityOff as FaEyeSlash,
   Close as CloseIcon,
   EmojiEmotions,
+  CheckCircleOutline,
+  Cancel,
 } from '@mui/icons-material';
 import Lottie from 'react-lottie';
 import loginAnimation from '../../assets/lottie/login-lottie.json';
 import signupAnimation from '../../assets/lottie/signup-lottie.json';
 import Snackbar from '../common/Snackbar';
 
+const passwordChecks = [
+  {
+    label: 'At least 8 characters',
+    test: (password = '') => password.length >= 8,
+    mandatory: true,
+  },
+  {
+    label: 'Contains an uppercase letter',
+    test: (password = '') => /[A-Z]/.test(password),
+    mandatory: true,
+  },
+  {
+    label: 'Contains a lowercase letter',
+    test: (password = '') => /[a-z]/.test(password),
+    mandatory: true,
+  },
+  {
+    label: 'Contains a number',
+    test: (password = '') => /\d/.test(password),
+    mandatory: true,
+  },
+  {
+    label: 'Contains a special character',
+    test: (password = '') => /[^A-Za-z0-9]/.test(password),
+    mandatory: true,
+  },
+  {
+    label: '12+ characters (bonus security)',
+    test: (password = '') => password.length >= 12,
+    mandatory: false,
+  },
+];
+
+const calculatePasswordStrength = (password = '') => {
+  const checks = passwordChecks.map((check) => ({
+    ...check,
+    met: check.test(password),
+  }));
+
+  const mandatoryChecks = checks.filter((check) => check.mandatory);
+  const mandatoryMet = mandatoryChecks.filter((check) => check.met).length;
+  const bonusMet = checks.filter((check) => !check.mandatory && check.met).length;
+  const percentage = (checks.filter((check) => check.met).length / checks.length) * 100;
+
+  let level = 'weak';
+  if (mandatoryMet >= 3 && mandatoryMet < mandatoryChecks.length) {
+    level = 'medium';
+  } else if (mandatoryMet === mandatoryChecks.length && bonusMet === 0) {
+    level = 'strong';
+  } else if (mandatoryMet === mandatoryChecks.length && bonusMet > 0) {
+    level = 'very-strong';
+  }
+
+  return {
+    level,
+    percentage: password ? percentage : 0,
+    checks,
+    meetsBaseline: mandatoryMet === mandatoryChecks.length,
+  };
+};
+
 const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mode, setMode] = useState(initialMode);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -65,6 +131,50 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
   const [progressMessage, setProgressMessage] = useState("Let's Get Started!");
 
   const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const passwordStrength = useMemo(
+    () => calculatePasswordStrength(signupForm.password),
+    [signupForm.password]
+  );
+
+  const strengthStyles = {
+    weak: {
+      label: 'Weak',
+      color: theme.palette.error.main,
+    },
+    medium: {
+      label: 'Medium',
+      color: theme.palette.warning.main,
+    },
+    strong: {
+      label: 'Strong',
+      color: theme.palette.info.main,
+    },
+    'very-strong': {
+      label: 'Very Strong',
+      color: theme.palette.success.main,
+    },
+  };
+
+  const strengthMeta = strengthStyles[passwordStrength.level] || strengthStyles.weak;
+  const passwordsMismatch =
+    Boolean(signupForm.confirmpassword) && signupForm.password !== signupForm.confirmpassword;
+  const canSubmitSignup =
+    passwordStrength.meetsBaseline &&
+    !passwordsMismatch &&
+    signupForm.username &&
+    signupForm.email &&
+    signupForm.password &&
+    signupForm.confirmpassword;
+  const canSubmitLogin = loginCredentials.email && loginCredentials.password;
+
+  useEffect(() => {
+    if (open) {
+      setMode(initialMode);
+      setError('');
+      setShowPassword(false);
+      setShowConfirmPassword(false);
+    }
+  }, [initialMode, open]);
 
   const handleModeChange = (event, newMode) => {
     if (newMode !== null) {
@@ -130,31 +240,24 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
         localStorage.setItem('token', data.token);
       }
 
-      const userResponse = await fetch(`${backendURL}/api/user/`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
+      const authenticatedUser = data.user;
+
+      if (!authenticatedUser || !(authenticatedUser._id || authenticatedUser.id)) {
+        throw new Error('Unable to retrieve user details');
+      }
+
+      setSnackbar({
+        show: true,
+        message: 'Welcome back! Redirecting...',
+        type: 'success',
       });
 
-      if (!userResponse.ok) {
-        const errorData = await userResponse.json();
-        throw new Error(errorData.message || 'Error fetching user details');
-      }
+      const userId = authenticatedUser._id || authenticatedUser.id;
 
-      const users = await userResponse.json();
-      const user = users.find((u) => u.email === loginCredentials.email);
-
-      if (user) {
-        setSnackbar({
-          show: true,
-          message: 'Welcome back! Redirecting...',
-          type: 'success',
-        });
-        setTimeout(() => {
-          onAuthSuccess(user._id);
-          onClose();
-        }, 1500);
-      }
+      setTimeout(() => {
+        onAuthSuccess(userId);
+        onClose();
+      }, 1500);
     } catch (error) {
       console.error('Login error:', error);
       setError(error.message || 'Failed to login. Please try again.');
@@ -177,8 +280,14 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
       return;
     }
 
-    if (signupForm.password.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (!passwordStrength.meetsBaseline) {
+      const strengthError = 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.';
+      setError(strengthError);
+      setSnackbar({
+        show: true,
+        message: strengthError,
+        type: 'failure',
+      });
       return;
     }
 
@@ -243,128 +352,161 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
       <Dialog
         open={open}
         onClose={onClose}
-        maxWidth="md"
+        fullScreen={isMobile}
+        maxWidth="lg"
         fullWidth
+        scroll="paper"
         PaperProps={{
           sx: {
-            borderRadius: 3,
-            backgroundColor: 'background.paper',
-            backgroundImage: 'none',
+            borderRadius: { xs: 0, md: 4 },
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
+            overflow: 'hidden',
+            maxHeight: '100vh',
           },
         }}
       >
-        <IconButton
-          onClick={onClose}
+        <DialogContent
           sx={{
-            position: 'absolute',
-            right: 12,
-            top: 12,
-            zIndex: 1,
-            color: 'text.secondary',
-            '&:hover': {
-              backgroundColor: alpha(theme.palette.text.primary, 0.08),
-            },
+            p: 0,
+            borderRadius: { xs: 0, md: 4 },
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            maxHeight: { xs: '100vh', md: 'calc(100vh - 64px)' },
           }}
         >
-          <CloseIcon />
-        </IconButton>
-
-        <DialogContent sx={{ p: 0 }}>
           <Box
             sx={{
+              width: '100%',
+              maxWidth: 1180,
+              mx: 'auto',
+              my: { xs: 0, md: 6 },
+              borderRadius: { xs: 0, md: 4 },
+              overflow: 'hidden',
+              boxShadow: { xs: 'none', md: '0 30px 60px rgba(15, 23, 42, 0.35)' },
               display: 'flex',
               flexDirection: { xs: 'column', md: 'row' },
-              minHeight: { xs: 'auto', md: '600px' },
+              backgroundColor: 'background.paper',
+              minHeight: { xs: '100vh', md: 620 },
             }}
           >
-            {/* Left Side - Animation */}
             <Box
               sx={{
-                flex: { xs: '0 0 auto', md: '0 0 45%' },
-                background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.15)} 0%, ${alpha(theme.palette.primary.light, 0.1)} 100%)`,
+                flex: { xs: '0 0 38%', md: '0 0 45%' },
+                background: `linear-gradient(140deg, ${alpha(theme.palette.primary.main, 0.85)} 0%, ${alpha(
+                  theme.palette.primary.dark,
+                  0.9
+                )} 60%, ${alpha(theme.palette.primary.light, 0.65)} 100%)`,
+                color: '#fff',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
+                justifyContent: 'space-between',
                 p: { xs: 4, md: 5 },
                 position: 'relative',
-                overflow: 'hidden',
-                '&::before': {
-                  content: '""',
-                  position: 'absolute',
-                  top: '-50%',
-                  left: '-50%',
-                  width: '200%',
-                  height: '200%',
-                  background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.1)} 0%, transparent 70%)`,
-                },
               }}
             >
-              <Box sx={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
-                {mode === 'login' ? (
-                  <FaDumbbell
-                    sx={{
-                      fontSize: 48,
-                      color: 'primary.main',
-                      mb: 2,
-                    }}
-                  />
-                ) : (
-                  <FaRunning
-                    sx={{
-                      fontSize: 48,
-                      color: 'primary.main',
-                      mb: 2,
-                    }}
-                  />
-                )}
+              <Stack spacing={2.5} sx={{ zIndex: 1 }}>
+                <Chip
+                  label="Athlete Workspace"
+                  sx={{
+                    alignSelf: 'flex-start',
+                    fontWeight: 600,
+                    backgroundColor: alpha('#fff', 0.2),
+                    color: '#fff',
+                  }}
+                />
                 <Typography
                   variant="h4"
                   sx={{
                     fontWeight: 700,
-                    mb: 2,
-                    color: 'text.primary',
+                    lineHeight: 1.2,
                   }}
                 >
-                  {mode === 'login' ? 'Welcome Back!' : 'Join Fit-Track'}
+                  {mode === 'login'
+                    ? 'Sign in and pick up exactly where you left off'
+                    : 'Create an account and start building consistent momentum'}
                 </Typography>
                 <Typography
                   variant="body1"
                   sx={{
-                    color: 'text.secondary',
-                    mb: 3,
-                    maxWidth: '300px',
-                    mx: 'auto',
+                    color: alpha('#fff', 0.85),
+                    maxWidth: 360,
                   }}
                 >
-                  {mode === 'login'
-                    ? 'Track your fitness journey and stay consistent with your goals.'
-                    : 'Start tracking your workouts and build lasting fitness habits.'}
+                  Personalized insights, streak tracking, and smart nudges keep you honest with your goals.
                 </Typography>
-                <Box sx={{ maxWidth: '280px', mx: 'auto' }}>
-                  <Lottie options={lottieOptions} height={200} width={200} />
-                </Box>
+                <Stack spacing={1.5}>
+                  {[
+                    'Progress dashboards updated in real time',
+                    'Workout logging that takes seconds',
+                    'Secure, private and synced across devices',
+                  ].map((item) => (
+                    <Box key={item} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <CheckCircleOutline sx={{ fontSize: 18, color: '#fff' }} />
+                      <Typography variant="body2" sx={{ color: alpha('#fff', 0.9), fontWeight: 500 }}>
+                        {item}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Stack>
+              </Stack>
+              <Box sx={{ mt: 4, alignSelf: 'center' }}>
+                <Lottie options={lottieOptions} height={220} width={220} />
               </Box>
             </Box>
 
-            {/* Right Side - Form */}
             <Box
               sx={{
                 flex: 1,
-                p: { xs: 4, md: 5 },
+                position: 'relative',
+                backgroundColor: 'background.paper',
                 display: 'flex',
-                flexDirection: 'column',
               }}
             >
-              <Box sx={{ mb: 3 }}>
+              <IconButton
+                onClick={onClose}
+                sx={{
+                  position: 'absolute',
+                  right: { xs: 16, md: 20 },
+                  top: { xs: 16, md: 20 },
+                  zIndex: 2,
+                  color: 'text.secondary',
+                  backgroundColor: alpha(theme.palette.text.primary, 0.04),
+                  '&:hover': {
+                    backgroundColor: alpha(theme.palette.text.primary, 0.12),
+                  },
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+
+              <Box
+                sx={{
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  p: { xs: 3, md: 5 },
+                  pt: { xs: 7, md: 6 },
+                }}
+              >
+                <Stack spacing={1} sx={{ mb: 2.5 }}>
+                  <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                    {mode === 'login' ? 'Welcome back' : 'Create your Fit-Track account'}
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    {mode === 'login'
+                      ? 'Securely access your streaks, routines, and saved workouts.'
+                      : 'A few quick details and you are ready to track every rep.'}
+                  </Typography>
+                </Stack>
+
                 <Tabs
                   value={mode}
                   onChange={handleModeChange}
                   sx={{
-                    borderBottom: 1,
-                    borderColor: 'divider',
+                    alignSelf: 'flex-start',
                     '& .MuiTab-root': {
-                      fontSize: '1rem',
+                      fontSize: '0.95rem',
                       fontWeight: 600,
                       textTransform: 'none',
                       minWidth: 120,
@@ -374,284 +516,335 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
                   <Tab label="Sign In" value="login" />
                   <Tab label="Sign Up" value="signup" />
                 </Tabs>
-              </Box>
 
-              {error && (
-                <Alert severity="error" sx={{ mb: 3 }}>
-                  {error}
-                </Alert>
-              )}
+                <Divider sx={{ my: 2 }} />
 
-              {mode === 'login' ? (
-                // Login Form
-                <Box
-                  component="form"
-                  onSubmit={handleLogin}
-                  sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}
-                >
-                  <Stack spacing={2.5} sx={{ flex: 1 }}>
-                    <Box>
-                      <Typography
-                        variant="body2"
-                        sx={{ mb: 1, fontWeight: 500, color: 'text.secondary' }}
-                      >
-                        Email
-                      </Typography>
-                      <TextField
-                        fullWidth
-                        type="email"
-                        name="email"
-                        placeholder="Enter your email"
-                        value={loginCredentials.email}
-                        onChange={handleLoginInputChange}
-                        required
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <FaEnvelope sx={{ color: 'text.secondary', fontSize: 20 }} />
-                            </InputAdornment>
-                          ),
-                        }}
-                      />
-                    </Box>
+                {error && (
+                  <Alert severity="error" sx={{ mb: 2 }}>
+                    {error}
+                  </Alert>
+                )}
 
-                    <Box>
-                      <Typography
-                        variant="body2"
-                        sx={{ mb: 1, fontWeight: 500, color: 'text.secondary' }}
-                      >
-                        Password
-                      </Typography>
-                      <TextField
-                        fullWidth
-                        type={showPassword ? 'text' : 'password'}
-                        name="password"
-                        placeholder="Enter your password"
-                        value={loginCredentials.password}
-                        onChange={handleLoginInputChange}
-                        required
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <FaLock sx={{ color: 'text.secondary', fontSize: 20 }} />
-                            </InputAdornment>
-                          ),
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton
-                                onClick={() => setShowPassword(!showPassword)}
-                                edge="end"
-                                size="small"
-                              >
-                                {showPassword ? <FaEyeSlash /> : <FaEye />}
-                              </IconButton>
-                            </InputAdornment>
-                          ),
-                        }}
-                      />
-                    </Box>
+                <Box sx={{ flex: 1, overflowY: 'auto', pr: { md: 1 } }}>
+                  {mode === 'login' ? (
+                    <Box
+                      component="form"
+                      onSubmit={handleLogin}
+                      sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}
+                    >
+                      <Stack spacing={2.5} sx={{ flex: 1 }}>
+                        <Box>
+                          <TextField
+                            fullWidth
+                            type="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            value={loginCredentials.email}
+                            onChange={handleLoginInputChange}
+                            required
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <FaEnvelope sx={{ color: 'text.secondary', fontSize: 20 }} />
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </Box>
 
-                    <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-                      <EmojiEmotions sx={{ color: 'primary.main', mr: 1, fontSize: 24 }} />
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                        Feeling 💪 today?
-                      </Typography>
-                    </Box>
-                  </Stack>
+                        <Box>
+                          <TextField
+                            fullWidth
+                            type={showPassword ? 'text' : 'password'}
+                            name="password"
+                            placeholder="Enter your password"
+                            value={loginCredentials.password}
+                            onChange={handleLoginInputChange}
+                            required
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <FaLock sx={{ color: 'text.secondary', fontSize: 20 }} />
+                                </InputAdornment>
+                              ),
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    edge="end"
+                                    size="small"
+                                  >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                  </IconButton>
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </Box>
 
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    size="large"
-                    fullWidth
-                    disabled={isSubmitting}
-                    sx={{
-                      mt: 4,
-                      py: 1.5,
-                      fontSize: '1rem',
-                      fontWeight: 600,
-                      textTransform: 'none',
-                    }}
-                  >
-                    {isSubmitting ? 'Signing In...' : 'Sign In'}
-                  </Button>
-                </Box>
-              ) : (
-                // Signup Form
-                <Box
-                  component="form"
-                  onSubmit={handleSignup}
-                  sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}
-                >
-                  <Stack spacing={2.5} sx={{ flex: 1 }}>
-                    {progress > 0 && (
-                      <Box sx={{ mb: 1 }}>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            mb: 0.5,
-                          }}
-                        >
-                          <Typography variant="caption" sx={{ fontWeight: 600 }}>
-                            {progressMessage}
-                          </Typography>
-                          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                            {Math.round(progress)}%
+                        <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                          <EmojiEmotions sx={{ color: 'primary.main', mr: 1, fontSize: 24 }} />
+                          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                            Feeling 💪 today?
                           </Typography>
                         </Box>
-                        <LinearProgress
-                          variant="determinate"
-                          value={progress}
-                          sx={{
-                            height: 6,
-                            borderRadius: 3,
-                            backgroundColor: alpha(theme.palette.primary.main, 0.15),
-                          }}
-                        />
-                      </Box>
-                    )}
+                      </Stack>
 
-                    <Box>
-                      <Typography
-                        variant="body2"
-                        sx={{ mb: 1, fontWeight: 500, color: 'text.secondary' }}
-                      >
-                        Username
-                      </Typography>
-                      <TextField
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        size="large"
                         fullWidth
-                        name="username"
-                        placeholder="Choose a username"
-                        value={signupForm.username}
-                        onChange={handleSignupInputChange}
-                        required
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <FaUser sx={{ color: 'text.secondary', fontSize: 20 }} />
-                            </InputAdornment>
-                          ),
+                        disabled={isSubmitting || !canSubmitLogin}
+                        sx={{
+                          mt: 4,
+                          py: 1.5,
+                          fontSize: '1rem',
+                          fontWeight: 600,
+                          textTransform: 'none',
                         }}
-                      />
-                    </Box>
-
-                    <Box>
-                      <Typography
-                        variant="body2"
-                        sx={{ mb: 1, fontWeight: 500, color: 'text.secondary' }}
                       >
-                        Email
-                      </Typography>
-                      <TextField
-                        fullWidth
-                        type="email"
-                        name="email"
-                        placeholder="Enter your email"
-                        value={signupForm.email}
-                        onChange={handleSignupInputChange}
-                        required
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <FaEnvelope sx={{ color: 'text.secondary', fontSize: 20 }} />
-                            </InputAdornment>
-                          ),
-                        }}
-                      />
+                        {isSubmitting ? 'Signing In...' : 'Sign In'}
+                      </Button>
                     </Box>
+                  ) : (
+                    <Box
+                      component="form"
+                      onSubmit={handleSignup}
+                      sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}
+                    >
+                      <Stack spacing={2.5} sx={{ flex: 1 }}>
+                        {progress > 0 && (
+                          <Box sx={{ mb: 1 }}>
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                mb: 0.5,
+                              }}
+                            >
+                              <Typography variant="caption" sx={{ fontWeight: 600 }}>
+                                {progressMessage}
+                              </Typography>
+                              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                                {Math.round(progress)}%
+                              </Typography>
+                            </Box>
+                            <LinearProgress
+                              variant="determinate"
+                              value={progress}
+                              sx={{
+                                height: 6,
+                                borderRadius: 3,
+                                backgroundColor: alpha(theme.palette.primary.main, 0.15),
+                              }}
+                            />
+                          </Box>
+                        )}
 
-                    <Box>
-                      <Typography
-                        variant="body2"
-                        sx={{ mb: 1, fontWeight: 500, color: 'text.secondary' }}
-                      >
-                        Password
-                      </Typography>
-                      <TextField
-                        fullWidth
-                        type={showPassword ? 'text' : 'password'}
-                        name="password"
-                        placeholder="Create a password"
-                        value={signupForm.password}
-                        onChange={handleSignupInputChange}
-                        required
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <FaLock sx={{ color: 'text.secondary', fontSize: 20 }} />
-                            </InputAdornment>
-                          ),
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton
-                                onClick={() => setShowPassword(!showPassword)}
-                                edge="end"
-                                size="small"
+                        <Box>
+                          <TextField
+                            fullWidth
+                            name="username"
+                            placeholder="Choose a username"
+                            value={signupForm.username}
+                            onChange={handleSignupInputChange}
+                            required
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <FaUser sx={{ color: 'text.secondary', fontSize: 20 }} />
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </Box>
+
+                        <Box>
+                          <TextField
+                            fullWidth
+                            type="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            value={signupForm.email}
+                            onChange={handleSignupInputChange}
+                            required
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <FaEnvelope sx={{ color: 'text.secondary', fontSize: 20 }} />
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </Box>
+
+                        <Box>
+                          <TextField
+                            fullWidth
+                            type={showPassword ? 'text' : 'password'}
+                            name="password"
+                            placeholder="Create a password"
+                            value={signupForm.password}
+                            onChange={handleSignupInputChange}
+                            required
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <FaLock sx={{ color: 'text.secondary', fontSize: 20 }} />
+                                </InputAdornment>
+                              ),
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    edge="end"
+                                    size="small"
+                                  >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                  </IconButton>
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                          {signupForm.password && (
+                            <Box sx={{ mt: 1.5 }}>
+                              <LinearProgress
+                                variant="determinate"
+                                value={passwordStrength.percentage}
+                                sx={{
+                                  height: 6,
+                                  borderRadius: 3,
+                                  backgroundColor: alpha(strengthMeta.color, 0.12),
+                                  '& .MuiLinearProgress-bar': {
+                                    backgroundColor: strengthMeta.color,
+                                  },
+                                }}
+                              />
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  display: 'block',
+                                  mt: 0.75,
+                                  fontWeight: 600,
+                                  color: strengthMeta.color,
+                                }}
                               >
-                                {showPassword ? <FaEyeSlash /> : <FaEye />}
-                              </IconButton>
-                            </InputAdornment>
-                          ),
-                        }}
-                      />
-                    </Box>
-
-                    <Box>
-                      <Typography
-                        variant="body2"
-                        sx={{ mb: 1, fontWeight: 500, color: 'text.secondary' }}
-                      >
-                        Confirm Password
-                      </Typography>
-                      <TextField
-                        fullWidth
-                        type={showConfirmPassword ? 'text' : 'password'}
-                        name="confirmpassword"
-                        placeholder="Confirm your password"
-                        value={signupForm.confirmpassword}
-                        onChange={handleSignupInputChange}
-                        required
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <FaLock sx={{ color: 'text.secondary', fontSize: 20 }} />
-                            </InputAdornment>
-                          ),
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                edge="end"
-                                size="small"
+                                Password strength: {strengthMeta.label}
+                              </Typography>
+                              <Box
+                                sx={{
+                                  display: 'grid',
+                                  gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' },
+                                  gap: 1,
+                                  mt: 1,
+                                }}
                               >
-                                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                              </IconButton>
-                            </InputAdornment>
-                          ),
-                        }}
-                      />
-                    </Box>
-                  </Stack>
+                                {passwordStrength.checks.map((check) => (
+                                  <Box
+                                    key={check.label}
+                                    sx={{
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: 0.5,
+                                      color: check.met ? 'success.main' : 'text.secondary',
+                                    }}
+                                  >
+                                    {check.met ? (
+                                      <CheckCircleOutline sx={{ fontSize: 16, color: 'success.main' }} />
+                                    ) : (
+                                      <Cancel sx={{ fontSize: 16, color: 'text.disabled' }} />
+                                    )}
+                                    <Typography variant="caption" sx={{ fontWeight: 600 }}>
+                                      {check.label}
+                                    </Typography>
+                                  </Box>
+                                ))}
+                              </Box>
+                            </Box>
+                          )}
+                        </Box>
 
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    size="large"
-                    fullWidth
-                    disabled={isSubmitting}
-                    sx={{
-                      mt: 4,
-                      py: 1.5,
-                      fontSize: '1rem',
-                      fontWeight: 600,
-                      textTransform: 'none',
-                    }}
-                  >
-                    {isSubmitting ? 'Creating Account...' : 'Start Your Journey'}
-                  </Button>
+                        <Box>
+                          <TextField
+                            fullWidth
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            name="confirmpassword"
+                            placeholder="Confirm your password"
+                            value={signupForm.confirmpassword}
+                            onChange={handleSignupInputChange}
+                            required
+                            error={passwordsMismatch}
+                            helperText={
+                              signupForm.confirmpassword
+                                ? passwordsMismatch
+                                  ? 'Passwords do not match'
+                                  : 'Passwords match'
+                                : ''
+                            }
+                            FormHelperTextProps={{
+                              sx: {
+                                mt: 1,
+                                fontWeight: 600,
+                                color: passwordsMismatch ? 'error.main' : 'success.main',
+                              },
+                            }}
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <FaLock sx={{ color: 'text.secondary', fontSize: 20 }} />
+                                </InputAdornment>
+                              ),
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                    edge="end"
+                                    size="small"
+                                  >
+                                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                                  </IconButton>
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                          {signupForm.confirmpassword && !passwordsMismatch && (
+                            <Chip
+                              size="small"
+                              label="Great! Passwords match"
+                              icon={<CheckCircleOutline sx={{ fontSize: 16 }} />}
+                              sx={{
+                                mt: 1.5,
+                                alignSelf: 'flex-start',
+                                fontWeight: 600,
+                                backgroundColor: alpha(theme.palette.success.main, 0.08),
+                                color: 'success.main',
+                              }}
+                            />
+                          )}
+                        </Box>
+                      </Stack>
+
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        size="large"
+                        fullWidth
+                        disabled={isSubmitting || !canSubmitSignup}
+                        sx={{
+                          mt: 4,
+                          py: 1.5,
+                          fontSize: '1rem',
+                          fontWeight: 600,
+                          textTransform: 'none',
+                        }}
+                      >
+                        {isSubmitting ? 'Creating Account...' : 'Start Your Journey'}
+                      </Button>
+                    </Box>
+                  )}
                 </Box>
-              )}
+              </Box>
             </Box>
           </Box>
         </DialogContent>

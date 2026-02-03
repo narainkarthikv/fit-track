@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { getAuthConfig } from '../utils/api';
 
 const backendURL = import.meta.env.VITE_API_URL;
 
@@ -50,10 +51,12 @@ export const updateTotalDays =
     dispatch(setStatus('loading'));
     try {
       const url = `${backendURL}/api/user/${userID}/updateTotalDays`;
-      console.log(url); // Verify URL
 
-      // Make the API call
-      const response = await axios.post(url, { dayCheck: updatedDayCheck });
+      const response = await axios.post(
+        url,
+        { dayCheck: updatedDayCheck },
+        getAuthConfig()
+      );
 
       // Extract updated totalDays from the response
       const { totalDays } = response.data;

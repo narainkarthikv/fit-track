@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { getAuthConfig } from '../utils/api';
 
 const backendURL = import.meta.env.VITE_API_URL;
 
@@ -49,7 +50,8 @@ export const fetchExercises = (userID) => async (dispatch) => {
   dispatch(setStatus('loading'));
   try {
     const response = await axios.get(
-      `${backendURL}/api/exercises/${userID}/exercises_list`
+      `${backendURL}/api/exercises/${userID}/exercises_list`,
+      getAuthConfig()
     );
     dispatch(fetchExercisesSuccess({ userID, data: response.data.Exercises }));
   } catch (error) {
@@ -61,7 +63,8 @@ export const addExercise = (userID, newExerciseData) => async (dispatch) => {
   try {
     const response = await axios.post(
       `${backendURL}/api/exercises/${userID}/add`,
-      newExerciseData
+      newExerciseData,
+      getAuthConfig()
     );
     dispatch(addExerciseSuccess({ userID, data: response.data.newExercise })); // Assuming the API returns the newly added exercise
   } catch (error) {
@@ -73,7 +76,8 @@ export const addExercise = (userID, newExerciseData) => async (dispatch) => {
 export const deleteExercise = (userID, exerciseId) => async (dispatch) => {
   try {
     await axios.delete(
-      `${backendURL}/api/exercises/${userID}/exercises_list/${exerciseId}`
+      `${backendURL}/api/exercises/${userID}/exercises_list/${exerciseId}`,
+      getAuthConfig()
     );
     dispatch(deleteExerciseSuccess({ userID, exerciseId }));
   } catch (error) {

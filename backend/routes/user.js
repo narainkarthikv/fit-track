@@ -2,20 +2,83 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user.model');
 const Exercise = require('../models/exercise.model');
-// const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const verifyToken = require('../middleware/jwtAuth.js');
+const { ensureAdmin, ensureSelf } = require('../middleware/accessControl');
+
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET must be defined');
+}
+const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '1d';
+
+const isBcryptHash = (value = '') =>
+  value.startsWith('$2a$') || value.startsWith('$2b$') || value.startsWith('$2y$');
+
+const hashPassword = async (password) => {
+  if (typeof password !== 'string' || password.length < 6) {
+    throw new Error('Password must be at least 6 characters long');
+  }
+  return bcrypt.hash(password, saltRounds);
+};
+
+const sanitizeUser = (userDoc) => {
+  if (!userDoc) {
+    return null;
+  }
+
+  const user = userDoc.toObject ? userDoc.toObject() : userDoc;
+  return {
+    id: user._id?.toString() || user.id,
+    username: user.username,
+    email: user.email,
+    xp: user.xp,
+    totalDays: user.totalDays,
+    dayCheck: user.dayCheck,
+    lastActiveDate: user.lastActiveDate,
+    streakCount: user.streakCount,
+    role: user.role || 'user',
+  };
+};
+
+const createTokenPayload = (user) => ({
+  id: user._id.toString(),
+  email: user.email,
+  role: user.role || 'user',
+});
+
+const verifyAndUpgradePassword = async (user, providedPassword) => {
+  const storedHash = user.password;
+  if (!storedHash || !providedPassword) {
+    return false;
+  }
+
+  if (isBcryptHash(storedHash)) {
+    return bcrypt.compare(providedPassword, storedHash);
+  }
+
+  const isMatch = providedPassword === storedHash;
+  if (isMatch) {
+    user.password = await hashPassword(providedPassword);
+    await user.save();
+  }
+  return isMatch;
+};
 
 // Create a new user
 router.post('/add', async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    // TODO: Re-enable bcrypt hashing once bcryptjs is properly installed
-    // const hashedPassword = await bcrypt.hash(password, saltRounds);
-    // For now, store plain password (NOT SECURE - for testing only)
-    const hashedPassword = password;
+    if (!password || password.length < 6) {
+      return res
+        .status(400)
+        .json({ error: 'Password must be at least 6 characters long' });
+    }
+
+    const hashedPassword = await hashPassword(password);
 
     const newUser = new User({
       username,
@@ -36,7 +99,9 @@ router.post('/add', async (req, res) => {
     // Save the new exercise to the database
     await newExercise.save();
 
-    res.status(200).json({ message: 'User created successfully' });
+    res
+      .status(200)
+      .json({ message: 'User created successfully', user: sanitizeUser(newUser) });
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -45,53 +110,20 @@ router.post('/add', async (req, res) => {
 
 // User login
 router.post('/login', async (req, res) => {
-  console.log('🔵 Login route handler called');
-
   try {
-    console.log('📝 Extracting email and password from request');
     const { email, password } = req.body;
-    console.log(`📧 Email: ${email}, Has Password: ${!!password}`);
-
-    console.log('🔍 Finding user in database');
     const user = await User.findOne({ email });
-    console.log(`✓ User query completed, Found: ${!!user}`);
 
     if (!user) {
-      console.log('❌ User not found');
       return res.status(404).json({ error: 'User not found' });
     }
 
-    console.log('🔐 Password verification step');
-
-    const providedPassword = req.body.password;
-    const storedHash = user.password;
-
-    // Check password validity
-    if (!storedHash) {
-      console.error('🔴 Stored password is empty or undefined');
-      return res
-        .status(500)
-        .json({ error: 'Invalid user record - no password' });
-    }
-
-    if (!providedPassword) {
-      console.error('🔴 Provided password is empty or undefined');
-      return res.status(401).json({ error: 'Password required' });
-    }
-
-    console.log('✓ Comparing passwords...');
-    // TODO: Re-enable bcrypt once bcryptjs is properly installed
-    // For now, doing plain comparison (NOT SECURE - for testing only)
-    const isPasswordValid = providedPassword === storedHash;
-    console.log(`✓ Password comparison result: ${isPasswordValid}`);
+    const isPasswordValid = await verifyAndUpgradePassword(user, password);
 
     if (!isPasswordValid) {
-      console.log('❌ Password invalid');
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    console.log('✅ Password valid, continuing with login...');
-    // Continue with rest of logic
     handlePasswordValid(user, res);
   } catch (error) {
     console.error('🔴 Outer catch block error:', error);
@@ -102,9 +134,6 @@ router.post('/login', async (req, res) => {
 // Helper function to handle successful password verification
 async function handlePasswordValid(user, res) {
   try {
-    console.log('📅 Processing streak update');
-    //Automatic streak updation logic
-
     const today = new Date();
     const todayIndex = today.getDay();
 
@@ -151,21 +180,16 @@ async function handlePasswordValid(user, res) {
 
       user.totalDays = newDayCheck.filter(Boolean).length;
 
-      console.log('💾 Saving user');
       await user.save();
-      console.log('✓ User saved');
     }
 
-    console.log('🔑 Generating JWT token');
-    const token = jwt.sign(
-      { id: user._id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRATION }
-    );
-    console.log('✓ Token generated');
+    const token = jwt.sign(createTokenPayload(user), JWT_SECRET, {
+      expiresIn: JWT_EXPIRATION,
+    });
 
-    console.log('✅ Login successful, sending response');
-    res.status(200).json({ message: 'Login successful', token, user });
+    res
+      .status(200)
+      .json({ message: 'Login successful', token, user: sanitizeUser(user) });
   } catch (error) {
     console.error('🔴 Error in handlePasswordValid:', error.message);
     console.error(error.stack);
@@ -176,7 +200,7 @@ async function handlePasswordValid(user, res) {
 }
 
 //fetch streak info
-router.get('/streak/:userID', verifyToken, async (req, res) => {
+router.get('/streak/:userID', verifyToken, ensureSelf('userID'), async (req, res) => {
   const { userID } = req.params;
 
   try {
@@ -189,15 +213,15 @@ router.get('/streak/:userID', verifyToken, async (req, res) => {
       streakCount: user.streakCount,
     });
   } catch (error) {
-    console.error('Error fetching streak:', err);
+    console.error('Error fetching streak:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
 // Get all users
-router.get('/', async (req, res) => {
+router.get('/', verifyToken, ensureAdmin, async (req, res) => {
   try {
-    const users = await User.find({}, '_id email');
+    const users = await User.find({}, '_id email username role');
     res.json(users);
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -206,7 +230,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get a user by ID
-router.get('/:userId', verifyToken, async (req, res) => {
+router.get('/:userId', verifyToken, ensureSelf('userId'), async (req, res) => {
   const { userId } = req.params;
 
   try {
@@ -214,12 +238,7 @@ router.get('/:userId', verifyToken, async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    res.json({
-      username: user.username,
-      email: user.email,
-      xp: user.xp,
-      totalDays: user.totalDays,
-    });
+    res.json(sanitizeUser(user));
   } catch (error) {
     console.error('Error fetching user:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -227,7 +246,7 @@ router.get('/:userId', verifyToken, async (req, res) => {
 });
 
 // Update user profile
-router.put('/:userId/update', verifyToken, async (req, res) => {
+router.put('/:userId/update', verifyToken, ensureSelf('userId'), async (req, res) => {
   const { userId } = req.params;
   const { username, email, currentPassword, newPassword } = req.body;
 
@@ -237,9 +256,7 @@ router.put('/:userId/update', verifyToken, async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Validate username and email
     if (username && username.trim()) {
-      // Check if username is taken by another user
       if (username !== user.username) {
         const existingUser = await User.findOne({ username });
         if (existingUser) {
@@ -250,7 +267,6 @@ router.put('/:userId/update', verifyToken, async (req, res) => {
     }
 
     if (email && email.trim()) {
-      // Check if email is taken by another user
       if (email !== user.email) {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -260,38 +276,34 @@ router.put('/:userId/update', verifyToken, async (req, res) => {
       user.email = email.trim();
     }
 
-    // Handle password change if requested
     if (newPassword) {
       if (!currentPassword) {
         return res.status(400).json({ error: 'Current password is required' });
       }
 
-      // Verify current password
-      // TODO: Re-enable bcrypt once bcryptjs is properly installed
-      const isPasswordValid = currentPassword === user.password;
-      
+      const isPasswordValid = await verifyAndUpgradePassword(
+        user,
+        currentPassword
+      );
+
       if (!isPasswordValid) {
         return res.status(401).json({ error: 'Current password is incorrect' });
       }
 
       if (newPassword.length < 6) {
-        return res.status(400).json({ error: 'New password must be at least 6 characters' });
+        return res
+          .status(400)
+          .json({ error: 'New password must be at least 6 characters' });
       }
 
-      // TODO: Hash new password with bcrypt
-      user.password = newPassword;
+      user.password = await hashPassword(newPassword);
     }
 
     await user.save();
 
-    res.status(200).json({ 
+    res.status(200).json({
       message: 'Profile updated successfully',
-      user: {
-        username: user.username,
-        email: user.email,
-        xp: user.xp,
-        totalDays: user.totalDays,
-      }
+      user: sanitizeUser(user),
     });
   } catch (error) {
     console.error('Error updating user:', error);
@@ -300,25 +312,33 @@ router.put('/:userId/update', verifyToken, async (req, res) => {
 });
 
 // Update totalDays
-router.post('/:userId/updateTotalDays', async (req, res) => {
-  const { userId } = req.params;
-  const { dayCheck } = req.body;
-  try {
-    const user = await User.findById(userId);
-    if (user) {
-      const totalDays = dayCheck.filter(Boolean).length;
-      user.totalDays = totalDays;
-      await user.save();
-      res
-        .status(200)
-        .json({ message: 'TotalDays updated successfully', totalDays });
-    } else {
-      res.status(404).json({ message: 'User not found' });
+router.post(
+  '/:userId/updateTotalDays',
+  verifyToken,
+  ensureSelf('userId'),
+  async (req, res) => {
+    const { userId } = req.params;
+    const { dayCheck } = req.body;
+    try {
+      const user = await User.findById(userId);
+      if (user) {
+        if (!Array.isArray(dayCheck)) {
+          return res.status(400).json({ error: 'dayCheck must be an array' });
+        }
+        const totalDays = dayCheck.filter(Boolean).length;
+        user.totalDays = totalDays;
+        await user.save();
+        res
+          .status(200)
+          .json({ message: 'TotalDays updated successfully', totalDays });
+      } else {
+        res.status(404).json({ message: 'User not found' });
+      }
+    } catch (error) {
+      console.error('Error updating totalDays:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-  } catch (error) {
-    console.error('Error updating totalDays:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
   }
-});
+);
 
 module.exports = router;
