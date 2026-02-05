@@ -1,23 +1,17 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Typography, Fade } from '@mui/material';
-import {
-  fetchExercises,
-  addExercise,
-  deleteExercise,
-} from '../slices/exercisesSlice';
+import { Box, Typography, Fade, Button } from '@mui/material';
+import { Add, Close } from '@mui/icons-material';
+import { fetchExercises, addExercise, deleteExercise } from '../slices/exercisesSlice';
 import ExerciseTable from './Exercise/ExerciseTable';
 import ExerciseForm from './Exercise/ExerciseForm';
 
-const ExercisesList = ({ userID }) => {
+const ExercisesList = ({ userID, title = "Today's Exercises" }) => {
   const dispatch = useDispatch();
   const userExercises = useSelector((state) => state.exercises.userExercises);
   const status = useSelector((state) => state.exercises.status);
-  
-  const exercises = useMemo(
-    () => userExercises?.[userID] || [],
-    [userExercises, userID]
-  );
+
+  const exercises = useMemo(() => userExercises?.[userID] || [], [userExercises, userID]);
   const [formVisible, setFormVisible] = useState(false);
   const [newExerciseData, setNewExerciseData] = useState({
     description: '',
@@ -60,27 +54,51 @@ const ExercisesList = ({ userID }) => {
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          gap: 2,
+          justifyContent: 'space-between',
+          mb: 2,
+        }}
+      >
+        <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '1.125rem' }}>
+          {title}
+        </Typography>
+        <Button
+          variant={formVisible ? 'outlined' : 'contained'}
+          startIcon={formVisible ? <Close /> : <Add />}
+          onClick={() => setFormVisible((prev) => !prev)}
+          sx={{ borderRadius: 8, fontWeight: 600 }}
+        >
+          {formVisible ? 'Close' : 'Add Exercise'}
+        </Button>
+      </Box>
 
-      <Box sx={{ 
-        flexGrow: 1, 
-        minHeight: '380px', 
-        maxHeight: '380px', 
-        overflowY: 'auto',
-        '&::-webkit-scrollbar': {
-          width: '8px',
-        },
-        '&::-webkit-scrollbar-track': {
-          background: 'rgba(255, 255, 255, 0.05)',
-          borderRadius: '4px',
-        },
-        '&::-webkit-scrollbar-thumb': {
-          background: 'rgba(255, 255, 255, 0.1)',
-          borderRadius: '4px',
-          '&:hover': {
-            background: 'rgba(255, 255, 255, 0.15)',
+      <Box
+        sx={{
+          flexGrow: 1,
+          minHeight: '380px',
+          maxHeight: '380px',
+          overflowY: 'auto',
+          '&::-webkit-scrollbar': {
+            width: '8px',
           },
-        },
-      }}>
+          '&::-webkit-scrollbar-track': {
+            background: 'rgba(255, 255, 255, 0.05)',
+            borderRadius: '4px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: 'rgba(255, 255, 255, 0.1)',
+            borderRadius: '4px',
+            '&:hover': {
+              background: 'rgba(255, 255, 255, 0.15)',
+            },
+          },
+        }}
+      >
         {status === 'loading' && (
           <Box sx={{ textAlign: 'center', py: 4 }}>
             <Typography color="text.secondary">Loading exercises...</Typography>
@@ -93,8 +111,8 @@ const ExercisesList = ({ userID }) => {
         )}
         <Fade in={status === 'succeeded'} timeout={500}>
           <Box>
-            <ExerciseTable 
-              exercises={exercises} 
+            <ExerciseTable
+              exercises={exercises}
               handleDelete={handleDelete}
               formVisible={formVisible}
               formComponent={
@@ -109,25 +127,6 @@ const ExercisesList = ({ userID }) => {
           </Box>
         </Fade>
       </Box>
-      
-      {!formVisible && (
-        <Box sx={{ mt: 2 }}>
-          <button
-            className="btn btn-outline-primary"
-            onClick={() => setFormVisible(true)}
-            style={{
-              width: '100%',
-              padding: '10px',
-              fontSize: '0.95rem',
-              fontWeight: 500,
-              borderRadius: '8px',
-              transition: 'all 0.2s ease',
-            }}
-          >
-            + Add Exercise
-          </button>
-        </Box>
-      )}
     </Box>
   );
 };

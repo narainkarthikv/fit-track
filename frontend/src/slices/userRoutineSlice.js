@@ -39,34 +39,25 @@ const userRoutineSlice = createSlice({
   },
 });
 
-export const {
-  setDayCheck,
-  updateTotalDaysSuccess,
-  updateTotalDaysFailure,
-  setStatus,
-} = userRoutineSlice.actions;
+export const { setDayCheck, updateTotalDaysSuccess, updateTotalDaysFailure, setStatus } =
+  userRoutineSlice.actions;
 
-export const updateTotalDays =
-  (userID, updatedDayCheck) => async (dispatch) => {
-    dispatch(setStatus('loading'));
-    try {
-      const url = `${backendURL}/api/user/${userID}/updateTotalDays`;
+export const updateTotalDays = (userID, updatedDayCheck) => async (dispatch) => {
+  dispatch(setStatus('loading'));
+  try {
+    const url = `${backendURL}/api/user/${userID}/updateTotalDays`;
 
-      const response = await axios.post(
-        url,
-        { dayCheck: updatedDayCheck },
-        getAuthConfig()
-      );
+    const response = await axios.post(url, { dayCheck: updatedDayCheck }, getAuthConfig());
 
-      // Extract updated totalDays from the response
-      const { totalDays } = response.data;
+    // Extract updated totalDays from the response
+    const { totalDays } = response.data;
 
-      dispatch(setDayCheck({ userID, dayCheck: updatedDayCheck }));
-      dispatch(updateTotalDaysSuccess({ userID, totalDays }));
-    } catch (error) {
-      console.error('Error in updateTotalDays:', error);
-      dispatch(updateTotalDaysFailure(error.toString()));
-    }
-  };
+    dispatch(setDayCheck({ userID, dayCheck: updatedDayCheck }));
+    dispatch(updateTotalDaysSuccess({ userID, totalDays }));
+  } catch (error) {
+    console.error('Error in updateTotalDays:', error);
+    dispatch(updateTotalDaysFailure(error.toString()));
+  }
+};
 
 export default userRoutineSlice.reducer;

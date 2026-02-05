@@ -66,7 +66,7 @@ const NavBar = ({
   };
 
   const handleProfileUpdated = (updatedData) => {
-    setUserDetails(prev => ({
+    setUserDetails((prev) => ({
       ...prev,
       username: updatedData.username,
       email: updatedData.email,
@@ -83,8 +83,8 @@ const NavBar = ({
           />
         </ListItem>
         <ListItem>
-          <UserDropdown 
-            user={user} 
+          <UserDropdown
+            user={user}
             handleLogout={handleLogout}
             onEditProfileClick={handleEditProfileClick}
           />
@@ -134,8 +134,8 @@ const NavBar = ({
                   notifications={notifications}
                   toggleNotificationReadStatus={toggleNotificationReadStatus}
                 />
-                <UserDropdown 
-                  user={user} 
+                <UserDropdown
+                  user={user}
                   handleLogout={handleLogout}
                   onEditProfileClick={handleEditProfileClick}
                 />

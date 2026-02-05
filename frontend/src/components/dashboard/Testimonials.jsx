@@ -4,12 +4,12 @@ import { AccountCircle } from '@mui/icons-material';
 
 const Testimonials = () => {
   const testimonials = [
-    { quote: "Simple to use, helps me stay accountable.", name: 'Sarah M.' },
-    { quote: "Nice to see my workout patterns over time.", name: 'James K.' },
-    { quote: "Does what it needs to do without the fluff.", name: 'Priya R.' },
-    { quote: "The streak feature keeps me showing up.", name: 'Mike T.' },
-    { quote: "Clean interface, easy logging. Works for me.", name: 'Emma L.' },
-    { quote: "Good for tracking progress without overthinking.", name: 'Alex D.' },
+    { quote: 'Simple to use, helps me stay accountable.', name: 'Sarah M.' },
+    { quote: 'Nice to see my workout patterns over time.', name: 'James K.' },
+    { quote: 'Does what it needs to do without the fluff.', name: 'Priya R.' },
+    { quote: 'The streak feature keeps me showing up.', name: 'Mike T.' },
+    { quote: 'Clean interface, easy logging. Works for me.', name: 'Emma L.' },
+    { quote: 'Good for tracking progress without overthinking.', name: 'Alex D.' },
   ];
 
   return (
@@ -49,18 +49,18 @@ const Testimonials = () => {
         <Box
           sx={{
             overflow: 'hidden',
-            '&:hover .scrolling-wrapper': {
+            '&:hover .testimonial-track': {
               animationPlayState: 'paused',
             },
           }}
         >
           <Box
-            className="scrolling-wrapper"
+            className="testimonial-track"
             sx={{
               display: 'flex',
               gap: 3,
-              animation: 'scroll 45s linear infinite',
-              '@keyframes scroll': {
+              animation: 'testimonialScroll 45s linear infinite',
+              '@keyframes testimonialScroll': {
                 '0%': { transform: 'translateX(0)' },
                 '100%': { transform: 'translateX(-50%)' },
               },

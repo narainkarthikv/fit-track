@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { 
-  Container, 
-  Grid, 
-  Box, 
+import {
+  Container,
+  Grid,
+  Box,
   Typography,
   Paper,
   Stack,
@@ -11,7 +11,7 @@ import {
   useTheme,
   Fade,
 } from '@mui/material';
-import { 
+import {
   TrendingUp as TrendingUpIcon,
   EmojiEvents as TrophyIcon,
   CalendarMonth as CalendarIcon,
@@ -27,14 +27,17 @@ import HeatMap from '../components/HeatMap';
 // Premium Stats Card Component
 const StatCard = ({ title, value, subtitle, icon: Icon, color, trend }) => {
   const theme = useTheme();
-  
+
   return (
     <Paper
       elevation={0}
       sx={{
         p: 3,
         height: '100%',
-        background: `linear-gradient(135deg, ${alpha(color || theme.palette.primary.main, 0.05)} 0%, ${alpha(color || theme.palette.primary.main, 0.01)} 100%)`,
+        background: `linear-gradient(135deg, ${alpha(
+          color || theme.palette.primary.main,
+          0.05
+        )} 0%, ${alpha(color || theme.palette.primary.main, 0.01)} 100%)`,
         border: '1px solid',
         borderColor: alpha(color || theme.palette.primary.main, 0.1),
         borderRadius: 2,
@@ -53,18 +56,20 @@ const StatCard = ({ title, value, subtitle, icon: Icon, color, trend }) => {
           right: 0,
           width: '100px',
           height: '100px',
-          background: `radial-gradient(circle, ${alpha(color || theme.palette.primary.main, 0.15)} 0%, transparent 70%)`,
-          borderRadius: '50%',
-          transform: 'translate(30%, -30%)',
+          background: `radial-gradient(circle, ${alpha(
+            color || theme.palette.primary.main,
+            0.2
+          )} 0%, transparent 70%)`,
+          transform: 'translate(30px, -30px)',
         },
       }}
     >
-      <Stack spacing={2}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+      <Stack spacing={1.5}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Box>
-            <Typography 
-              variant="body2" 
-              sx={{ 
+            <Typography
+              variant="body2"
+              sx={{
                 color: 'text.secondary',
                 fontWeight: 500,
                 textTransform: 'uppercase',
@@ -80,7 +85,9 @@ const StatCard = ({ title, value, subtitle, icon: Icon, color, trend }) => {
                 fontWeight: 700,
                 mt: 1,
                 fontSize: '2rem',
-                background: `linear-gradient(135deg, ${color || theme.palette.primary.main} 0%, ${alpha(color || theme.palette.primary.main, 0.7)} 100%)`,
+                background: `linear-gradient(135deg, ${
+                  color || theme.palette.primary.main
+                } 0%, ${alpha(color || theme.palette.primary.main, 0.7)} 100%)`,
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
@@ -89,7 +96,10 @@ const StatCard = ({ title, value, subtitle, icon: Icon, color, trend }) => {
               {value}
             </Typography>
             {subtitle && (
-              <Typography variant="caption" sx={{ color: 'text.secondary', mt: 0.5, display: 'block' }}>
+              <Typography
+                variant="caption"
+                sx={{ color: 'text.secondary', mt: 0.5, display: 'block' }}
+              >
                 {subtitle}
               </Typography>
             )}
@@ -156,37 +166,32 @@ const Home = ({ user }) => {
     if (!quote) {
       const fetchQuote = async () => {
         try {
-          const response = await axios.get(
-            'https://api.api-ninjas.com/v2/quotes',
-            {
-              params: {
-                categories: 'success, inspirational, life, courage',
-              },
-              headers: {
-                'X-Api-Key': import.meta.env.VITE_APININJAS,
-              },
-            }
-          );
-          
+          const response = await axios.get('https://api.api-ninjas.com/v2/quotes', {
+            params: {
+              categories: 'success, inspirational, life, courage',
+            },
+            headers: {
+              'X-Api-Key': import.meta.env.VITE_APININJAS,
+            },
+          });
+
           if (response.data && response.data.length > 0) {
             setQuote(response.data[0]);
           } else {
-            // Fallback quote object
             setQuote({
               quote: "The only bad workout is the one that didn't happen.",
-              author: "Unknown",
-              work: "",
-              categories: ["fitness"]
+              author: 'Unknown',
+              work: '',
+              categories: ['fitness'],
             });
           }
         } catch (err) {
           console.error('Error fetching Quotes', err);
-          // Fallback quote object
           setQuote({
             quote: "The only bad workout is the one that didn't happen.",
-            author: "Unknown",
-            work: "",
-            categories: ["fitness"]
+            author: 'Unknown',
+            work: '',
+            categories: ['fitness'],
           });
         }
       };
@@ -196,10 +201,10 @@ const Home = ({ user }) => {
   }, [quote]);
 
   return (
-    <Box 
-      component="main" 
-      sx={{ 
-        flexGrow: 1, 
+    <Box
+      component="main"
+      sx={{
+        flexGrow: 1,
         minHeight: '100vh',
         backgroundColor: 'background.default',
         pt: { xs: 2, md: 3 },
@@ -290,16 +295,6 @@ const Home = ({ user }) => {
                     height: '100%',
                   }}
                 >
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      fontWeight: 700,
-                      mb: 3,
-                      fontSize: '1.125rem',
-                    }}
-                  >
-                    Today's Exercises
-                  </Typography>
                   <ExercisesList userID={user} />
                 </Paper>
               </Grid>
@@ -340,16 +335,6 @@ const Home = ({ user }) => {
                       borderRadius: 2,
                     }}
                   >
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight: 700,
-                        mb: 2,
-                        fontSize: '1.125rem',
-                      }}
-                    >
-                      Activity Heatmap
-                    </Typography>
                     <HeatMap userID={user} setUserDetails={setUserDetails} />
                   </Paper>
                 </Stack>

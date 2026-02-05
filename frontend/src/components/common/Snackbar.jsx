@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Snackbar as MuiSnackbar, Alert, Box, LinearProgress } from '@mui/material';
+import { Snackbar as MuiSnackbar, Alert, Box, LinearProgress, Typography } from '@mui/material';
 import Lottie from 'react-lottie';
 import successAnimation from '../../assets/lottie/success-lottie.json';
 import failureAnimation from '../../assets/lottie/failure-lottie.json';
@@ -53,7 +53,9 @@ const Snackbar = ({ show, message, type, onClose }) => {
           <Lottie options={defaultOptions} height={50} width={50} />
         </Box>
         <Box sx={{ flex: 1 }}>
-          <span style={{ fontWeight: 600 }}>{message}</span>
+          <Typography variant="body2" sx={{ fontWeight: 600 }}>
+            {message}
+          </Typography>
           <LinearProgress
             variant="determinate"
             value={progress}

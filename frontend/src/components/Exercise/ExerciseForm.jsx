@@ -1,15 +1,19 @@
 import React from 'react';
-import { TextField, Checkbox, FormControlLabel, Button, Box, Stack } from '@mui/material';
+import {
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  Button,
+  Box,
+  Stack,
+  TableRow,
+  TableCell,
+} from '@mui/material';
 import { Add, Close } from '@mui/icons-material';
 
-const ExerciseForm = ({
-  newExerciseData,
-  handleChange,
-  handleAdd,
-  setFormVisible,
-}) => (
-  <tr style={{ backgroundColor: 'rgba(255, 255, 255, 0.02)' }}>
-    <td colSpan={4} style={{ padding: '16px 12px' }}>
+const ExerciseForm = ({ newExerciseData, handleChange, handleAdd, setFormVisible }) => (
+  <TableRow sx={{ backgroundColor: 'rgba(255, 255, 255, 0.02)' }}>
+    <TableCell colSpan={4} sx={{ py: 2 }}>
       <Box component="form" onSubmit={handleAdd} sx={{ width: '100%' }}>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center">
           <TextField
@@ -20,7 +24,7 @@ const ExerciseForm = ({
             onChange={handleChange}
             required
             fullWidth
-            sx={{ 
+            sx={{
               minWidth: 150,
               '& .MuiOutlinedInput-root': {
                 backgroundColor: 'rgba(255, 255, 255, 0.05)',
@@ -47,7 +51,7 @@ const ExerciseForm = ({
             required
             inputProps={{ min: 1 }}
             fullWidth
-            sx={{ 
+            sx={{
               minWidth: 120,
               maxWidth: 150,
               '& .MuiOutlinedInput-root': {
@@ -105,9 +109,9 @@ const ExerciseForm = ({
             >
               Cancel
             </Button>
-            <Button 
-              type="submit" 
-              variant="contained" 
+            <Button
+              type="submit"
+              variant="contained"
               size="small"
               startIcon={<Add />}
               sx={{
@@ -125,8 +129,8 @@ const ExerciseForm = ({
           </Stack>
         </Stack>
       </Box>
-    </td>
-  </tr>
+    </TableCell>
+  </TableRow>
 );
 
 export default ExerciseForm;

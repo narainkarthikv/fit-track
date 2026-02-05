@@ -8,7 +8,8 @@ const Card = ({ title, text, children, sx = {} }) => (
       height: '100%',
       display: 'flex',
       flexDirection: 'column',
-      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)',
+      background:
+        'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)',
       backdropFilter: 'blur(10px)',
       border: '1px solid rgba(255, 255, 255, 0.08)',
       borderRadius: '16px',
@@ -31,14 +32,20 @@ const Card = ({ title, text, children, sx = {} }) => (
         sx={{ pb: 1 }}
       />
     )}
-    <CardContent sx={{ 
-      flex: 1, 
-      p: 3,
-      '&:last-child': {
-        pb: 3,
-      },
-    }}>
-      {text && <Typography variant="body2" sx={{ mb: 2 }}>{text}</Typography>}
+    <CardContent
+      sx={{
+        flex: 1,
+        p: 3,
+        '&:last-child': {
+          pb: 3,
+        },
+      }}
+    >
+      {text && (
+        <Typography variant="body2" sx={{ mb: 2 }}>
+          {text}
+        </Typography>
+      )}
       {children}
     </CardContent>
   </MuiCard>

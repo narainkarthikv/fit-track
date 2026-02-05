@@ -1,14 +1,6 @@
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {
-  Box,
-  Container,
-  Typography,
-  Button,
-  useTheme,
-  useMediaQuery,
-  alpha,
-} from '@mui/material';
+import { Box, Container, Typography, Button, useTheme, useMediaQuery, alpha } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
 
 const CTA = ({ isLoggedIn, onGetStartedClick }) => {
@@ -20,8 +12,18 @@ const CTA = ({ isLoggedIn, onGetStartedClick }) => {
       component="section"
       id="cta"
       sx={{
-        py: { xs: 8, md: 10 },
+        py: 'clamp(64px, 9vh, 112px)',
+        scrollMarginTop: { xs: '72px', md: '88px' },
         backgroundColor: 'background.default',
+        position: 'relative',
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          background: `radial-gradient(circle at top, ${alpha(theme.palette.primary.main, 0.08)} 0%, transparent 55%)`,
+          pointerEvents: 'none',
+        },
       }}
     >
       <Container maxWidth="md">
@@ -71,8 +73,8 @@ const CTA = ({ isLoggedIn, onGetStartedClick }) => {
               fontWeight: 400,
             }}
           >
-            Join others who are using Fit-Track to stay consistent with their fitness.
-            No commitments, just simple workout tracking.
+            Join others who are using Fit-Track to stay consistent with their fitness. No
+            commitments, just simple workout tracking.
           </Typography>
 
           {isLoggedIn ? (

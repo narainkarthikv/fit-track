@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-} from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Box } from '@mui/material';
 import NavBar from './components/Navbar/NavBar';
 import Home from './pages/Home';
 import DashBoard from './pages/Dashboard';
@@ -52,14 +47,10 @@ const App = () => {
   };
 
   return (
-    <div className="App">
+    <Box sx={{ flex: 1, width: '100%' }}>
       {/* Only render NavBar if user is logged in */}
       {isLoggedIn && (
-        <NavBar 
-          user={userID} 
-          handleLogout={handleLogout}
-          userDetails={{ userId: userID }}
-        />
+        <NavBar user={userID} handleLogout={handleLogout} userDetails={{ userId: userID }} />
       )}
 
       <Routes>
@@ -68,10 +59,7 @@ const App = () => {
           path="/"
           element={
             !isLoggedIn ? (
-              <DashBoard 
-                isLoggedIn={false} 
-                onAuthSuccess={handleAuthSuccess}
-              />
+              <DashBoard isLoggedIn={false} onAuthSuccess={handleAuthSuccess} />
             ) : (
               <Navigate to="/dashboard" replace />
             )
@@ -89,12 +77,9 @@ const App = () => {
         />
 
         {/* Redirect all undefined routes */}
-        <Route
-          path="*"
-          element={<Navigate to={isLoggedIn ? '/dashboard' : '/'} replace />}
-        />
+        <Route path="*" element={<Navigate to={isLoggedIn ? '/dashboard' : '/'} replace />} />
       </Routes>
-    </div>
+    </Box>
   );
 };
 

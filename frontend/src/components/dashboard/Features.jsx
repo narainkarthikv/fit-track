@@ -5,6 +5,7 @@ import {
   EventNote as FaCalendarPlus,
   Whatshot as FaFire,
   TrendingUp as FaChartLine,
+  Insights as FaInsights,
 } from '@mui/icons-material';
 import {
   Box,
@@ -13,43 +14,53 @@ import {
   Card,
   CardContent,
   Typography,
+  alpha,
+  useTheme,
 } from '@mui/material';
 
 const Features = () => {
+  const theme = useTheme();
   const features = [
     {
       icon: <FaRunning />,
-      title: 'Log Your Workouts',
+      title: 'Log workouts in seconds',
       description:
-        'Record exercises, sets, reps, and weight. Keep everything in one place.',
-      color: '#4CAF50',
+        'Capture sets, reps, weight, and notes without breaking your flow. Everything stays tidy and searchable.',
+      color: '#3B82F6',
     },
     {
       icon: <FaChartLine />,
-      title: 'Monitor Progress',
+      title: 'See progress at a glance',
       description:
-        'See your workout history and patterns. Understand what works for you.',
-      color: '#2196F3',
+        'Trends, streaks, and personal bests surface fast so you know what is working and what to adjust.',
+      color: '#60A5FA',
     },
     {
       icon: <FaFire />,
-      title: 'Stay Consistent',
-      description:
-        'Track your workout streaks. Build the habit of showing up.',
-      color: '#FF6B6B',
+      title: 'Stay consistent',
+      description: 'Gentle nudges and streaks keep you showing up. Motivation without the noise.',
+      color: '#1E40AF',
     },
     {
       icon: <FaCalendarPlus />,
-      title: 'Add Custom Exercises',
-      description: 'Create exercises that match your routine. Flexible and personal.',
-      color: '#FFC837',
+      title: 'Build your routine',
+      description:
+        'Create custom exercises and templates that match how you train, then reuse them anytime.',
+      color: '#2563EB',
     },
     {
       icon: <FaUserCircle />,
-      title: 'Your Personal Space',
+      title: 'Your personal space',
       description:
-        'A dashboard designed for your fitness journey, not anyone else\'s.',
-      color: '#9C27B0',
+        'A focused dashboard built around your goals. No distractions, no comparison feeds.',
+      color: '#38BDF8',
+    },
+    {
+      icon: <FaInsights />,
+      title: 'Smart summaries',
+      description:
+        'Weekly snapshots highlight volume, time, and consistency so you can course-correct fast.',
+      color: '#0EA5E9',
     },
   ];
 
@@ -58,8 +69,29 @@ const Features = () => {
       component="section"
       id="features"
       sx={{
-        py: { xs: 8, md: 10 },
+        py: 'clamp(64px, 9vh, 112px)',
+        scrollMarginTop: { xs: '72px', md: '88px' },
         backgroundColor: 'background.paper',
+        position: 'relative',
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          background: `linear-gradient(180deg, ${alpha(theme.palette.primary.main, 0.08)} 0%, transparent 60%)`,
+          pointerEvents: 'none',
+        },
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          top: '-120px',
+          right: '-80px',
+          width: '320px',
+          height: '320px',
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.14)} 0%, transparent 70%)`,
+          pointerEvents: 'none',
+        },
       }}
     >
       <Container maxWidth="lg">
@@ -76,18 +108,18 @@ const Features = () => {
           >
             What you can do
           </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                color: 'text.secondary',
-                maxWidth: '600px',
-                mx: 'auto',
-                fontSize: { xs: '1rem', md: '1.05rem' },
-                fontWeight: 400,
-              }}
-            >
-              Simple tools to help you track workouts and stay on track
-            </Typography>
+          <Typography
+            variant="h6"
+            sx={{
+              color: 'text.secondary',
+              maxWidth: '600px',
+              mx: 'auto',
+              fontSize: { xs: '1rem', md: '1.05rem' },
+              fontWeight: 400,
+            }}
+          >
+            Focused tools that make it easy to log, review, and stay consistent without the clutter.
+          </Typography>
         </Box>
         {/* Responsive Asymmetric Grid Layout */}
         <Box
@@ -105,19 +137,21 @@ const Features = () => {
           {features.map((feature, idx) => {
             // Define unique grid layouts for asymmetric masonry effect
             const gridAreas = {
-              0: { xs: '1', sm: '1 / span 2', md: '1 / span 5' },      // Hero - Large
-              1: { xs: '1', sm: '1', md: '6 / span 4' },                // Medium
-              2: { xs: '1', sm: '1', md: '10 / span 3' },               // Tall
-              3: { xs: '1', sm: '1', md: '6 / span 4' },                // Medium
-              4: { xs: '1', sm: '1 / span 2', md: '10 / span 3' },      // Wide
+              0: { xs: '1', sm: '1 / span 2', md: '1 / span 6' }, // Hero - Large
+              1: { xs: '1', sm: '1', md: '7 / span 3' }, // Medium
+              2: { xs: '1', sm: '1', md: '10 / span 3' }, // Tall
+              3: { xs: '1', sm: '1', md: '1 / span 4' }, // Medium
+              4: { xs: '1', sm: '1', md: '5 / span 4' }, // Medium
+              5: { xs: '1', sm: '1', md: '9 / span 4' }, // Wide
             };
 
             const minHeights = {
-              0: { xs: 'auto', sm: 'auto', md: '340px' },  // Hero
-              1: { xs: 'auto', sm: 'auto', md: '160px' },   // Medium
-              2: { xs: 'auto', sm: 'auto', md: '340px' },   // Tall
-              3: { xs: 'auto', sm: 'auto', md: '160px' },   // Medium
-              4: { xs: 'auto', sm: 'auto', md: '160px' },   // Wide
+              0: { xs: 'auto', sm: 'auto', md: '360px' }, // Hero
+              1: { xs: 'auto', sm: 'auto', md: '180px' }, // Medium
+              2: { xs: 'auto', sm: 'auto', md: '360px' }, // Tall
+              3: { xs: 'auto', sm: 'auto', md: '180px' }, // Medium
+              4: { xs: 'auto', sm: 'auto', md: '180px' }, // Medium
+              5: { xs: 'auto', sm: 'auto', md: '180px' }, // Wide
             };
 
             const isHero = idx === 0;
@@ -152,9 +186,9 @@ const Features = () => {
                     transition: 'opacity 0.4s ease',
                   },
                   '&:hover': {
-                    transform: { 
-                      xs: 'translateY(-2px)', 
-                      md: isHero ? 'translateY(-6px) scale(1.01)' : 'translateY(-5px)' 
+                    transform: {
+                      xs: 'translateY(-2px)',
+                      md: isHero ? 'translateY(-6px) scale(1.01)' : 'translateY(-5px)',
                     },
                     borderColor: feature.color,
                     boxShadow: {
@@ -170,15 +204,15 @@ const Features = () => {
               >
                 <Box
                   sx={{
-                    width: { 
-                      xs: 52, 
+                    width: {
+                      xs: 52,
                       sm: isHero ? 60 : 52,
-                      md: isHero ? 64 : isTall ? 52 : 48 
+                      md: isHero ? 64 : isTall ? 52 : 48,
                     },
-                    height: { 
-                      xs: 52, 
+                    height: {
+                      xs: 52,
                       sm: isHero ? 60 : 52,
-                      md: isHero ? 64 : isTall ? 52 : 48 
+                      md: isHero ? 64 : isTall ? 52 : 48,
                     },
                     borderRadius: isHero ? 2 : 1.5,
                     backgroundColor: `${feature.color}15`,
@@ -195,16 +229,16 @@ const Features = () => {
                 >
                   {React.cloneElement(feature.icon, {
                     sx: {
-                      fontSize: { 
+                      fontSize: {
                         xs: '1.625rem',
                         sm: isHero ? '1.875rem' : '1.625rem',
-                        md: isHero ? '2rem' : isTall ? '1.75rem' : '1.5rem' 
+                        md: isHero ? '2rem' : isTall ? '1.75rem' : '1.5rem',
                       },
                       color: feature.color,
                     },
                   })}
                 </Box>
-                <CardContent sx={{ p: 0, flex: 1 }}>
+                <CardContent sx={{ p: 0, flex: 1, textAlign: 'center' }}>
                   <Typography
                     variant="h6"
                     component="h3"

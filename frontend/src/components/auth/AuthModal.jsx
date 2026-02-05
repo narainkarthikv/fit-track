@@ -102,6 +102,7 @@ const calculatePasswordStrength = (password = '') => {
 const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const lottieSize = isMobile ? 220 : 300;
   const [mode, setMode] = useState(initialMode);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -191,18 +192,21 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
     setError('');
   }, []);
 
-  const handleSignupInputChange = useCallback((e) => {
-    const { name, value } = e.target;
-    setSignupForm((prev) => ({ ...prev, [name]: value }));
-    setError('');
+  const handleSignupInputChange = useCallback(
+    (e) => {
+      const { name, value } = e.target;
+      setSignupForm((prev) => ({ ...prev, [name]: value }));
+      setError('');
 
-    const filledFields = Object.values({ ...signupForm, [name]: value }).filter(
-      (field) => field !== ''
-    ).length;
-    const newProgress = (filledFields / 4) * 100;
-    setProgress(newProgress);
-    updateProgressMessage(newProgress);
-  }, [signupForm]);
+      const filledFields = Object.values({ ...signupForm, [name]: value }).filter(
+        (field) => field !== ''
+      ).length;
+      const newProgress = (filledFields / 4) * 100;
+      setProgress(newProgress);
+      updateProgressMessage(newProgress);
+    },
+    [signupForm]
+  );
 
   const updateProgressMessage = (progress) => {
     if (progress === 0) setProgressMessage("Let's Get Started!");
@@ -281,7 +285,8 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
     }
 
     if (!passwordStrength.meetsBaseline) {
-      const strengthError = 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.';
+      const strengthError =
+        'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.';
       setError(strengthError);
       setSnackbar({
         show: true,
@@ -356,11 +361,17 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
         maxWidth="lg"
         fullWidth
         scroll="paper"
+        BackdropProps={{
+          sx: {
+            backgroundColor: alpha(theme.palette.background.default, 0.8),
+            backdropFilter: 'blur(10px)',
+          },
+        }}
         PaperProps={{
           sx: {
             borderRadius: { xs: 0, md: 4 },
-            backgroundColor: 'transparent',
-            boxShadow: 'none',
+            backgroundColor: theme.palette.background.paper,
+            boxShadow: { xs: 'none', md: '0 24px 60px rgba(8, 14, 28, 0.55)' },
             overflow: 'hidden',
             maxHeight: '100vh',
           },
@@ -373,6 +384,7 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
             overflowX: 'hidden',
             overflowY: 'auto',
             maxHeight: { xs: '100vh', md: 'calc(100vh - 64px)' },
+            backgroundColor: theme.palette.background.paper,
           }}
         >
           <Box
@@ -403,6 +415,29 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
                 justifyContent: 'space-between',
                 p: { xs: 4, md: 5 },
                 position: 'relative',
+                overflow: 'hidden',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: '-20%',
+                  right: '-10%',
+                  width: 260,
+                  height: 260,
+                  borderRadius: '50%',
+                  background: `radial-gradient(circle, ${alpha('#fff', 0.22)} 0%, transparent 70%)`,
+                  pointerEvents: 'none',
+                },
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  bottom: '-30%',
+                  left: '-15%',
+                  width: 320,
+                  height: 320,
+                  borderRadius: '50%',
+                  background: `radial-gradient(circle, ${alpha('#fff', 0.12)} 0%, transparent 70%)`,
+                  pointerEvents: 'none',
+                },
               }}
             >
               <Stack spacing={2.5} sx={{ zIndex: 1 }}>
@@ -433,7 +468,8 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
                     maxWidth: 360,
                   }}
                 >
-                  Personalized insights, streak tracking, and smart nudges keep you honest with your goals.
+                  Personalized insights, streak tracking, and smart nudges keep you honest with your
+                  goals.
                 </Typography>
                 <Stack spacing={1.5}>
                   {[
@@ -443,15 +479,18 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
                   ].map((item) => (
                     <Box key={item} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <CheckCircleOutline sx={{ fontSize: 18, color: '#fff' }} />
-                      <Typography variant="body2" sx={{ color: alpha('#fff', 0.9), fontWeight: 500 }}>
+                      <Typography
+                        variant="body2"
+                        sx={{ color: alpha('#fff', 0.9), fontWeight: 500 }}
+                      >
                         {item}
                       </Typography>
                     </Box>
                   ))}
                 </Stack>
               </Stack>
-              <Box sx={{ mt: 4, alignSelf: 'center' }}>
-                <Lottie options={lottieOptions} height={220} width={220} />
+              <Box sx={{ mt: 4, alignSelf: 'center', width: lottieSize, height: lottieSize }}>
+                <Lottie options={lottieOptions} height={lottieSize} width={lottieSize} />
               </Box>
             </Box>
 
@@ -735,7 +774,10 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
                               <Box
                                 sx={{
                                   display: 'grid',
-                                  gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' },
+                                  gridTemplateColumns: {
+                                    xs: '1fr',
+                                    sm: 'repeat(2, minmax(0, 1fr))',
+                                  },
                                   gap: 1,
                                   mt: 1,
                                 }}
@@ -751,7 +793,9 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
                                     }}
                                   >
                                     {check.met ? (
-                                      <CheckCircleOutline sx={{ fontSize: 16, color: 'success.main' }} />
+                                      <CheckCircleOutline
+                                        sx={{ fontSize: 16, color: 'success.main' }}
+                                      />
                                     ) : (
                                       <Cancel sx={{ fontSize: 16, color: 'text.disabled' }} />
                                     )}

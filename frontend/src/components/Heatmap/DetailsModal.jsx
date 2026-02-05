@@ -15,9 +15,7 @@ const DetailsModal = ({ showModal, handleClose, selectedValue }) => {
     return { color: 'default', text: 'No Exercise', icon: '💤' };
   };
 
-  const feedback = getFeedbackInfo(
-    selectedValue ? selectedValue.count : defaultValue.count
-  );
+  const feedback = getFeedbackInfo(selectedValue ? selectedValue.count : defaultValue.count);
 
   return (
     <Dialog open={showModal} onClose={handleClose} maxWidth="xs" fullWidth>
@@ -48,7 +46,13 @@ const DetailsModal = ({ showModal, handleClose, selectedValue }) => {
               borderColor: 'divider',
             }}
           >
-            <Stack direction="row" spacing={1} alignItems="center" justifyContent="center" sx={{ mb: 1 }}>
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              justifyContent="center"
+              sx={{ mb: 1 }}
+            >
               <FitnessCenter color="primary" fontSize="small" />
               <Typography variant="body2" color="text.secondary">
                 Exercise Count
@@ -68,7 +72,13 @@ const DetailsModal = ({ showModal, handleClose, selectedValue }) => {
               opacity: 0.9,
             }}
           >
-            <Stack direction="row" spacing={1} alignItems="center" justifyContent="center" sx={{ mb: 1 }}>
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              justifyContent="center"
+              sx={{ mb: 1 }}
+            >
               <EmojiEvents color={feedback.color} fontSize="small" />
               <Typography variant="body2" color="text.secondary">
                 Status

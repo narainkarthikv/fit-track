@@ -4,20 +4,31 @@ import { TrendingUp, CalendarMonth, Whatshot } from '@mui/icons-material';
 
 const ProgressShowcase = () => {
   const theme = useTheme();
-  
+
   const stats = [
-    { label: 'Weekly Trend', value: '+12%', icon: <TrendingUp />, color: '#4CAF50' },
-    { label: 'Current Streak', value: '7 days', icon: <Whatshot />, color: '#FF6B6B' },
-    { label: 'This Month', value: '18 workouts', icon: <CalendarMonth />, color: '#2196F3' },
+    { label: 'Weekly Trend', value: '+12%', icon: <TrendingUp />, color: '#60A5FA' },
+    { label: 'Current Streak', value: '7 days', icon: <Whatshot />, color: '#3B82F6' },
+    { label: 'This Month', value: '18 workouts', icon: <CalendarMonth />, color: '#1E40AF' },
   ];
-  
+
   return (
     <Box
       component="section"
+      id="track-your-progress"
       sx={{
-        py: { xs: 8, md: 10 },
+        py: 'clamp(64px, 9vh, 112px)',
+        scrollMarginTop: { xs: '72px', md: '88px' },
         textAlign: 'center',
         backgroundColor: 'background.default',
+        position: 'relative',
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          background: `linear-gradient(180deg, transparent 0%, ${alpha(theme.palette.primary.main, 0.06)} 100%)`,
+          pointerEvents: 'none',
+        },
       }}
     >
       <Container maxWidth="lg">
@@ -44,10 +55,10 @@ const ProgressShowcase = () => {
             fontWeight: 400,
           }}
         >
-          Visual insights into your workout patterns. See your streaks, 
-          frequency, and trends at a glance.
+          Visual insights into your workout patterns. See your streaks, frequency, and trends at a
+          glance.
         </Typography>
-        
+
         {/* Stats Cards */}
         <Grid container spacing={{ xs: 2, md: 2.5 }} sx={{ mb: { xs: 4, md: 5 } }}>
           {stats.map((stat, idx) => (
@@ -108,7 +119,7 @@ const ProgressShowcase = () => {
             </Grid>
           ))}
         </Grid>
-        
+
         {/* Abstract Heatmap Visualization */}
         <Box
           sx={{
@@ -124,7 +135,7 @@ const ProgressShowcase = () => {
           <Typography
             variant="subtitle2"
             sx={{
-              textAlign: 'left',
+              textAlign: 'center',
               mb: 2,
               color: 'text.secondary',
               fontSize: '0.75rem',
@@ -147,13 +158,14 @@ const ProgressShowcase = () => {
                         width: '100%',
                         height: { xs: '12px', md: '14px' },
                         borderRadius: 0.5,
-                        backgroundColor: intensity > 0.7 
-                          ? alpha(theme.palette.primary.main, 0.8)
-                          : intensity > 0.4
-                          ? alpha(theme.palette.primary.main, 0.4)
-                          : intensity > 0.2
-                          ? alpha(theme.palette.primary.main, 0.2)
-                          : alpha(theme.palette.divider, 0.3),
+                        backgroundColor:
+                          intensity > 0.7
+                            ? alpha(theme.palette.primary.main, 0.8)
+                            : intensity > 0.4
+                              ? alpha(theme.palette.primary.main, 0.4)
+                              : intensity > 0.2
+                                ? alpha(theme.palette.primary.main, 0.2)
+                                : alpha(theme.palette.divider, 0.3),
                         transition: 'all 0.2s ease',
                         '&:hover': {
                           transform: 'scale(1.2)',
@@ -166,7 +178,13 @@ const ProgressShowcase = () => {
               </Stack>
             ))}
           </Stack>
-          <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end" sx={{ mt: 2 }}>
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            justifyContent="flex-end"
+            sx={{ mt: 2 }}
+          >
             <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem' }}>
               Less
             </Typography>

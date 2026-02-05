@@ -63,10 +63,9 @@ export const addExercise = (userID, newExerciseData) => async (dispatch) => {
       newExerciseData,
       getAuthConfig()
     );
-    const selectedMonth = new Date(newExerciseData.date).toLocaleString(
-      'default',
-      { month: 'long' }
-    );
+    const selectedMonth = new Date(newExerciseData.date).toLocaleString('default', {
+      month: 'long',
+    });
 
     // Fetch updated month data after adding exercise
     const updatedMonthResponse = await axios.get(

@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  IconButton,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  Divider,
-} from '@mui/material';
+import { IconButton, Menu, MenuItem, ListItemIcon, Divider } from '@mui/material';
 import {
   AccountCircle as PersonIcon,
   Edit as EditIcon,

@@ -5,6 +5,7 @@ import Features from '../components/dashboard/Features';
 import ProgressShowcase from '../components/dashboard/ProgressShowcase';
 // import Testimonials from '../components/dashboard/Testimonials';
 import CTA from '../components/dashboard/CTA';
+import Contributing from '../components/dashboard/Contributing';
 import Footer from '../components/dashboard/Footer';
 import LandingNav from '../components/dashboard/LandingNav';
 import AuthModal from '../components/auth/AuthModal';
@@ -37,21 +38,16 @@ const DashBoard = ({ isLoggedIn, onAuthSuccess }) => {
           onGetStartedClick={() => handleOpenAuthModal('signup')}
         />
       )}
-      <Hero 
-        isLoggedIn={isLoggedIn} 
-        onGetStartedClick={() => handleOpenAuthModal('signup')}
-      />
+      <Hero isLoggedIn={isLoggedIn} onGetStartedClick={() => handleOpenAuthModal('signup')} />
       <Features />
       <ProgressShowcase />
       {/* <Testimonials /> */}
       <div id="cta">
-        <CTA 
-          isLoggedIn={isLoggedIn}
-          onGetStartedClick={() => handleOpenAuthModal('signup')}
-        />
+        <CTA isLoggedIn={isLoggedIn} onGetStartedClick={() => handleOpenAuthModal('signup')} />
       </div>
+      <Contributing />
       <Footer />
-      
+
       <AuthModal
         open={authModalOpen}
         onClose={handleCloseAuthModal}

@@ -32,12 +32,12 @@ const Hero = ({ isLoggedIn, onGetStartedClick }) => {
     <Box
       component="section"
       sx={{
-        minHeight: { xs: 'auto', md: '90vh' },
+        minHeight: { xs: 'auto', md: '100svh' },
         display: 'flex',
         alignItems: 'center',
         backgroundColor: 'background.default',
-        pt: { xs: 14, md: 12 },
-        pb: { xs: 10, md: 12 },
+        pt: { xs: 12, md: 'clamp(96px, 12vh, 140px)' },
+        pb: { xs: 8, md: 'clamp(72px, 10vh, 120px)' },
         position: 'relative',
         overflow: 'hidden',
         '&::before': {
@@ -66,12 +66,7 @@ const Hero = ({ isLoggedIn, onGetStartedClick }) => {
       }}
     >
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-        <Grid
-          container
-          spacing={0}
-          alignItems="center"
-          justifyContent="center"
-        >
+        <Grid container spacing={0} alignItems="center" justifyContent="center">
           {/* Centered Content */}
           <Grid
             item
@@ -82,7 +77,11 @@ const Hero = ({ isLoggedIn, onGetStartedClick }) => {
               textAlign: 'center',
             }}
           >
-            <Stack spacing={{ xs: 3, md: 3.5 }} alignItems="center" sx={{ maxWidth: '800px', mx: 'auto' }}>
+            <Stack
+              spacing={{ xs: 3, md: 3.5 }}
+              alignItems="center"
+              sx={{ maxWidth: '800px', mx: 'auto' }}
+            >
               <Typography
                 variant="h1"
                 component="h1"
@@ -121,28 +120,27 @@ const Hero = ({ isLoggedIn, onGetStartedClick }) => {
                   mx: 'auto',
                 }}
               >
-                Log workouts, monitor progress, and stay consistent. 
-                A straightforward tool for people serious about their fitness.
+                Log workouts, monitor progress, and stay consistent. A straightforward tool for
+                people serious about their fitness.
               </Typography>
 
               {/* Key Points */}
-              <Stack 
-                direction={{ xs: 'column', sm: 'row' }} 
-                spacing={{ xs: 2, sm: 4 }} 
-                sx={{ 
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                spacing={{ xs: 2, sm: 4 }}
+                sx={{
                   mt: 2,
                   justifyContent: 'center',
                   flexWrap: 'wrap',
                 }}
               >
-                {[
-                  'Track exercises',
-                  'Monitor progress',
-                  'Build habits',
-                ].map((point, idx) => (
+                {['Track exercises', 'Monitor progress', 'Build habits'].map((point, idx) => (
                   <Box key={idx} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <CheckCircleOutline sx={{ color: 'primary.main', fontSize: 18 }} />
-                    <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500, fontSize: '0.9375rem' }}>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: 'text.secondary', fontWeight: 500, fontSize: '0.9375rem' }}
+                    >
                       {point}
                     </Typography>
                   </Box>

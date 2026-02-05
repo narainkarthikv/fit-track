@@ -1,50 +1,42 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, alpha } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#4A90E2',   // Calm blue
-      light: '#6FA8EB',
-      dark: '#357ABD',
+      main: '#3B82F6',
+      light: '#6EA8FF',
+      dark: '#1E4FBF',
     },
     secondary: {
-      main: '#2C3E50',   // Blue-gray slate
-      light: '#3E556B',
-      dark: '#1B2836',
+      main: '#60A5FA',
+      light: '#93C5FD',
+      dark: '#2563EB',
     },
     background: {
-      default: '#0E1621', // Blue-tinted dark
-      paper: '#16202E',
+      default: '#0B1118',
+      paper: '#121B26',
     },
     text: {
-      primary: '#E6EDF3', // Soft white
-      secondary: '#9FB3C8',
+      primary: '#EAF2F6',
+      secondary: '#9FB0C3',
     },
     success: {
-      main: '#4CAF9A',
+      main: '#22C55E',
     },
     error: {
-      main: '#EF5350',
+      main: '#EF4444',
     },
     warning: {
-      main: '#F2A365',
+      main: '#F59E0B',
     },
     info: {
-      main: '#5DA9E9',
+      main: '#3B82F6',
     },
   },
 
   typography: {
-    fontFamily: [
-      'Inter',
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'sans-serif',
-    ].join(','),
+    fontFamily: ['"Sora"', '"Manrope"', 'sans-serif'].join(','),
     h1: {
       fontSize: '3.5rem',
       fontWeight: 700,
@@ -79,32 +71,104 @@ const theme = createTheme({
   },
 
   shape: {
-    borderRadius: 12,
+    borderRadius: 16,
   },
 
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        '*, *::before, *::after': {
+          boxSizing: 'border-box',
+        },
+        html: {
+          scrollBehavior: 'smooth',
+        },
+        body: {
+          minHeight: '100vh',
+          backgroundColor: '#0B1118',
+          backgroundImage:
+            'radial-gradient(circle at top left, rgba(59, 130, 246, 0.2), transparent 35%), radial-gradient(circle at 15% 25%, rgba(96, 165, 250, 0.12), transparent 45%)',
+          color: '#EAF2F6',
+        },
+        '#root': {
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+        },
+        '::selection': {
+          backgroundColor: '#3B82F6',
+          color: '#0B1118',
+        },
+        '::-webkit-scrollbar': {
+          width: '10px',
+          height: '10px',
+        },
+        '::-webkit-scrollbar-track': {
+          background: '#0F1822',
+        },
+        '::-webkit-scrollbar-thumb': {
+          background: '#1F2C3B',
+          borderRadius: '999px',
+        },
+        '::-webkit-scrollbar-thumb:hover': {
+          background: '#2B3B50',
+        },
+        '.react-calendar-heatmap': {
+          width: '100%',
+          height: 'auto',
+        },
+        '.react-calendar-heatmap .react-calendar-heatmap-small-text': {
+          fontSize: '6px',
+          fill: '#9FB0C3',
+        },
+        '.react-calendar-heatmap rect': {
+          rx: 6,
+          ry: 6,
+          transition: 'transform 0.2s ease, fill 0.2s ease',
+        },
+        '.react-calendar-heatmap rect:hover': {
+          transform: 'scale(1.05)',
+          stroke: '#60A5FA',
+          strokeWidth: 1,
+        },
+        '.react-calendar-heatmap .color-empty': {
+          fill: '#1A2532',
+        },
+        '.react-calendar-heatmap .color-scale-1': {
+          fill: '#60A5FA',
+        },
+        '.react-calendar-heatmap .color-scale-2': {
+          fill: '#3B82F6',
+        },
+        '.react-calendar-heatmap .color-scale-3': {
+          fill: '#1E40AF',
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
           textTransform: 'none',
           fontSize: '1rem',
           fontWeight: 600,
-          transition: 'opacity 0.2s ease',
+          borderRadius: 999,
+          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
         },
         contained: {
-          backgroundColor: '#4A90E2',
-          color: '#ffffff',
+          backgroundColor: '#3B82F6',
+          color: '#0B1118',
           '&:hover': {
-            backgroundColor: '#357ABD',
-            opacity: 0.9,
+            backgroundColor: '#2563EB',
+            boxShadow: '0 8px 20px rgba(59, 130, 246, 0.3)',
+            transform: 'translateY(-1px)',
           },
         },
         outlined: {
-          borderColor: '#4A90E2',
-          color: '#4A90E2',
+          borderColor: '#3B82F6',
+          color: '#3B82F6',
           '&:hover': {
-            backgroundColor: 'rgba(74, 144, 226, 0.08)',
-            borderColor: '#357ABD',
+            backgroundColor: 'rgba(59, 130, 246, 0.08)',
+            borderColor: '#2563EB',
           },
         },
       },
@@ -113,12 +177,12 @@ const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: '#16202E',
+          backgroundColor: '#121B26',
           backgroundImage: 'none',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+          boxShadow: '0 8px 20px rgba(6, 12, 18, 0.45)',
           transition: 'box-shadow 0.2s ease',
           '&:hover': {
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+            boxShadow: '0 12px 28px rgba(6, 12, 18, 0.55)',
           },
         },
       },
@@ -128,16 +192,16 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-root': {
-            backgroundColor: '#1F2A3A',
+            backgroundColor: '#0F1822',
             color: '#E6EDF3',
             '& fieldset': {
-              borderColor: '#34495E',
+              borderColor: '#1E2C3C',
             },
             '&:hover fieldset': {
-              borderColor: '#6FA8EB',
+              borderColor: '#3B82F6',
             },
             '&.Mui-focused fieldset': {
-              borderColor: '#4A90E2',
+              borderColor: '#3B82F6',
             },
           },
           '& .MuiInputBase-input::placeholder': {
@@ -159,8 +223,8 @@ const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: '#16202E',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.35)',
+          backgroundColor: '#121B26',
+          boxShadow: '0 6px 18px rgba(6, 12, 18, 0.45)',
         },
       },
     },
@@ -168,7 +232,16 @@ const theme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          backgroundColor: '#16202E',
+          backgroundColor: '#121B26',
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          backgroundImage: 'none',
+          borderRadius: 24,
+          boxShadow: '0 24px 60px rgba(2, 10, 18, 0.65)',
         },
       },
     },

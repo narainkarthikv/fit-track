@@ -8,14 +8,16 @@ const Quotes = ({ quote }) => {
   // Loading state
   if (!quote) {
     return (
-      <Box sx={{ 
-        display: 'flex', 
-        flexDirection: 'column',
-        gap: 2,
-        height: '100%',
-        justifyContent: 'center',
-        width: '100%',
-      }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          height: '100%',
+          justifyContent: 'center',
+          width: '100%',
+        }}
+      >
         <Skeleton variant="text" width="60%" height={24} />
         <Skeleton variant="text" width="100%" height={32} />
         <Skeleton variant="text" width="90%" height={32} />
@@ -27,18 +29,20 @@ const Quotes = ({ quote }) => {
   const { quote: text, author, work } = quote;
 
   return (
-    <Box sx={{ 
-      display: 'flex', 
-      flexDirection: 'column',
-      gap: 2,
-      height: '100%',
-      justifyContent: 'center',
-      position: 'relative',
-      width: '100%',
-    }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        height: '100%',
+        justifyContent: 'center',
+        position: 'relative',
+        width: '100%',
+      }}
+    >
       {/* Opening Quote Mark */}
-      <FormatQuote 
-        sx={{ 
+      <FormatQuote
+        sx={{
           position: 'absolute',
           top: -12,
           left: -12,
@@ -46,13 +50,13 @@ const Quotes = ({ quote }) => {
           color: theme.palette.primary.main,
           opacity: 0.15,
           transform: 'rotate(180deg)',
-        }} 
+        }}
       />
-      
+
       {/* Quote Label */}
-      <Typography 
-        variant="body2" 
-        sx={{ 
+      <Typography
+        variant="body2"
+        sx={{
           color: 'text.secondary',
           fontSize: '0.75rem',
           fontWeight: 600,
@@ -62,10 +66,10 @@ const Quotes = ({ quote }) => {
       >
         Daily Inspiration
       </Typography>
-      
+
       {/* Quote Text */}
-      <Typography 
-        sx={{ 
+      <Typography
+        sx={{
           fontSize: { xs: '0.95rem', md: '1.05rem' },
           lineHeight: 1.7,
           color: 'text.primary',
@@ -77,10 +81,10 @@ const Quotes = ({ quote }) => {
       >
         "{text}"
       </Typography>
-      
+
       {/* Author and Work Attribution */}
-      <Box 
-        sx={{ 
+      <Box
+        sx={{
           display: 'flex',
           flexDirection: 'column',
           gap: 0.5,
@@ -115,17 +119,17 @@ const Quotes = ({ quote }) => {
           </Typography>
         )}
       </Box>
-      
+
       {/* Closing Quote Mark */}
-      <FormatQuote 
-        sx={{ 
+      <FormatQuote
+        sx={{
           position: 'absolute',
           bottom: -12,
           right: -12,
           fontSize: 56,
           color: theme.palette.primary.main,
           opacity: 0.15,
-        }} 
+        }}
       />
     </Box>
   );
