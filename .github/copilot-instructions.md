@@ -1,6 +1,7 @@
 # GitHub Copilot Coding Agent Instructions
 
 ## Purpose
+
 These instructions onboard GitHub Copilot Coding Agent to the Fit-Track repository.
 Follow this document as the single source of truth. Only search the repository if
 information here is missing or incorrect.
@@ -13,6 +14,7 @@ information here is missing or incorrect.
 **MERN stack** (MongoDB, Express, React, Node.js).
 
 It allows users to:
+
 - Log exercises and workouts
 - View activity heatmaps
 - Track fitness progress via analytics
@@ -20,6 +22,7 @@ It allows users to:
 - Authenticate securely using JWT
 
 The repository contains **two primary applications**:
+
 - A React + Vite frontend
 - A Node.js + Express backend API
 
@@ -54,6 +57,7 @@ The project supports **local development** and **Docker-based development**.
 ## Environment Requirements (Always Required)
 
 ### Runtime Versions
+
 - **Node.js**: 18.x or newer (required)
 - **npm**: 9.x or newer
 - **Docker**: Optional but recommended
@@ -62,6 +66,7 @@ The project supports **local development** and **Docker-based development**.
   - OR local MongoDB instance
 
 ### Environment Files
+
 - Root `.env` is required for Docker
 - `backend/.env` is required for backend runtime
 - `frontend/.env` is required for frontend runtime
@@ -78,13 +83,13 @@ The project supports **local development** and **Docker-based development**.
 
 ```bash
 docker-compose up -d --build
-````
+```
 
 Validated:
 
-* Builds frontend and backend successfully
-* Correctly wires environment variables
-* Avoids local Node/Mongo version conflicts
+- Builds frontend and backend successfully
+- Correctly wires environment variables
+- Avoids local Node/Mongo version conflicts
 
 Useful commands:
 
@@ -106,9 +111,9 @@ npm install
 npm run dev
 ```
 
-* Requires `backend/.env`
-* Runs on port `5000`
-* MongoDB connection must succeed or server will crash
+- Requires `backend/.env`
+- Runs on port `5000`
+- MongoDB connection must succeed or server will crash
 
 ⚠️ `npm install` must always be run before `npm run dev`.
 
@@ -122,9 +127,9 @@ npm install
 npm run dev
 ```
 
-* Runs on port `5173`
-* Requires `VITE_API_URL` to point to backend
-* Frontend will fail silently if backend is unreachable
+- Runs on port `5173`
+- Requires `VITE_API_URL` to point to backend
+- Frontend will fail silently if backend is unreachable
 
 ---
 
@@ -135,15 +140,15 @@ cd frontend
 npm run lint
 ```
 
-* ESLint + Prettier
-* Lint failures should be fixed before PR submission
+- ESLint + Prettier
+- Lint failures should be fixed before PR submission
 
 ---
 
 ### Tests
 
-* Frontend tests use **Vitest**
-* Backend tests are not fully implemented yet
+- Frontend tests use **Vitest**
+- Backend tests are not fully implemented yet
 
 ```bash
 cd frontend
@@ -158,8 +163,8 @@ npm test
 
 ### Node Version Mismatch
 
-* Node <18 will cause Vite and dependency failures
-* Always verify:
+- Node <18 will cause Vite and dependency failures
+- Always verify:
 
 ```bash
 node --version
@@ -169,16 +174,16 @@ node --version
 
 ### MongoDB Issues
 
-* `ATLAS_URI` must be valid
-* MongoDB Atlas IP whitelist must allow access
-* Database user must have read/write permissions
+- `ATLAS_URI` must be valid
+- MongoDB Atlas IP whitelist must allow access
+- Database user must have read/write permissions
 
 ---
 
 ### Port Conflicts
 
-* Backend: `5000`
-* Frontend: `5173`
+- Backend: `5000`
+- Frontend: `5173`
 
 If ports are busy:
 
@@ -209,10 +214,10 @@ lsof -i :5173
 
 ### Backend Architecture (`/backend`)
 
-* `server.js` – Express app entry point
-* `models/` – Mongoose schemas
-* `routes/` – API endpoints
-* `middleware/jwtAuth.js` – JWT authentication
+- `server.js` – Express app entry point
+- `models/` – Mongoose schemas
+- `routes/` – API endpoints
+- `middleware/jwtAuth.js` – JWT authentication
 
 API routes are mounted under `/api/*`.
 
@@ -226,19 +231,19 @@ GET /api/health
 
 ### Frontend Architecture (`/frontend`)
 
-* `src/App.jsx` – Root component
-* `src/main.jsx` – Entry point
-* `src/pages/` – Route-level components
-* `src/components/` – UI components grouped by feature
-* `src/slices/` – Redux Toolkit slices
-* `src/store/store.js` – Redux store configuration
-* `src/theme/theme.js` – MUI theme
+- `src/App.jsx` – Root component
+- `src/main.jsx` – Entry point
+- `src/pages/` – Route-level components
+- `src/components/` – UI components grouped by feature
+- `src/slices/` – Redux Toolkit slices
+- `src/store/store.js` – Redux store configuration
+- `src/theme/theme.js` – MUI theme
 
 Frontend uses:
 
-* Functional components only
-* React hooks
-* Redux Toolkit for state
+- Functional components only
+- React hooks
+- Redux Toolkit for state
 
 ---
 
@@ -246,34 +251,34 @@ Frontend uses:
 
 Before submitting changes:
 
-* Frontend must build without errors
-* ESLint must pass
-* App must run locally or via Docker
-* API routes must not break authentication
-* No breaking changes to environment variable names
+- Frontend must build without errors
+- ESLint must pass
+- App must run locally or via Docker
+- API routes must not break authentication
+- No breaking changes to environment variable names
 
 ---
 
 ## Coding Standards (Strict)
 
-* Use **async/await**, not `.then()`
-* Use **functional React components**
-* No class components
-* Follow existing file structure
-* Do not introduce new state libraries
-* Respect Material-UI theming system
-* Max line length: **100 characters**
+- Use **async/await**, not `.then()`
+- Use **functional React components**
+- No class components
+- Follow existing file structure
+- Do not introduce new state libraries
+- Respect Material-UI theming system
+- Max line length: **100 characters**
 
 ---
 
 ## Agent Guidance
 
-* Trust this document first
-* Avoid repository-wide searching unless required
-* Prefer Docker for validation
-* Do not refactor architecture unless explicitly requested
-* Keep PRs focused and minimal
-* Never change environment variable names without updating documentation
+- Trust this document first
+- Avoid repository-wide searching unless required
+- Prefer Docker for validation
+- Do not refactor architecture unless explicitly requested
+- Keep PRs focused and minimal
+- Never change environment variable names without updating documentation
 
 ---
 

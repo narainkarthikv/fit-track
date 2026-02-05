@@ -28,9 +28,7 @@ router.get('/', verifyToken, ensureAdmin, async (req, res) => {
   try {
     const ExerciseData = await Exercise.find({});
     if (!ExerciseData) {
-      return res
-        .status(404)
-        .json({ error: 'Exercise data not found for this ID.' });
+      return res.status(404).json({ error: 'Exercise data not found for this ID.' });
     }
     return res.json(ExerciseData);
   } catch (error) {
@@ -44,9 +42,7 @@ router.get('/:userId/exercises_list', verifyToken, ensureSelf('userId'), async (
   try {
     const exerciseData = await Exercise.findOne({ userId: userId });
     if (!exerciseData) {
-      return res
-        .status(404)
-        .json({ error: 'Exercise data not found for this userId.' });
+      return res.status(404).json({ error: 'Exercise data not found for this userId.' });
     }
     return res.json(exerciseData);
   } catch (error) {
@@ -62,9 +58,7 @@ router.post('/:userId/add', verifyToken, ensureSelf('userId'), async (req, res) 
   try {
     const exercisesData = await Exercise.findOne({ userId: userId });
     if (!exercisesData) {
-      return res
-        .status(404)
-        .json({ message: 'Exercise data not found for this userId.' });
+      return res.status(404).json({ message: 'Exercise data not found for this userId.' });
     }
     const validationError = validateExercisePayload({
       description,
@@ -99,70 +93,58 @@ router.delete(
   verifyToken,
   ensureSelf('userId'),
   async (req, res) => {
-  const { userId, exerciseId } = req.params;
-  try {
-    const exerciseData = await Exercise.findOne({ userId: userId });
-    if (!exerciseData) {
-      return res
-        .status(404)
-        .json({ message: 'Exercise data not found for this userId.' });
-    }
+    const { userId, exerciseId } = req.params;
+    try {
+      const exerciseData = await Exercise.findOne({ userId: userId });
+      if (!exerciseData) {
+        return res.status(404).json({ message: 'Exercise data not found for this userId.' });
+      }
       const exerciseToRemove = exerciseData.Exercises.id(exerciseId);
       if (!exerciseToRemove) {
-        return res
-          .status(404)
-          .json({ message: 'Exercise not found in exercise data.' });
+        return res.status(404).json({ message: 'Exercise not found in exercise data.' });
       }
       exerciseToRemove.deleteOne();
       await exerciseData.save();
       res.json({ message: `${exerciseId} Exercise deleted successfully.` });
-  } catch (error) {
-    console.error('Error deleting Exercise:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
+    } catch (error) {
+      console.error('Error deleting Exercise:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
   }
 );
 
-router.post(
-  '/:userId/track-exercise',
-  verifyToken,
-  ensureSelf('userId'),
-  async (req, res) => {
+router.post('/:userId/track-exercise', verifyToken, ensureSelf('userId'), async (req, res) => {
   const { userId } = req.params;
   const { date, count } = req.body;
 
   try {
-      if (!Number.isFinite(Number(count)) || Number(count) < 0) {
-        return res.status(400).json({ message: 'Invalid count value' });
-      }
+    if (!Number.isFinite(Number(count)) || Number(count) < 0) {
+      return res.status(400).json({ message: 'Invalid count value' });
+    }
 
-      const parsedDate = normalizeDate(date);
-      if (!parsedDate) {
-        return res.status(400).json({ message: 'Invalid date value' });
-      }
+    const parsedDate = normalizeDate(date);
+    if (!parsedDate) {
+      return res.status(400).json({ message: 'Invalid date value' });
+    }
 
     const exerciseData = await Exercise.findOne({ userId: userId });
     if (!exerciseData) {
-      return res
-        .status(404)
-        .json({ message: 'Exercise data not found for this userId.' });
+      return res.status(404).json({ message: 'Exercise data not found for this userId.' });
     }
 
     // Always update the exercise for the given date or add a new entry without restriction
     const existingEntryIndex = exerciseData.trackExercises.findIndex(
-      (entry) =>
-          entry.date &&
-          normalizeDayKey(entry.date) === normalizeDayKey(parsedDate)
+      (entry) => entry.date && normalizeDayKey(entry.date) === normalizeDayKey(parsedDate)
     );
 
     if (existingEntryIndex !== -1) {
       // If an entry exists, update it
-        exerciseData.trackExercises[existingEntryIndex].totalExercises = Number(count);
+      exerciseData.trackExercises[existingEntryIndex].totalExercises = Number(count);
     } else {
       // If no entry exists, add a new one
       exerciseData.trackExercises.push({
-          date: parsedDate,
-          totalExercises: Number(count),
+        date: parsedDate,
+        totalExercises: Number(count),
       });
     }
 
@@ -175,24 +157,19 @@ router.post(
     console.error('Error updating exercise data:', error);
     res.status(500).json({ message: 'Error updating exercise data' });
   }
-  }
-);
+});
 
 // Get exercise data for a specific month
-router.get(
-  '/:userId/data/:month',
-  verifyToken,
-  ensureSelf('userId'),
-  async (req, res) => {
+router.get('/:userId/data/:month', verifyToken, ensureSelf('userId'), async (req, res) => {
   const { month, userId } = req.params;
   try {
     // Parse the month into a date range (start and end of the month)
     const year = new Date().getFullYear();
-      const startDate = new Date(`${month} 1, ${year}`);
-      if (Number.isNaN(startDate.getTime())) {
-        return res.status(400).json({ message: 'Invalid month parameter' });
-      }
-      const endDate = new Date(year, startDate.getMonth() + 1, 0); // last day of the month
+    const startDate = new Date(`${month} 1, ${year}`);
+    if (Number.isNaN(startDate.getTime())) {
+      return res.status(400).json({ message: 'Invalid month parameter' });
+    }
+    const endDate = new Date(year, startDate.getMonth() + 1, 0); // last day of the month
 
     // Find exercises within the date range
     const exerciseData = await Exercise.aggregate([
@@ -227,7 +204,6 @@ router.get(
     console.error('Error fetching exercise data:', error);
     res.status(500).json({ message: 'Error fetching exercise data' });
   }
-  }
-);
+});
 
 module.exports = router;

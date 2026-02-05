@@ -73,9 +73,7 @@ router.post('/add', async (req, res) => {
     const { username, email, password } = req.body;
 
     if (!password || password.length < 6) {
-      return res
-        .status(400)
-        .json({ error: 'Password must be at least 6 characters long' });
+      return res.status(400).json({ error: 'Password must be at least 6 characters long' });
     }
 
     const hashedPassword = await hashPassword(password);
@@ -99,9 +97,7 @@ router.post('/add', async (req, res) => {
     // Save the new exercise to the database
     await newExercise.save();
 
-    res
-      .status(200)
-      .json({ message: 'User created successfully', user: sanitizeUser(newUser) });
+    res.status(200).json({ message: 'User created successfully', user: sanitizeUser(newUser) });
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -152,15 +148,7 @@ async function handlePasswordValid(user, res) {
       //Was this user already active today? If yes, do nothing
 
       //1- Mark today's day of the week as true
-      let newDayCheck = user.dayCheck || [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-      ];
+      let newDayCheck = user.dayCheck || [false, false, false, false, false, false, false];
       const isNewWeek = todayIndex === 0; //if sunday then start fresh
       if (isNewWeek) {
         newDayCheck = [false, false, false, false, false, false, false]; // Start fresh week
@@ -187,15 +175,11 @@ async function handlePasswordValid(user, res) {
       expiresIn: JWT_EXPIRATION,
     });
 
-    res
-      .status(200)
-      .json({ message: 'Login successful', token, user: sanitizeUser(user) });
+    res.status(200).json({ message: 'Login successful', token, user: sanitizeUser(user) });
   } catch (error) {
     console.error('🔴 Error in handlePasswordValid:', error.message);
     console.error(error.stack);
-    res
-      .status(500)
-      .json({ error: 'Internal server error', message: error.message });
+    res.status(500).json({ error: 'Internal server error', message: error.message });
   }
 }
 
@@ -281,19 +265,14 @@ router.put('/:userId/update', verifyToken, ensureSelf('userId'), async (req, res
         return res.status(400).json({ error: 'Current password is required' });
       }
 
-      const isPasswordValid = await verifyAndUpgradePassword(
-        user,
-        currentPassword
-      );
+      const isPasswordValid = await verifyAndUpgradePassword(user, currentPassword);
 
       if (!isPasswordValid) {
         return res.status(401).json({ error: 'Current password is incorrect' });
       }
 
       if (newPassword.length < 6) {
-        return res
-          .status(400)
-          .json({ error: 'New password must be at least 6 characters' });
+        return res.status(400).json({ error: 'New password must be at least 6 characters' });
       }
 
       user.password = await hashPassword(newPassword);
@@ -312,33 +291,26 @@ router.put('/:userId/update', verifyToken, ensureSelf('userId'), async (req, res
 });
 
 // Update totalDays
-router.post(
-  '/:userId/updateTotalDays',
-  verifyToken,
-  ensureSelf('userId'),
-  async (req, res) => {
-    const { userId } = req.params;
-    const { dayCheck } = req.body;
-    try {
-      const user = await User.findById(userId);
-      if (user) {
-        if (!Array.isArray(dayCheck)) {
-          return res.status(400).json({ error: 'dayCheck must be an array' });
-        }
-        const totalDays = dayCheck.filter(Boolean).length;
-        user.totalDays = totalDays;
-        await user.save();
-        res
-          .status(200)
-          .json({ message: 'TotalDays updated successfully', totalDays });
-      } else {
-        res.status(404).json({ message: 'User not found' });
+router.post('/:userId/updateTotalDays', verifyToken, ensureSelf('userId'), async (req, res) => {
+  const { userId } = req.params;
+  const { dayCheck } = req.body;
+  try {
+    const user = await User.findById(userId);
+    if (user) {
+      if (!Array.isArray(dayCheck)) {
+        return res.status(400).json({ error: 'dayCheck must be an array' });
       }
-    } catch (error) {
-      console.error('Error updating totalDays:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      const totalDays = dayCheck.filter(Boolean).length;
+      user.totalDays = totalDays;
+      await user.save();
+      res.status(200).json({ message: 'TotalDays updated successfully', totalDays });
+    } else {
+      res.status(404).json({ message: 'User not found' });
     }
+  } catch (error) {
+    console.error('Error updating totalDays:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
-);
+});
 
 module.exports = router;

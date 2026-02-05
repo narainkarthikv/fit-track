@@ -10,7 +10,7 @@ const port = process.env.PORT || 5000;
 const corsOptions = {
   origin: function (origin, callback) {
     const isDevelopment = process.env.NODE_ENV !== 'production';
-    
+
     // Log requests in development
     if (isDevelopment) {
       console.log(`CORS request from origin: ${origin}`);
@@ -37,24 +37,24 @@ const corsOptions = {
 
     // Production origins from environment variables
     // Format: FRONTEND_URL=https://fit-track.vercel.app,https://fit-track.netlify.app
-    const frontendUrls = process.env.FRONTEND_URL 
-      ? process.env.FRONTEND_URL.split(',').map(url => url.trim())
+    const frontendUrls = process.env.FRONTEND_URL
+      ? process.env.FRONTEND_URL.split(',').map((url) => url.trim())
       : [];
-    
+
     allowedOrigins.push(...frontendUrls);
 
     // GitHub Codespaces support (for development/preview)
     const isCodespacesURL = origin.includes('.github.dev') || origin.includes('.githubpreview.dev');
-    
+
     // Vercel preview deployments (branch previews)
     const isVercelPreview = origin.includes('.vercel.app');
-    
+
     // Netlify preview deployments (branch previews)
     const isNetlifyPreview = origin.includes('.netlify.app');
 
     // Check if origin is allowed
-    const isAllowed = 
-      allowedOrigins.includes(origin) || 
+    const isAllowed =
+      allowedOrigins.includes(origin) ||
       (isDevelopment && isCodespacesURL) ||
       (process.env.ALLOW_VERCEL_PREVIEW === 'true' && isVercelPreview) ||
       (process.env.ALLOW_NETLIFY_PREVIEW === 'true' && isNetlifyPreview);
