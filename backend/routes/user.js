@@ -13,6 +13,8 @@ if (!JWT_SECRET) {
   throw new Error('JWT_SECRET must be defined');
 }
 const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '1d';
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || JWT_SECRET;
+const REFRESH_TOKEN_EXPIRATION = process.env.REFRESH_TOKEN_EXPIRATION || '7d';
 
 const isBcryptHash = (value = '') =>
   value.startsWith('$2a$') || value.startsWith('$2b$') || value.startsWith('$2y$');
@@ -47,6 +49,21 @@ const createTokenPayload = (user) => ({
   id: user._id.toString(),
   email: user.email,
   role: user.role || 'user',
+});
+
+const createAccessToken = (user) =>
+  jwt.sign(createTokenPayload(user), JWT_SECRET, {
+    expiresIn: JWT_EXPIRATION,
+  });
+
+const createRefreshToken = (user) =>
+  jwt.sign(createTokenPayload(user), REFRESH_TOKEN_SECRET, {
+    expiresIn: REFRESH_TOKEN_EXPIRATION,
+  });
+
+const createAuthTokens = (user) => ({
+  token: createAccessToken(user),
+  refreshToken: createRefreshToken(user),
 });
 
 const verifyAndUpgradePassword = async (user, providedPassword) => {
@@ -171,17 +188,48 @@ async function handlePasswordValid(user, res) {
       await user.save();
     }
 
-    const token = jwt.sign(createTokenPayload(user), JWT_SECRET, {
-      expiresIn: JWT_EXPIRATION,
-    });
+    const { token, refreshToken } = createAuthTokens(user);
 
-    res.status(200).json({ message: 'Login successful', token, user: sanitizeUser(user) });
+    res.status(200).json({
+      message: 'Login successful',
+      token,
+      refreshToken,
+      user: sanitizeUser(user),
+    });
   } catch (error) {
     console.error('🔴 Error in handlePasswordValid:', error.message);
     console.error(error.stack);
     res.status(500).json({ error: 'Internal server error', message: error.message });
   }
 }
+
+router.post('/refresh-token', async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.status(401).json({ error: 'Refresh token is required' });
+    }
+
+    const decoded = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const tokens = createAuthTokens(user);
+
+    res.status(200).json({
+      message: 'Token refreshed successfully',
+      token: tokens.token,
+      refreshToken: tokens.refreshToken,
+    });
+  } catch (error) {
+    console.error('Refresh token error:', error.message);
+    return res.status(401).json({ error: 'Invalid or expired refresh token' });
+  }
+});
 
 //fetch streak info
 router.get('/streak/:userID', verifyToken, ensureSelf('userID'), async (req, res) => {

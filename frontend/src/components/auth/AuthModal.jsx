@@ -37,6 +37,7 @@ import Lottie from 'react-lottie';
 import loginAnimation from '../../assets/lottie/login-lottie.json';
 import signupAnimation from '../../assets/lottie/signup-lottie.json';
 import Snackbar from '../common/Snackbar';
+import { setAccessToken, setRefreshToken } from '../../utils/api';
 
 const passwordChecks = [
   {
@@ -241,7 +242,11 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
       }
 
       if (data.token) {
-        localStorage.setItem('token', data.token);
+        setAccessToken(data.token);
+      }
+
+      if (data.refreshToken) {
+        setRefreshToken(data.refreshToken);
       }
 
       const authenticatedUser = data.user;
@@ -298,7 +303,8 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
 
     setIsSubmitting(true);
 
-    const { confirmpassword, ...formData } = signupForm;
+    const formData = { ...signupForm };
+    delete formData.confirmpassword;
 
     try {
       const response = await fetch(`${backendURL}/api/user/add`, {

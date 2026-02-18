@@ -6,6 +6,9 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme/theme';
 import store from './store/store';
+import { initializeAxiosAuthInterceptor } from './utils/axiosAuthInterceptor';
+
+initializeAxiosAuthInterceptor();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

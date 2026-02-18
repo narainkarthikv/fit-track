@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
 import NavBar from './components/Navbar/NavBar';
 import Home from './pages/Home';
 import DashBoard from './pages/Dashboard';
+import {
+  USER_ID_KEY,
+  clearAuthStorage,
+  getAccessToken,
+} from './utils/api';
 
 // Private Route wrapper component
 const PrivateRoute = ({ isLoggedIn, children }) => {
@@ -23,26 +28,36 @@ const App = () => {
 
   // Check for existing session on mount
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const storedUserId = localStorage.getItem('userId');
+    const token = getAccessToken();
+    const storedUserId = localStorage.getItem(USER_ID_KEY);
     if (token && storedUserId) {
       setIsLoggedIn(true);
       setUserID(storedUserId);
     }
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     setIsLoggedIn(false);
     setUserID('');
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
+    clearAuthStorage();
     navigate('/');
-  };
+  }, [navigate]);
+
+  useEffect(() => {
+    const logoutListener = () => {
+      handleLogout();
+    };
+
+    window.addEventListener('auth:logout', logoutListener);
+    return () => {
+      window.removeEventListener('auth:logout', logoutListener);
+    };
+  }, [handleLogout]);
 
   const handleAuthSuccess = (userId) => {
     setIsLoggedIn(true);
     setUserID(userId);
-    localStorage.setItem('userId', userId);
+    localStorage.setItem(USER_ID_KEY, userId);
     navigate('/dashboard');
   };
 
