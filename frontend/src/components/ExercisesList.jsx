@@ -71,7 +71,34 @@ const ExercisesList = ({ userID, title = "Today's Exercises" }) => {
           variant={formVisible ? 'outlined' : 'contained'}
           startIcon={formVisible ? <Close /> : <Add />}
           onClick={() => setFormVisible((prev) => !prev)}
-          sx={{ borderRadius: 8, fontWeight: 600 }}
+          sx={{
+            borderRadius: 8,
+            fontWeight: 600,
+            ...(formVisible
+              ? {
+                  borderColor: 'divider',
+                  color: 'text.primary',
+                  '&:hover': {
+                    borderColor: 'primary.main',
+                    backgroundColor: 'action.hover',
+                  },
+                }
+              : {
+                  backgroundColor: 'primary.main',
+                  color: 'text.inverse',
+                  '&:hover': {
+                    backgroundColor: 'primary.dark',
+                  },
+                  '&:active': {
+                    backgroundColor: 'primary.dark',
+                  },
+                }),
+            '&:focus-visible': {
+              outline: '2px solid',
+              outlineColor: 'primary.light',
+              outlineOffset: 2,
+            },
+          }}
         >
           {formVisible ? 'Close' : 'Add Exercise'}
         </Button>

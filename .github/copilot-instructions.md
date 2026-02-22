@@ -259,6 +259,12 @@ Before submitting changes:
 
 ---
 
+## Design System & UI Guidelines
+
+Refer to `design-system.md` for detailed design tokens, color palette, typography, and component patterns. When implementing UI components, always reference the design system for consistency. 
+
+---
+
 ## Coding Standards (Strict)
 
 - Use **async/await**, not `.then()`

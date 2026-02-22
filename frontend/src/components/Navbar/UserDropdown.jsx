@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { IconButton, Menu, MenuItem, ListItemIcon, Divider } from '@mui/material';
 import {
   AccountCircle as PersonIcon,
@@ -7,8 +7,8 @@ import {
 } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 
-const UserDropdown = ({ user, handleLogout, onEditProfileClick }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const UserDropdown = ({ handleLogout, onEditProfileClick }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -36,7 +36,13 @@ const UserDropdown = ({ user, handleLogout, onEditProfileClick }) => {
       <IconButton
         onClick={handleClick}
         size="small"
-        sx={{ ml: 2 }}
+        sx={{
+          ml: 2,
+          color: 'text.secondary',
+          '&:hover': {
+            color: 'primary.main',
+          },
+        }}
         aria-controls={open ? 'account-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
@@ -51,21 +57,42 @@ const UserDropdown = ({ user, handleLogout, onEditProfileClick }) => {
         onClick={handleClose}
         PaperProps={{
           sx: {
-            backgroundColor: '#1a1a1a',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+            backgroundColor: 'background.paper',
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 2,
+            boxShadow: 6,
           },
         }}
       >
-        <MenuItem onClick={handleEditProfile}>
+        <MenuItem
+          onClick={handleEditProfile}
+          sx={{
+            py: 1.25,
+            px: 1.5,
+            '&:hover': {
+              backgroundColor: 'action.hover',
+            },
+          }}
+        >
           <ListItemIcon>
             <EditIcon fontSize="small" sx={{ color: 'primary.main' }} />
           </ListItemIcon>
           Edit Profile
         </MenuItem>
         <Divider sx={{ my: 0.5 }} />
-        <MenuItem onClick={handleLogoutClick}>
+        <MenuItem
+          onClick={handleLogoutClick}
+          sx={{
+            py: 1.25,
+            px: 1.5,
+            '&:hover': {
+              backgroundColor: 'action.hover',
+            },
+          }}
+        >
           <ListItemIcon>
-            <LogoutIcon fontSize="small" sx={{ color: '#FF6B6B' }} />
+            <LogoutIcon fontSize="small" sx={{ color: 'error.main' }} />
           </ListItemIcon>
           Logout
         </MenuItem>
@@ -75,7 +102,6 @@ const UserDropdown = ({ user, handleLogout, onEditProfileClick }) => {
 };
 
 UserDropdown.propTypes = {
-  user: PropTypes.string.isRequired,
   handleLogout: PropTypes.func.isRequired,
   onEditProfileClick: PropTypes.func,
 };

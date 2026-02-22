@@ -21,7 +21,7 @@ PrivateRoute.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const App = () => {
+const App = ({ themeMode, onToggleTheme }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userID, setUserID] = useState('');
   const navigate = useNavigate();
@@ -65,7 +65,13 @@ const App = () => {
     <Box sx={{ flex: 1, width: '100%' }}>
       {/* Only render NavBar if user is logged in */}
       {isLoggedIn && (
-        <NavBar user={userID} handleLogout={handleLogout} userDetails={{ userId: userID }} />
+        <NavBar
+          user={userID}
+          handleLogout={handleLogout}
+          userDetails={{ userId: userID }}
+          themeMode={themeMode}
+          onToggleTheme={onToggleTheme}
+        />
       )}
 
       <Routes>
@@ -98,10 +104,20 @@ const App = () => {
   );
 };
 
-const WrappedApp = () => (
+App.propTypes = {
+  themeMode: PropTypes.oneOf(['light', 'dark']).isRequired,
+  onToggleTheme: PropTypes.func.isRequired,
+};
+
+const WrappedApp = ({ themeMode, onToggleTheme }) => (
   <BrowserRouter>
-    <App />
+    <App themeMode={themeMode} onToggleTheme={onToggleTheme} />
   </BrowserRouter>
 );
+
+WrappedApp.propTypes = {
+  themeMode: PropTypes.oneOf(['light', 'dark']).isRequired,
+  onToggleTheme: PropTypes.func.isRequired,
+};
 
 export default WrappedApp;
