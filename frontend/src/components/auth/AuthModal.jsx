@@ -380,6 +380,7 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
             boxShadow: { xs: 'none', md: '0 24px 60px rgba(8, 14, 28, 0.55)' },
             overflow: 'hidden',
             maxHeight: '100vh',
+            border: 'none',
           },
         }}
       >
