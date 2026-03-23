@@ -21,8 +21,6 @@ import {
   Chip,
 } from '@mui/material';
 import {
-  DirectionsRun as FaRunning,
-  FitnessCenter as FaDumbbell,
   Person as FaUser,
   Email as FaEnvelope,
   Lock as FaLock,
@@ -376,9 +374,9 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
         PaperProps={{
           sx: {
             borderRadius: { xs: 0, md: 4 },
-            backgroundColor: theme.palette.background.paper,
-            boxShadow: { xs: 'none', md: '0 24px 60px rgba(8, 14, 28, 0.55)' },
-            overflow: 'hidden',
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
+            overflow: 'visible',
             maxHeight: '100vh',
           },
         }}
@@ -390,7 +388,7 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
             overflowX: 'hidden',
             overflowY: 'auto',
             maxHeight: { xs: '100vh', md: 'calc(100vh - 64px)' },
-            backgroundColor: theme.palette.background.paper,
+            backgroundColor: 'transparent',
           }}
         >
           <Box
@@ -398,13 +396,14 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
               width: '100%',
               maxWidth: 1180,
               mx: 'auto',
-              my: { xs: 0, md: 6 },
+              my: 0,
               borderRadius: { xs: 0, md: 4 },
               overflow: 'hidden',
-              boxShadow: { xs: 'none', md: '0 30px 60px rgba(15, 23, 42, 0.35)' },
+              boxShadow: { xs: 'none', md: '0 24px 56px rgba(8, 14, 28, 0.42)' },
               display: 'flex',
               flexDirection: { xs: 'column', md: 'row' },
               backgroundColor: 'background.paper',
+              backgroundClip: 'padding-box',
               minHeight: { xs: '100vh', md: 620 },
             }}
           >
