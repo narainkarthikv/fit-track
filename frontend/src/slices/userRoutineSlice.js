@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { getAuthConfig } from '../utils/api';
 
 const backendURL = import.meta.env.VITE_API_URL;
 
@@ -38,32 +39,25 @@ const userRoutineSlice = createSlice({
   },
 });
 
-export const {
-  setDayCheck,
-  updateTotalDaysSuccess,
-  updateTotalDaysFailure,
-  setStatus,
-} = userRoutineSlice.actions;
+export const { setDayCheck, updateTotalDaysSuccess, updateTotalDaysFailure, setStatus } =
+  userRoutineSlice.actions;
 
-export const updateTotalDays =
-  (userID, updatedDayCheck) => async (dispatch) => {
-    dispatch(setStatus('loading'));
-    try {
-      const url = `${backendURL}/api/user/${userID}/updateTotalDays`;
-      console.log(url); // Verify URL
+export const updateTotalDays = (userID, updatedDayCheck) => async (dispatch) => {
+  dispatch(setStatus('loading'));
+  try {
+    const url = `${backendURL}/api/user/${userID}/updateTotalDays`;
 
-      // Make the API call
-      const response = await axios.post(url, { dayCheck: updatedDayCheck });
+    const response = await axios.post(url, { dayCheck: updatedDayCheck }, getAuthConfig());
 
-      // Extract updated totalDays from the response
-      const { totalDays } = response.data;
+    // Extract updated totalDays from the response
+    const { totalDays } = response.data;
 
-      dispatch(setDayCheck({ userID, dayCheck: updatedDayCheck }));
-      dispatch(updateTotalDaysSuccess({ userID, totalDays }));
-    } catch (error) {
-      console.error('Error in updateTotalDays:', error);
-      dispatch(updateTotalDaysFailure(error.toString()));
-    }
-  };
+    dispatch(setDayCheck({ userID, dayCheck: updatedDayCheck }));
+    dispatch(updateTotalDaysSuccess({ userID, totalDays }));
+  } catch (error) {
+    console.error('Error in updateTotalDays:', error);
+    dispatch(updateTotalDaysFailure(error.toString()));
+  }
+};
 
 export default userRoutineSlice.reducer;

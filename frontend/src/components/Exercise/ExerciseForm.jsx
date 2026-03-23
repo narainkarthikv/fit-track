@@ -1,15 +1,19 @@
 import React from 'react';
-import { TextField, Checkbox, FormControlLabel, Button, Box, Stack } from '@mui/material';
+import {
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  Button,
+  Box,
+  Stack,
+  TableRow,
+  TableCell,
+} from '@mui/material';
 import { Add, Close } from '@mui/icons-material';
 
-const ExerciseForm = ({
-  newExerciseData,
-  handleChange,
-  handleAdd,
-  setFormVisible,
-}) => (
-  <tr style={{ backgroundColor: 'rgba(255, 255, 255, 0.02)' }}>
-    <td colSpan={4} style={{ padding: '16px 12px' }}>
+const ExerciseForm = ({ newExerciseData, handleChange, handleAdd, setFormVisible }) => (
+  <TableRow sx={{ backgroundColor: 'rgba(255, 255, 255, 0.02)' }}>
+    <TableCell colSpan={4} sx={{ py: 2 }}>
       <Box component="form" onSubmit={handleAdd} sx={{ width: '100%' }}>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center">
           <TextField
@@ -20,7 +24,7 @@ const ExerciseForm = ({
             onChange={handleChange}
             required
             fullWidth
-            sx={{ 
+            sx={{
               minWidth: 150,
               '& .MuiOutlinedInput-root': {
                 backgroundColor: 'rgba(255, 255, 255, 0.05)',
@@ -47,7 +51,7 @@ const ExerciseForm = ({
             required
             inputProps={{ min: 1 }}
             fullWidth
-            sx={{ 
+            sx={{
               minWidth: 120,
               maxWidth: 150,
               '& .MuiOutlinedInput-root': {
@@ -93,30 +97,46 @@ const ExerciseForm = ({
               startIcon={<Close />}
               onClick={() => setFormVisible(false)}
               sx={{
-                borderColor: 'rgba(255, 255, 255, 0.2)',
-                color: 'text.secondary',
+                borderColor: 'divider',
+                color: 'text.primary',
                 borderRadius: '8px',
                 '&:hover': {
-                  borderColor: 'error.main',
-                  backgroundColor: 'rgba(239, 83, 80, 0.1)',
-                  color: 'error.main',
+                  borderColor: 'primary.main',
+                  backgroundColor: 'action.hover',
+                },
+                '&:focus-visible': {
+                  outline: '2px solid',
+                  outlineColor: 'primary.light',
+                  outlineOffset: 2,
                 },
               }}
             >
               Cancel
             </Button>
-            <Button 
-              type="submit" 
-              variant="contained" 
+            <Button
+              type="submit"
+              variant="contained"
               size="small"
               startIcon={<Add />}
               sx={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                 borderRadius: '8px',
                 fontWeight: 600,
+                backgroundColor: 'primary.main',
+                color: 'text.inverse',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #5568d3 0%, #63408b 100%)',
-                  boxShadow: '0 4px 12px rgba(102, 126, 234, 0.4)',
+                  backgroundColor: 'primary.dark',
+                },
+                '&:active': {
+                  backgroundColor: 'primary.dark',
+                },
+                '&:focus-visible': {
+                  outline: '2px solid',
+                  outlineColor: 'primary.light',
+                  outlineOffset: 2,
+                },
+                '&.Mui-disabled': {
+                  backgroundColor: 'action.disabledBackground',
+                  color: 'text.disabled',
                 },
               }}
             >
@@ -125,8 +145,8 @@ const ExerciseForm = ({
           </Stack>
         </Stack>
       </Box>
-    </td>
-  </tr>
+    </TableCell>
+  </TableRow>
 );
 
 export default ExerciseForm;

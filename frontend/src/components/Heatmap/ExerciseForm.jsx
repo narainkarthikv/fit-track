@@ -1,13 +1,8 @@
 import React from 'react';
-import { TextField, Box, Stack, Typography, InputAdornment } from '@mui/material';
+import { TextField, Box, Stack, Typography } from '@mui/material';
 import { CalendarMonth, FitnessCenter } from '@mui/icons-material';
 
-const ExerciseForm = ({
-  exerciseDate,
-  setExerciseDate,
-  newExerciseCount,
-  setNewExerciseCount,
-}) => {
+const ExerciseForm = ({ exerciseDate, setExerciseDate, newExerciseCount, setNewExerciseCount }) => {
   return (
     <Box component="form" sx={{ py: 2 }}>
       <Stack spacing={3}>
@@ -24,7 +19,7 @@ const ExerciseForm = ({
             value={exerciseDate}
             onChange={(e) => setExerciseDate(e.target.value)}
             fullWidth
-            size="large"
+            size="medium"
             sx={{
               '& .MuiInputBase-root': {
                 bgcolor: 'background.paper',
@@ -46,7 +41,7 @@ const ExerciseForm = ({
             value={newExerciseCount}
             onChange={(e) => setNewExerciseCount(Number(e.target.value) || 0)}
             fullWidth
-            size="large"
+            size="medium"
             placeholder="Enter exercise count"
             sx={{
               '& .MuiInputBase-root': {

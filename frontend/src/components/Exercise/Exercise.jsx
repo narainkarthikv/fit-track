@@ -1,41 +1,44 @@
-import { IconButton, Chip, Tooltip, Box } from '@mui/material';
+import { IconButton, Chip, Tooltip, Box, TableRow, TableCell, Typography } from '@mui/material';
 import { CheckCircle, Cancel, Delete } from '@mui/icons-material';
 
 const Exercise = ({ deleteExercise, exercise }) => {
   return (
-    <tr 
-      style={{ 
-        borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+    <TableRow
+      hover
+      sx={{
+        borderBottom: '1px solid',
+        borderColor: 'rgba(255, 255, 255, 0.05)',
         transition: 'background-color 0.2s ease',
+        '&:hover': {
+          backgroundColor: 'rgba(255, 255, 255, 0.02)',
+        },
       }}
-      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.02)'}
-      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
     >
-      <td style={{ 
-        padding: '16px 12px',
-        color: 'rgba(255, 255, 255, 0.9)',
-        fontSize: '0.95rem',
-        fontWeight: 500,
-      }}>
+      <TableCell
+        sx={{
+          py: 1.75,
+          color: 'text.primary',
+          fontSize: '0.95rem',
+          fontWeight: 500,
+        }}
+      >
         {exercise.description}
-      </td>
-      <td style={{ 
-        padding: '16px 12px',
-        color: 'rgba(255, 255, 255, 0.7)',
-        fontSize: '0.9rem',
-      }}>
+      </TableCell>
+      <TableCell sx={{ py: 1.75, color: 'text.secondary', fontSize: '0.9rem' }}>
         <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
           {exercise.duration}
-          <span style={{ fontSize: '0.8rem', opacity: 0.6 }}>min</span>
+          <Typography component="span" variant="caption" sx={{ opacity: 0.6 }}>
+            min
+          </Typography>
         </Box>
-      </td>
-      <td style={{ padding: '16px 12px' }}>
+      </TableCell>
+      <TableCell sx={{ py: 1.75 }}>
         {exercise.exerciseCheck ? (
-          <Chip 
+          <Chip
             icon={<CheckCircle sx={{ fontSize: 16 }} />}
             label="Done"
             size="small"
-            sx={{ 
+            sx={{
               backgroundColor: 'rgba(46, 125, 50, 0.15)',
               color: '#66bb6a',
               border: '1px solid rgba(102, 187, 106, 0.3)',
@@ -45,11 +48,11 @@ const Exercise = ({ deleteExercise, exercise }) => {
             }}
           />
         ) : (
-          <Chip 
+          <Chip
             icon={<Cancel sx={{ fontSize: 16 }} />}
             label="Pending"
             size="small"
-            sx={{ 
+            sx={{
               backgroundColor: 'rgba(211, 47, 47, 0.1)',
               color: '#ef5350',
               border: '1px solid rgba(239, 83, 80, 0.3)',
@@ -59,15 +62,15 @@ const Exercise = ({ deleteExercise, exercise }) => {
             }}
           />
         )}
-      </td>
-      <td style={{ padding: '16px 12px' }}>
+      </TableCell>
+      <TableCell sx={{ py: 1.75 }}>
         <Tooltip title="Delete exercise" arrow>
           <IconButton
             size="small"
             onClick={() => deleteExercise(exercise._id)}
-            sx={{ 
+            sx={{
               color: 'rgba(255, 255, 255, 0.5)',
-              '&:hover': { 
+              '&:hover': {
                 backgroundColor: 'rgba(239, 83, 80, 0.15)',
                 color: '#ef5350',
               },
@@ -77,8 +80,8 @@ const Exercise = ({ deleteExercise, exercise }) => {
             <Delete sx={{ fontSize: 18 }} />
           </IconButton>
         </Tooltip>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

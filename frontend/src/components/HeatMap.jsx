@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
-import 'react-calendar-heatmap/dist/styles.css';
-import './Heatmap/Heatmap.css';
+import { Box, Paper, Stack, Typography, CircularProgress, alpha, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMonthData, addExercise } from '../slices/heatMapSlice';
 import HeatmapControls from './Heatmap/HeatmapControls';
@@ -10,13 +9,11 @@ import DetailsModal from './Heatmap/DetailsModal';
 
 const HeatMap = ({ userID }) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const userMonthData = useSelector((state) => state.heatMap.userMonthData);
   const status = useSelector((state) => state.heatMap.status);
-  
-  const monthData = useMemo(
-    () => userMonthData?.[userID] || [],
-    [userMonthData, userID]
-  );
+
+  const monthData = useMemo(() => userMonthData?.[userID] || [], [userMonthData, userID]);
 
   // Set the default month to the current month
   const [selectedMonth, setSelectedMonth] = useState(() =>
@@ -26,9 +23,7 @@ const HeatMap = ({ userID }) => {
   const [showModal, setShowModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [newExerciseCount, setNewExerciseCount] = useState(0);
-  const [exerciseDate, setExerciseDate] = useState(
-    new Date().toISOString().split('T')[0]
-  );
+  const [exerciseDate, setExerciseDate] = useState(new Date().toISOString().split('T')[0]);
 
   const months = Array.from({ length: 12 }, (_, index) =>
     new Date(0, index).toLocaleString('default', { month: 'long' })
@@ -84,7 +79,9 @@ const HeatMap = ({ userID }) => {
       : [];
 
     return status === 'loading' ? (
-      <p>Loading...</p>
+      <Typography variant="body2" color="text.secondary">
+        Loading...
+      </Typography>
     ) : (
       <CalendarHeatmap
         startDate={startDate}
@@ -104,27 +101,70 @@ const HeatMap = ({ userID }) => {
   };
 
   return (
-    <div className="d-flex font-weight-bold flex-column justify-content-center align-items-center p-4 bg-light rounded-3 shadow-sm">
-      <HeatmapControls
-        selectedMonth={selectedMonth}
-        setSelectedMonth={setSelectedMonth}
-        handleAddExercise={handleAddExercise}
-        months={months}
-      />
+    <Paper
+      elevation={0}
+      sx={{
+        p: { xs: 2, md: 3 },
+        borderRadius: 3,
+        border: '1px solid',
+        borderColor: alpha(theme.palette.primary.main, 0.12),
+        backgroundImage:
+          'linear-gradient(135deg, rgba(39, 198, 184, 0.08) 0%, rgba(18, 27, 38, 0.2) 45%, rgba(255, 181, 71, 0.08) 100%)',
+      }}
+    >
+      <Stack spacing={2.5} alignItems="stretch">
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '1.125rem' }}>
+            Activity Heatmap
+          </Typography>
+          <Box sx={{ ml: { sm: 'auto' }, width: { xs: '100%', sm: 'auto' } }}>
+            <HeatmapControls
+              selectedMonth={selectedMonth}
+              setSelectedMonth={setSelectedMonth}
+              handleAddExercise={handleAddExercise}
+              months={months}
+              compact
+            />
+          </Box>
+        </Box>
 
-      <div
-        className="heatmap-container position-relative my-4"
-        style={{ width: '100%', maxWidth: '800px' }}
-      >
-        {status === 'loading' ? (
-          <div className="position-absolute w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        ) : null}
-        {renderCalendarHeatmap()}
-      </div>
+        <Box
+          sx={{
+            position: 'relative',
+            width: '100%',
+            borderRadius: 3,
+            p: { xs: 1, md: 2 },
+            backgroundColor: alpha(theme.palette.background.paper, 0.6),
+            border: '1px solid',
+            borderColor: 'divider',
+            overflowX: 'auto',
+          }}
+        >
+          {status === 'loading' && (
+            <Box
+              sx={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: alpha(theme.palette.background.default, 0.6),
+                zIndex: 1,
+              }}
+            >
+              <CircularProgress size={36} />
+            </Box>
+          )}
+          {renderCalendarHeatmap()}
+        </Box>
+      </Stack>
 
       <DetailsModal
         showModal={showModal}
@@ -141,7 +181,7 @@ const HeatMap = ({ userID }) => {
         newExerciseCount={newExerciseCount}
         setNewExerciseCount={setNewExerciseCount}
       />
-    </div>
+    </Paper>
   );
 };
 

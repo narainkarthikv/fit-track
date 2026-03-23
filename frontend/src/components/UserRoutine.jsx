@@ -1,20 +1,16 @@
 import { updateTotalDays } from '../slices/userRoutineSlice';
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Chip } from '@mui/material';
-import { Whatshot as FireIcon, CheckCircle as CheckCircleIcon, SentimentDissatisfied } from '@mui/icons-material';
+import {
+  Whatshot as FireIcon,
+  CheckCircle as CheckCircleIcon,
+  SentimentDissatisfied,
+} from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 const UserRoutine = ({ userID }) => {
-  const [dayCheck, setDayCheck] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
+  const [dayCheck, setDayCheck] = useState([false, false, false, false, false, false, false]);
   const [streak, setStreak] = useState(0);
   const [weeklyStreakValue, setWeeklyStreakValue] = useState(0);
   const [msg, setMsg] = useState('');
@@ -66,70 +62,83 @@ const UserRoutine = ({ userID }) => {
   const today = new Date().getDay();
 
   return (
-    <Box sx={{ 
-      display: 'flex', 
-      flexDirection: 'column',
-      height: '100%',
-      gap: 2.5,
-    }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        gap: 2.5,
+      }}
+    >
       {/* Streak Card */}
-      <Box sx={{ 
-        background: 'linear-gradient(135deg, #FFC837 0%, #FF8008 100%)',
-        borderRadius: '16px',
-        p: 3,
-        textAlign: 'center',
-        boxShadow: '0 8px 24px rgba(255, 200, 55, 0.25)',
-        position: 'relative',
-        overflow: 'hidden',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 50%)',
-        }
-      }}>
-        <Box sx={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center', 
-          gap: 1,
-          mb: 0.5,
+      <Box
+        sx={{
+          background: 'linear-gradient(135deg, #FFC837 0%, #FF8008 100%)',
+          borderRadius: '16px',
+          p: 3,
+          textAlign: 'center',
+          boxShadow: '0 8px 24px rgba(255, 200, 55, 0.25)',
           position: 'relative',
-        }}>
-          <FireIcon sx={{ 
-            fontSize: 36, 
-            color: '#dc3545',
-            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
-          }} />
-          <Typography sx={{ 
-            fontSize: '3rem',
-            fontWeight: 900,
-            color: '#1a1a1a',
-            lineHeight: 1,
-            textShadow: '0 2px 4px rgba(0,0,0,0.1)',
-          }}>
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background:
+              'radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 50%)',
+          },
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 1,
+            mb: 0.5,
+            position: 'relative',
+          }}
+        >
+          <FireIcon
+            sx={{
+              fontSize: 36,
+              color: '#dc3545',
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+            }}
+          />
+          <Typography
+            sx={{
+              fontSize: '3rem',
+              fontWeight: 900,
+              color: '#1a1a1a',
+              lineHeight: 1,
+              textShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            }}
+          >
             {streak}
           </Typography>
         </Box>
-        <Typography sx={{ 
-          fontSize: '1rem',
-          fontWeight: 700,
-          color: '#1a1a1a',
-          textTransform: 'uppercase',
-          letterSpacing: '1px',
-        }}>
+        <Typography
+          sx={{
+            fontSize: '1rem',
+            fontWeight: 700,
+            color: '#1a1a1a',
+            textTransform: 'uppercase',
+            letterSpacing: '1px',
+          }}
+        >
           day streak!
         </Typography>
       </Box>
 
       {/* Weekdays Section */}
       <Box>
-        <Typography 
-          variant="body2" 
-          sx={{ 
+        <Typography
+          variant="body2"
+          sx={{
             color: 'text.secondary',
             fontSize: '0.75rem',
             fontWeight: 600,
@@ -140,13 +149,15 @@ const UserRoutine = ({ userID }) => {
         >
           This Week
         </Typography>
-        
+
         {/* Weekday Labels */}
-        <Box sx={{ 
-          display: 'flex', 
-          justifyContent: 'space-between',
-          mb: 2,
-        }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            mb: 2,
+          }}
+        >
           {weekdays.map((day, index) => (
             <Box
               key={index}
@@ -158,41 +169,49 @@ const UserRoutine = ({ userID }) => {
                 width: '38px',
               }}
             >
-              <Typography sx={{
-                fontSize: '0.85rem',
-                fontWeight: index === today ? 700 : 500,
-                color: index === today ? 'primary.main' : 'text.secondary',
-                transition: 'all 0.2s ease',
-              }}>
+              <Typography
+                sx={{
+                  fontSize: '0.85rem',
+                  fontWeight: index === today ? 700 : 500,
+                  color: index === today ? 'primary.main' : 'text.secondary',
+                  transition: 'all 0.2s ease',
+                }}
+              >
                 {day}
               </Typography>
               {dayCheck[index] ? (
-                <CheckCircleIcon sx={{ 
-                  color: '#FFC837', 
-                  fontSize: 20,
-                  filter: 'drop-shadow(0 2px 4px rgba(255, 200, 55, 0.4))',
-                }} />
+                <CheckCircleIcon
+                  sx={{
+                    color: '#FFC837',
+                    fontSize: 20,
+                    filter: 'drop-shadow(0 2px 4px rgba(255, 200, 55, 0.4))',
+                  }}
+                />
               ) : (
-                <Box sx={{
-                  width: 20,
-                  height: 20,
-                  borderRadius: '50%',
-                  border: '2px solid',
-                  borderColor: 'rgba(255, 255, 255, 0.1)',
-                }} />
+                <Box
+                  sx={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: '50%',
+                    border: '2px solid',
+                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                  }}
+                />
               )}
             </Box>
           ))}
         </Box>
 
         {/* Progress Bar */}
-        <Box sx={{ 
-          height: '6px',
-          backgroundColor: 'rgba(255, 255, 255, 0.08)',
-          borderRadius: '3px',
-          overflow: 'hidden',
-          mb: 2,
-        }}>
+        <Box
+          sx={{
+            height: '6px',
+            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+            borderRadius: '3px',
+            overflow: 'hidden',
+            mb: 2,
+          }}
+        >
           <Box
             sx={{
               height: '100%',

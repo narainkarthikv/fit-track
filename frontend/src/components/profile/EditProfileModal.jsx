@@ -27,7 +27,14 @@ import {
 } from '@mui/icons-material';
 import Snackbar from '../common/Snackbar';
 
-const EditProfileModal = ({ open, onClose, userId, currentUsername, currentEmail, onProfileUpdated }) => {
+const EditProfileModal = ({
+  open,
+  onClose,
+  userId,
+  currentUsername,
+  currentEmail,
+  onProfileUpdated,
+}) => {
   const theme = useTheme();
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -53,7 +60,7 @@ const EditProfileModal = ({ open, onClose, userId, currentUsername, currentEmail
   // Initialize form with current user data
   useEffect(() => {
     if (open && currentUsername && currentEmail) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         username: currentUsername,
         email: currentEmail,
@@ -104,7 +111,7 @@ const EditProfileModal = ({ open, onClose, userId, currentUsername, currentEmail
 
     try {
       const token = localStorage.getItem('token');
-      
+
       const updateData = {
         username: formData.username,
         email: formData.email,
@@ -138,7 +145,7 @@ const EditProfileModal = ({ open, onClose, userId, currentUsername, currentEmail
       });
 
       // Clear password fields
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         currentPassword: '',
         newPassword: '',

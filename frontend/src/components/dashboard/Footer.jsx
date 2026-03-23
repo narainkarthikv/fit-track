@@ -16,13 +16,13 @@ const Footer = () => (
       <Box sx={{ py: 6 }}>
         <Stack
           direction={{ xs: 'column', md: 'row' }}
-          spacing={{ xs: 3, md: 0 }}
+          spacing={{ xs: 3, md: 4 }}
           justifyContent="space-between"
-          alignItems={{ xs: 'center', md: 'flex-start' }}
-          sx={{ mb: 4 }}
+          alignItems={{ xs: 'left', md: 'left' }}
+          sx={{ mb: 4, textAlign: 'left' }}
         >
           {/* Brand */}
-          <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+          <Box sx={{ textAlign: 'left' }}>
             <Typography
               variant="h6"
               sx={{
@@ -38,9 +38,10 @@ const Footer = () => (
               sx={{
                 color: 'text.secondary',
                 maxWidth: '280px',
+                mx: 'auto',
               }}
             >
-              Simple workout tracking for consistent progress.
+              A focused training log built to keep you consistent and motivated.
             </Typography>
           </Box>
 
@@ -48,7 +49,7 @@ const Footer = () => (
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             spacing={{ xs: 2, sm: 4 }}
-            sx={{ textAlign: { xs: 'center', md: 'left' } }}
+            sx={{ textAlign: 'left' }}
           >
             <Box>
               <Typography
@@ -121,7 +122,7 @@ const Footer = () => (
                     '&:hover': { color: 'primary.main' },
                   }}
                 >
-                  Documentation
+                  Docs & repo
                 </Link>
                 <Link
                   href="https://github.com/narainkarthikv/fit-track/issues"
@@ -134,7 +135,48 @@ const Footer = () => (
                     '&:hover': { color: 'primary.main' },
                   }}
                 >
-                  Report Issue
+                  Report an issue
+                </Link>
+              </Stack>
+            </Box>
+
+            <Box>
+              <Typography
+                variant="subtitle2"
+                sx={{
+                  fontWeight: 600,
+                  mb: 1.5,
+                  color: 'text.primary',
+                }}
+              >
+                Community
+              </Typography>
+              <Stack spacing={1}>
+                <Link
+                  href="https://github.com/narainkarthikv/fit-track/blob/develop/CONTRIBUTING.md"
+                  target="_blank"
+                  rel="noopener"
+                  underline="none"
+                  sx={{
+                    color: 'text.secondary',
+                    fontSize: '0.875rem',
+                    '&:hover': { color: 'primary.main' },
+                  }}
+                >
+                  Contributing
+                </Link>
+                <Link
+                  href="https://github.com/narainkarthikv/fit-track"
+                  target="_blank"
+                  rel="noopener"
+                  underline="none"
+                  sx={{
+                    color: 'text.secondary',
+                    fontSize: '0.875rem',
+                    '&:hover': { color: 'primary.main' },
+                  }}
+                >
+                  Star on GitHub
                 </Link>
               </Stack>
             </Box>
@@ -148,7 +190,8 @@ const Footer = () => (
           direction={{ xs: 'column', sm: 'row' }}
           spacing={2}
           justifyContent="space-between"
-          alignItems="center"
+          alignItems="left"
+          sx={{ textAlign: 'left' }}
         >
           <Typography
             variant="body2"
@@ -157,7 +200,7 @@ const Footer = () => (
               fontSize: '0.875rem',
             }}
           >
-            © {new Date().getFullYear()} Fit-Track. Open source and free to use.
+            © {new Date().getFullYear()} Fit-Track. Built in the open for athletes who care.
           </Typography>
 
           <Stack direction="row" spacing={2}>

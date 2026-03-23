@@ -30,13 +30,14 @@ body {
 }
 
 code {
-  font-family:
-    source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 /* Smooth transitions */
 * {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 /* Scrollbar styling */
@@ -50,25 +51,23 @@ code {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #357ABD;
+  background: #357abd;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4A90E2;
+  background: #4a90e2;
 }
 
 /* Selection styling */
 ::selection {
-  background: #FF8C00;
+  background: #ff8c00;
   color: #fff;
 }
 
 ::-moz-selection {
-  background: #FF8C00;
+  background: #ff8c00;
   color: #fff;
-}
-  box-shadow: 0 6px 25px rgba(255, 87, 34, 0.6);
 }
 
 .text-shadow {

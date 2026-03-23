@@ -20,7 +20,9 @@ const Home = () => {
           </Card>
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
-          <Card sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Card
+            sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
             <Quotes />
           </Card>
         </Grid>
@@ -50,7 +52,15 @@ const Home = () => {
       <Grid container>
         <Grid item xs={12}>
           <Card>
-            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: { md: 'center' }, justifyContent: 'space-between', mb: 2 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', md: 'row' },
+                alignItems: { md: 'center' },
+                justifyContent: 'space-between',
+                mb: 2,
+              }}
+            >
               <Typography variant="h5" sx={{ fontWeight: 600, mb: { xs: 2, md: 0 } }}>
                 Exercises
               </Typography>

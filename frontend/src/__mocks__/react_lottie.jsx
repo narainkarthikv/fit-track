@@ -2,11 +2,7 @@
 import PropTypes from 'prop-types';
 
 const Lottie = (props) => {
-  return (
-    <div data-testid="lottie-mock">
-      {props.animationData ? 'Lottie Animation' : null}
-    </div>
-  );
+  return <div data-testid="lottie-mock">{props.animationData ? 'Lottie Animation' : null}</div>;
 };
 
 Lottie.propTypes = {

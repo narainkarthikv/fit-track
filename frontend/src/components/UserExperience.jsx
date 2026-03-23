@@ -3,19 +3,21 @@ import { EmojiEvents } from '@mui/icons-material';
 
 const UserExperience = ({ userDetails }) => {
   const xpPercentage = Math.min((userDetails.xp / 100) * 100, 100);
-  
+
   return (
-    <Box sx={{ 
-      display: 'flex', 
-      flexDirection: 'column',
-      gap: 2,
-      height: '100%',
-      justifyContent: 'center',
-    }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        height: '100%',
+        justifyContent: 'center',
+      }}
+    >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-        <Avatar 
-          sx={{ 
-            width: 48, 
+        <Avatar
+          sx={{
+            width: 48,
             height: 48,
             bgcolor: 'primary.main',
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -24,9 +26,9 @@ const UserExperience = ({ userDetails }) => {
           {userDetails.username?.charAt(0).toUpperCase() || 'U'}
         </Avatar>
         <Box sx={{ flexGrow: 1 }}>
-          <Typography 
-            variant="body2" 
-            sx={{ 
+          <Typography
+            variant="body2"
+            sx={{
               color: 'text.secondary',
               fontSize: '0.75rem',
               fontWeight: 500,
@@ -36,9 +38,9 @@ const UserExperience = ({ userDetails }) => {
           >
             Welcome back
           </Typography>
-          <Typography 
-            variant="h6" 
-            sx={{ 
+          <Typography
+            variant="h6"
+            sx={{
               fontWeight: 700,
               fontSize: '1.1rem',
               color: 'text.primary',
@@ -49,14 +51,14 @@ const UserExperience = ({ userDetails }) => {
           </Typography>
         </Box>
       </Box>
-      
+
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             <EmojiEvents sx={{ fontSize: 16, color: '#ffd700' }} />
-            <Typography 
-              variant="body2" 
-              sx={{ 
+            <Typography
+              variant="body2"
+              sx={{
                 fontSize: '0.85rem',
                 fontWeight: 600,
                 color: 'text.secondary',
@@ -65,9 +67,9 @@ const UserExperience = ({ userDetails }) => {
               Experience
             </Typography>
           </Box>
-          <Typography 
-            variant="body2" 
-            sx={{ 
+          <Typography
+            variant="body2"
+            sx={{
               fontSize: '0.9rem',
               fontWeight: 700,
               color: 'primary.main',
@@ -76,10 +78,10 @@ const UserExperience = ({ userDetails }) => {
             {userDetails.xp} XP
           </Typography>
         </Box>
-        <LinearProgress 
-          variant="determinate" 
-          value={xpPercentage} 
-          sx={{ 
+        <LinearProgress
+          variant="determinate"
+          value={xpPercentage}
+          sx={{
             height: 8,
             borderRadius: 4,
             backgroundColor: 'rgba(255, 255, 255, 0.08)',
@@ -89,9 +91,9 @@ const UserExperience = ({ userDetails }) => {
             },
           }}
         />
-        <Typography 
-          variant="caption" 
-          sx={{ 
+        <Typography
+          variant="caption"
+          sx={{
             fontSize: '0.7rem',
             color: 'text.secondary',
             mt: 0.5,

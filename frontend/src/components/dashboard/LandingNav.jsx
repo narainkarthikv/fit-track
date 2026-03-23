@@ -14,7 +14,7 @@ import { FitnessCenter as FaDumbbell } from '@mui/icons-material';
 
 const LandingNav = ({ onSignInClick, onGetStartedClick }) => {
   const theme = useTheme();
-  
+
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 50,
@@ -25,9 +25,7 @@ const LandingNav = ({ onSignInClick, onGetStartedClick }) => {
       position="fixed"
       elevation={trigger ? 2 : 0}
       sx={{
-        backgroundColor: trigger
-          ? alpha(theme.palette.background.paper, 0.95)
-          : 'transparent',
+        backgroundColor: trigger ? alpha(theme.palette.background.paper, 0.95) : 'transparent',
         backdropFilter: trigger ? 'blur(10px)' : 'none',
         borderBottom: trigger ? `1px solid ${theme.palette.divider}` : 'none',
         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',

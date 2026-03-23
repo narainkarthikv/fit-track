@@ -14,6 +14,11 @@ const userSchema = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, trim: true },
     totalDays: { type: Number, default: 0 },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user',
+    },
 
     //New fields for automatic streak tracking
     dayCheck: {

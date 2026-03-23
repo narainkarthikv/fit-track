@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
@@ -8,6 +8,7 @@ import {
   Container,
   Box,
   IconButton,
+  Tooltip,
   Drawer,
   List,
   ListItem,
@@ -15,7 +16,12 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { FitnessCenter as FaDumbbell, Menu as MenuIcon } from '@mui/icons-material';
+import {
+  FitnessCenter as FaDumbbell,
+  Menu as MenuIcon,
+  LightMode as LightModeIcon,
+  DarkMode as DarkModeIcon,
+} from '@mui/icons-material';
 import NotificationDropdown from './NotificationDropdown';
 import UserDropdown from './UserDropdown';
 import EditProfileModal from '../profile/EditProfileModal';
@@ -25,6 +31,8 @@ const NavBar = ({
   handleLogout,
   notifications = [],
   toggleNotificationReadStatus = () => {},
+  themeMode,
+  onToggleTheme,
 }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [editProfileOpen, setEditProfileOpen] = useState(false);
@@ -66,7 +74,7 @@ const NavBar = ({
   };
 
   const handleProfileUpdated = (updatedData) => {
-    setUserDetails(prev => ({
+    setUserDetails((prev) => ({
       ...prev,
       username: updatedData.username,
       email: updatedData.email,
@@ -77,14 +85,32 @@ const NavBar = ({
     <Box sx={{ width: 250, p: 2 }}>
       <List>
         <ListItem>
+          <Tooltip title={themeMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+            <IconButton
+              aria-label={themeMode === 'dark' ? 'switch to light mode' : 'switch to dark mode'}
+              onClick={onToggleTheme}
+              sx={{
+                color: 'text.secondary',
+                '&:hover': { color: 'primary.main' },
+                '&:focus-visible': {
+                  outline: '2px solid',
+                  outlineColor: 'primary.light',
+                  outlineOffset: 2,
+                },
+              }}
+            >
+              {themeMode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+            </IconButton>
+          </Tooltip>
+        </ListItem>
+        <ListItem>
           <NotificationDropdown
             notifications={notifications}
             toggleNotificationReadStatus={toggleNotificationReadStatus}
           />
         </ListItem>
         <ListItem>
-          <UserDropdown 
-            user={user} 
+          <UserDropdown
             handleLogout={handleLogout}
             onEditProfileClick={handleEditProfileClick}
           />
@@ -130,12 +156,32 @@ const NavBar = ({
             {/* Desktop Navigation */}
             {!isMobile && (
               <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                <Tooltip
+                  title={themeMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                >
+                  <IconButton
+                    aria-label={
+                      themeMode === 'dark' ? 'switch to light mode' : 'switch to dark mode'
+                    }
+                    onClick={onToggleTheme}
+                    sx={{
+                      color: 'text.secondary',
+                      '&:hover': { color: 'primary.main' },
+                      '&:focus-visible': {
+                        outline: '2px solid',
+                        outlineColor: 'primary.light',
+                        outlineOffset: 2,
+                      },
+                    }}
+                  >
+                    {themeMode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+                  </IconButton>
+                </Tooltip>
                 <NotificationDropdown
                   notifications={notifications}
                   toggleNotificationReadStatus={toggleNotificationReadStatus}
                 />
-                <UserDropdown 
-                  user={user} 
+                <UserDropdown
                   handleLogout={handleLogout}
                   onEditProfileClick={handleEditProfileClick}
                 />
@@ -164,7 +210,7 @@ const NavBar = ({
           onClose={handleDrawerToggle}
           PaperProps={{
             sx: {
-              backgroundColor: '#1a1a1a',
+              backgroundColor: 'background.paper',
             },
           }}
         >
@@ -196,6 +242,8 @@ NavBar.propTypes = {
     })
   ),
   toggleNotificationReadStatus: PropTypes.func,
+  themeMode: PropTypes.oneOf(['light', 'dark']).isRequired,
+  onToggleTheme: PropTypes.func.isRequired,
 };
 
 export default NavBar;

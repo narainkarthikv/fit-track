@@ -53,6 +53,7 @@ docker-compose logs -f
 ```
 
 **Access the application:**
+
 - **Frontend**: http://localhost:5173
 - **Backend API**: http://localhost:5000
 - **Health Check**: http://localhost:5000/api/health
@@ -150,6 +151,7 @@ The application will be available at **http://localhost:5173**
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **React 18** - Modern UI library
 - **Vite** - Lightning-fast build tool
 - **Redux Toolkit** - State management
@@ -162,6 +164,7 @@ The application will be available at **http://localhost:5173**
 - **Vitest** - Testing framework
 
 ### Backend
+
 - **Node.js** - JavaScript runtime
 - **Express.js** - Web framework
 - **MongoDB** - NoSQL database
@@ -171,6 +174,7 @@ The application will be available at **http://localhost:5173**
 - **CORS** - Cross-origin resource sharing
 
 ### DevOps
+
 - **Docker** - Containerization
 - **Docker Compose** - Multi-container orchestration
 - **GitHub Actions** - CI/CD pipelines
@@ -359,6 +363,18 @@ npm test
   - `docs: update installation guide`
   - `refactor: optimize heatmap rendering`
 
+### Formatting (Prettier)
+
+Run these from the repository root so Prettier checks both frontend and backend:
+
+```bash
+# Check formatting
+npx prettier --check .
+
+# Write formatting fixes
+npx prettier --write .
+```
+
 ### API Endpoints
 
 #### Authentication
@@ -446,6 +462,7 @@ For detailed guidelines, see [CONTRIBUTING.md](./CONTRIBUTING.md)
 #### Docker Issues
 
 **Containers won't start:**
+
 ```bash
 # Check Docker daemon is running
 docker ps
@@ -459,6 +476,7 @@ docker-compose up -d --build
 ```
 
 **Port conflicts:**
+
 ```bash
 # Check what's using the ports
 lsof -i :5000   # Backend
@@ -470,6 +488,7 @@ kill -9 $(lsof -ti:5173)
 ```
 
 **Hot reload not working:**
+
 ```bash
 # Rebuild without cache
 docker-compose up -d --build --no-cache
@@ -482,16 +501,19 @@ ls -la frontend/
 #### Local Development Issues
 
 **MongoDB connection failed:**
+
 - Verify `ATLAS_URI` is correct in `.env`
 - Check MongoDB Atlas IP whitelist (allow 0.0.0.0/0 for development)
 - Ensure database user has read/write permissions
 
 **Frontend can't connect to backend:**
+
 - Verify `VITE_API_URL` in frontend `.env`
 - Check backend is running on correct port
 - Verify CORS is enabled in `server.js`
 
 **Dependencies issues:**
+
 ```bash
 # Clear npm cache and reinstall
 npm cache clean --force
@@ -500,6 +522,7 @@ npm install
 ```
 
 **Build errors:**
+
 ```bash
 # Check Node.js version (should be 18+)
 node --version
@@ -510,6 +533,7 @@ npm run dev
 ```
 
 **JWT authentication fails:**
+
 - Ensure `JWT_SECRET` is set in backend `.env`
 - Check token is included in request headers
 - Verify token hasn't expired
@@ -599,4 +623,4 @@ Want to help build these features? Check out our [Contributing Guide](./CONTRIBU
 
 **Built with ❤️ by the Wisdom Fox community**
 
-*Let's build the best fitness tracker together! 🚀*
+_Let's build the best fitness tracker together! 🚀_
