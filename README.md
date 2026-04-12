@@ -4,11 +4,11 @@
 [![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/fit-track)](https://github.com/narainkarthikv/fit-track/issues)
 [![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/fit-track)](https://github.com/narainkarthikv/fit-track/stargazers)
 
-# 🏃‍♂️ Fit-Track
+# 🏃‍♂️FitProgressr 
 
 **Your complete fitness journey companion built with the MERN stack.**
 
-Fit-Track is a powerful, open-source fitness logging application that helps you track workouts, visualize progress, and stay motivated. Built with modern web technologies and designed for fitness enthusiasts of all levels.
+FitProgressr is a powerful, open-source fitness logging application that helps you track workouts, visualize progress, and stay motivated. Built with modern web technologies and designed for fitness enthusiasts of all levels.
 
 ## ✨ Features
 
@@ -39,7 +39,7 @@ Get the entire application running in seconds:
 ```bash
 # Clone the repository
 git clone https://github.com/narainkarthikv/fit-track.git
-cd fit-track
+cd FitProgressr
 
 # Configure environment variables
 cp .env.example .env
@@ -554,7 +554,7 @@ npm run dev
 
 ## 👥 Contributors
 
-Thanks to everyone who has helped make Fit-Track awesome! 💪
+Thanks to everyone who has helped make FitProgressr awesome! 💪
 
 <a href="https://github.com/narainkarthikv/fit-track/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=narainkarthikv/fit-track" alt="Contributors" />
@@ -576,7 +576,7 @@ This project is licensed under the **MIT License** - see [MIT-LICENSE.txt](./MIT
 
 ## 🌟 Show Your Support
 
-If Fit-Track helps you on your fitness journey:
+If FitProgressr helps you on your fitness journey:
 
 - ⭐ Star the repository
 - 🐛 Report issues you encounter
