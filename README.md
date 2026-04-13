@@ -4,7 +4,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/fit-track)](https://github.com/narainkarthikv/fit-track/issues)
 [![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/fit-track)](https://github.com/narainkarthikv/fit-track/stargazers)
 
-# 🏃‍♂️FitProgressr 
+# 🏃‍♂️ FitProgressr
 
 **Your complete fitness journey companion built with the MERN stack.**
 
@@ -524,8 +524,10 @@ npm install
 **Build errors:**
 
 ```bash
-# Check Node.js version (should be 18+)
-node --version
+git clone https://github.com/narainkarthikv/FitProgressr.git
+cd FitProgressr
+cp .env.example .env
+docker-compose up -d --build
 
 # Clear Vite cache
 rm -rf .vite node_modules/.vite
@@ -587,10 +589,9 @@ If FitProgressr helps you on your fitness journey:
 
 ## 🔗 Links
 
-- **Live Demo**: [fit-track.vercel.app](https://wisdomfox-fit-track.netlify.app/)
-- **Repository**: [github.com/narainkarthikv/fit-track](https://github.com/narainkarthikv/fit-track)
-- **Issues**: [github.com/narainkarthikv/fit-track/issues](https://github.com/narainkarthikv/fit-track/issues)
-- **Discussions**: [github.com/narainkarthikv/fit-track/discussions](https://github.com/narainkarthikv/fit-track/discussions)
+- Repository: https://github.com/narainkarthikv/FitProgressr
+- Issues: https://github.com/narainkarthikv/FitProgressr/issues
+- Discussions: https://github.com/narainkarthikv/FitProgressr/discussions
 
 Want to help build these features? Check out our [Contributing Guide](./CONTRIBUTING.md)!
 
