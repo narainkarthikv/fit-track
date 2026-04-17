@@ -4,11 +4,11 @@
 [![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/fit-track)](https://github.com/narainkarthikv/fit-track/issues)
 [![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/fit-track)](https://github.com/narainkarthikv/fit-track/stargazers)
 
-# 🏃‍♂️ Fit-Track
+# 🏃‍♂️ FitProgressr
 
 **Your complete fitness journey companion built with the MERN stack.**
 
-Fit-Track is a powerful, open-source fitness logging application that helps you track workouts, visualize progress, and stay motivated. Built with modern web technologies and designed for fitness enthusiasts of all levels.
+FitProgressr is a powerful, open-source fitness logging application that helps you track workouts, visualize progress, and stay motivated. Built with modern web technologies and designed for fitness enthusiasts of all levels.
 
 ## ✨ Features
 
@@ -39,7 +39,7 @@ Get the entire application running in seconds:
 ```bash
 # Clone the repository
 git clone https://github.com/narainkarthikv/fit-track.git
-cd fit-track
+cd FitProgressr
 
 # Configure environment variables
 cp .env.example .env
@@ -524,8 +524,10 @@ npm install
 **Build errors:**
 
 ```bash
-# Check Node.js version (should be 18+)
-node --version
+git clone https://github.com/narainkarthikv/FitProgressr.git
+cd FitProgressr
+cp .env.example .env
+docker-compose up -d --build
 
 # Clear Vite cache
 rm -rf .vite node_modules/.vite
@@ -554,7 +556,7 @@ npm run dev
 
 ## 👥 Contributors
 
-Thanks to everyone who has helped make Fit-Track awesome! 💪
+Thanks to everyone who has helped make FitProgressr awesome! 💪
 
 <a href="https://github.com/narainkarthikv/fit-track/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=narainkarthikv/fit-track" alt="Contributors" />
@@ -576,7 +578,7 @@ This project is licensed under the **MIT License** - see [MIT-LICENSE.txt](./MIT
 
 ## 🌟 Show Your Support
 
-If Fit-Track helps you on your fitness journey:
+If FitProgressr helps you on your fitness journey:
 
 - ⭐ Star the repository
 - 🐛 Report issues you encounter
@@ -587,10 +589,9 @@ If Fit-Track helps you on your fitness journey:
 
 ## 🔗 Links
 
-- **Live Demo**: [fit-track.vercel.app](https://wisdomfox-fit-track.netlify.app/)
-- **Repository**: [github.com/narainkarthikv/fit-track](https://github.com/narainkarthikv/fit-track)
-- **Issues**: [github.com/narainkarthikv/fit-track/issues](https://github.com/narainkarthikv/fit-track/issues)
-- **Discussions**: [github.com/narainkarthikv/fit-track/discussions](https://github.com/narainkarthikv/fit-track/discussions)
+- Repository: https://github.com/narainkarthikv/FitProgressr
+- Issues: https://github.com/narainkarthikv/FitProgressr/issues
+- Discussions: https://github.com/narainkarthikv/FitProgressr/discussions
 
 Want to help build these features? Check out our [Contributing Guide](./CONTRIBUTING.md)!
 
