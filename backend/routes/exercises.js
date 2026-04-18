@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Exercise = require('../models/exercise.model');
+const mongoose = require('mongoose');
 const verifyToken = require('../middleware/jwtAuth.js');
 const { ensureAdmin, ensureSelf } = require('../middleware/accessControl');
 
@@ -10,6 +11,19 @@ const normalizeDate = (value) => {
 };
 
 const normalizeDayKey = (date) => date.toISOString().split('T')[0];
+const toObjectId = (value) =>
+  mongoose.Types.ObjectId.isValid(value) ? new mongoose.Types.ObjectId(value) : null;
+
+const buildUserIdFilter = (userId) => {
+  const objectId = toObjectId(userId);
+  if (!objectId) {
+    return { $expr: { $eq: [{ $toString: '$userId' }, userId] } };
+  }
+
+  return {
+    $or: [{ userId: objectId }, { $expr: { $eq: [{ $toString: '$userId' }, userId] } }],
+  };
+};
 
 const validateExercisePayload = ({ description, duration, exerciseCheck }) => {
   if (!description || typeof description !== 'string') {
@@ -40,7 +54,7 @@ router.get('/', verifyToken, ensureAdmin, async (req, res) => {
 router.get('/:userId/exercises_list', verifyToken, ensureSelf('userId'), async (req, res) => {
   const { userId } = req.params;
   try {
-    const exerciseData = await Exercise.findOne({ userId: userId });
+    const exerciseData = await Exercise.findOne(buildUserIdFilter(userId));
     if (!exerciseData) {
       return res.status(404).json({ error: 'Exercise data not found for this userId.' });
     }
@@ -56,7 +70,7 @@ router.post('/:userId/add', verifyToken, ensureSelf('userId'), async (req, res) 
   const { description, duration, exerciseCheck } = req.body;
 
   try {
-    const exercisesData = await Exercise.findOne({ userId: userId });
+    const exercisesData = await Exercise.findOne(buildUserIdFilter(userId));
     if (!exercisesData) {
       return res.status(404).json({ message: 'Exercise data not found for this userId.' });
     }
@@ -95,7 +109,7 @@ router.delete(
   async (req, res) => {
     const { userId, exerciseId } = req.params;
     try {
-      const exerciseData = await Exercise.findOne({ userId: userId });
+      const exerciseData = await Exercise.findOne(buildUserIdFilter(userId));
       if (!exerciseData) {
         return res.status(404).json({ message: 'Exercise data not found for this userId.' });
       }
@@ -127,7 +141,7 @@ router.post('/:userId/track-exercise', verifyToken, ensureSelf('userId'), async 
       return res.status(400).json({ message: 'Invalid date value' });
     }
 
-    const exerciseData = await Exercise.findOne({ userId: userId });
+    const exerciseData = await Exercise.findOne(buildUserIdFilter(userId));
     if (!exerciseData) {
       return res.status(404).json({ message: 'Exercise data not found for this userId.' });
     }
@@ -171,6 +185,13 @@ router.get('/:userId/data/:month', verifyToken, ensureSelf('userId'), async (req
     }
     const endDate = new Date(year, startDate.getMonth() + 1, 0); // last day of the month
 
+    const userIdObject = toObjectId(userId);
+    const userIdMatch = userIdObject
+      ? {
+          $or: [{ $eq: ['$userId', userIdObject] }, { $eq: [{ $toString: '$userId' }, userId] }],
+        }
+      : { $eq: [{ $toString: '$userId' }, userId] };
+
     // Find exercises within the date range
     const exerciseData = await Exercise.aggregate([
       {
@@ -182,7 +203,7 @@ router.get('/:userId/data/:month', verifyToken, ensureSelf('userId'), async (req
             $gte: startDate,
             $lt: new Date(endDate.getTime() + 24 * 60 * 60 * 1000), // inclusive of last day
           },
-          userId: userId,
+          $expr: userIdMatch,
         },
       },
       {

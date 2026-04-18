@@ -535,7 +535,7 @@ const AuthModal = ({ open, onClose, initialMode = 'login', onAuthSuccess }) => {
               >
                 <Stack spacing={1} sx={{ mb: 2.5 }}>
                   <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                    {mode === 'login' ? 'Welcome back' : 'Create your Fit-Track account'}
+                    {mode === 'login' ? 'Welcome back' : 'Create your FitProgressr account'}
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     {mode === 'login'

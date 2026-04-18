@@ -81,7 +81,7 @@ const Contributing = () => {
               lineHeight: 1.7,
             }}
           >
-            Fit-Track stays free, always. It grows through community energy, thoughtful feedback,
+            FitProgressr stays free, always. It grows through community energy, thoughtful feedback,
             and small contributions that make a big difference.
           </Typography>
         </Box>
@@ -154,7 +154,7 @@ const Contributing = () => {
               </Typography>
             </Stack>
             <Typography variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.7 }}>
-              We build Fit-Track with the community, not for the community. Share feedback,
+              We build FitProgressr with the community, not for the community. Share feedback,
               celebrate wins, and point out the rough edges so we can keep improving.
             </Typography>
           </Stack>

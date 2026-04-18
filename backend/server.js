@@ -36,7 +36,7 @@ const corsOptions = {
     }
 
     // Production origins from environment variables
-    // Format: FRONTEND_URL=https://fit-track.vercel.app,https://fit-track.netlify.app
+    // Format: FRONTEND_URL=https://fitprogressr.vercel.app,https://fitprogressr.netlify.app
     const frontendUrls = process.env.FRONTEND_URL
       ? process.env.FRONTEND_URL.split(',').map((url) => url.trim())
       : [];

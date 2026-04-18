@@ -149,7 +149,7 @@ const NavBar = ({
                   color: 'text.primary',
                 }}
               >
-                Fit-Track
+                FitProgressr
               </Typography>
             </Box>
 

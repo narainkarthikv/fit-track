@@ -4,7 +4,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: fit-track-backend
+    container_name: fitprogressr-backend
     environment:
       NODE_ENV: ${NODE_ENV}
       JWT_SECRET: ${JWT_SECRET}
@@ -17,7 +17,7 @@ services:
       - ./backend:/app
       - /app/node_modules
     networks:
-      - fit-track-network
+      - fitprogressr-network
     restart: unless-stopped
     command: npm run dev
 
@@ -29,7 +29,7 @@ services:
       args:
         VITE_API_URL: ${VITE_API_URL}
         VITE_APININJAS: ${VITE_APININJAS}
-    container_name: fit-track-frontend
+    container_name: fitprogressr-frontend
     depends_on:
       - backend
     environment:
@@ -41,10 +41,10 @@ services:
       - ./frontend:/app
       - /app/node_modules
     networks:
-      - fit-track-network
+      - fitprogressr-network
     restart: unless-stopped
     command: npm run dev
 
 networks:
-  fit-track-network:
+  fitprogressr-network:
     driver: bridge

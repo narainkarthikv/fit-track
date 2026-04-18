@@ -30,8 +30,12 @@ const userSchema = new Schema(
   },
   {
     collection: 'users',
+    timestamps: true,
   }
 );
+
+userSchema.index({ email: 1 });
+userSchema.index({ username: 1 });
 
 const User = mongoose.model('User', userSchema);
 

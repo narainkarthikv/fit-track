@@ -1,14 +1,14 @@
-![License](https://img.shields.io/github/license/narainkarthikv/fit-track)
+![License](https://img.shields.io/github/license/narainkarthikv/fitprogressr)
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![Last Commit](https://img.shields.io/github/last-commit/narainkarthikv/fit-track)
-[![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/fit-track)](https://github.com/narainkarthikv/fit-track/issues)
-[![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/fit-track)](https://github.com/narainkarthikv/fit-track/stargazers)
+![Last Commit](https://img.shields.io/github/last-commit/narainkarthikv/fitprogressr)
+[![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/fitprogressr)](https://github.com/narainkarthikv/fitprogressr/issues)
+[![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/fitprogressr)](https://github.com/narainkarthikv/fitprogressr/stargazers)
 
-# 🏃‍♂️ Fit-Track
+# FitProgressr
 
 **Your complete fitness journey companion built with the MERN stack.**
 
-Fit-Track is a powerful, open-source fitness logging application that helps you track workouts, visualize progress, and stay motivated. Built with modern web technologies and designed for fitness enthusiasts of all levels.
+FitProgressr is a powerful, open-source fitness logging application that helps you track workouts, visualize progress, and stay motivated. Built with modern web technologies and designed for fitness enthusiasts of all levels.
 
 ## ✨ Features
 
@@ -38,8 +38,8 @@ Get the entire application running in seconds:
 
 ```bash
 # Clone the repository
-git clone https://github.com/narainkarthikv/fit-track.git
-cd fit-track
+git clone https://github.com/narainkarthikv/fitprogressr.git
+cd FitProgressr
 
 # Configure environment variables
 cp .env.example .env
@@ -57,6 +57,11 @@ docker-compose logs -f
 - **Frontend**: http://localhost:5173
 - **Backend API**: http://localhost:5000
 - **Health Check**: http://localhost:5000/api/health
+
+**Deployments:**
+
+- **Production**: https://fitprogressr.netlify.app/
+- **Development**: https://fitprogressr-dev.vercel.app/
 
 **Useful Docker Commands:**
 
@@ -107,7 +112,7 @@ NODE_ENV=development
 PORT=5000
 JWT_SECRET=your-secret-key-here
 JWT_EXPIRATION=7d
-ATLAS_URI=mongodb+srv://username:password@cluster.mongodb.net/fittrack
+ATLAS_URI=mongodb+srv://username:password@cluster.mongodb.net/fitprogressr
 ```
 
 Start the server:
@@ -273,7 +278,7 @@ JWT_SECRET=your-super-secret-jwt-key-change-this
 JWT_EXPIRATION=7d
 
 # Database
-ATLAS_URI=mongodb+srv://username:password@cluster.mongodb.net/fittrack?retryWrites=true&w=majority
+ATLAS_URI=mongodb+srv://username:password@cluster.mongodb.net/fitprogressr?retryWrites=true&w=majority
 
 # Docker Configuration
 BACKEND_PORT=5000
@@ -524,8 +529,10 @@ npm install
 **Build errors:**
 
 ```bash
-# Check Node.js version (should be 18+)
-node --version
+git clone https://github.com/narainkarthikv/FitProgressr.git
+cd FitProgressr
+cp .env.example .env
+docker-compose up -d --build
 
 # Clear Vite cache
 rm -rf .vite node_modules/.vite
@@ -541,9 +548,9 @@ npm run dev
 ### Getting Help
 
 - 📖 Check the [documentation](./CONTRIBUTING.md)
-- 🐛 [Report bugs](https://github.com/narainkarthikv/fit-track/issues)
-- 💬 [Ask questions](https://github.com/narainkarthikv/fit-track/discussions)
-- 💡 [Request features](https://github.com/narainkarthikv/fit-track/issues)
+- 🐛 [Report bugs](https://github.com/narainkarthikv/fitprogressr/issues)
+- 💬 [Ask questions](https://github.com/narainkarthikv/fitprogressr/discussions)
+- 💡 [Request features](https://github.com/narainkarthikv/fitprogressr/issues)
 
 ## 📖 Documentation
 
@@ -554,10 +561,10 @@ npm run dev
 
 ## 👥 Contributors
 
-Thanks to everyone who has helped make Fit-Track awesome! 💪
+Thanks to everyone who has helped make FitProgressr awesome! 💪
 
-<a href="https://github.com/narainkarthikv/fit-track/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=narainkarthikv/fit-track" alt="Contributors" />
+<a href="https://github.com/narainkarthikv/fitprogressr/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=narainkarthikv/fitprogressr" alt="Contributors" />
 </a>
 
 See the [Contributors Page](./Contributors.md) for the full list.
@@ -570,13 +577,13 @@ This project is licensed under the **MIT License** - see [MIT-LICENSE.txt](./MIT
 
 ## 💬 Community & Support
 
-- **Issues**: [Report bugs or request features](https://github.com/narainkarthikv/fit-track/issues)
-- **Discussions**: [Ask questions and share ideas](https://github.com/narainkarthikv/fit-track/discussions)
-- **Pull Requests**: [Contribute code improvements](https://github.com/narainkarthikv/fit-track/pulls)
+- **Issues**: [Report bugs or request features](https://github.com/narainkarthikv/fitprogressr/issues)
+- **Discussions**: [Ask questions and share ideas](https://github.com/narainkarthikv/fitprogressr/discussions)
+- **Pull Requests**: [Contribute code improvements](https://github.com/narainkarthikv/fitprogressr/pulls)
 
 ## 🌟 Show Your Support
 
-If Fit-Track helps you on your fitness journey:
+If FitProgressr helps you on your fitness journey:
 
 - ⭐ Star the repository
 - 🐛 Report issues you encounter
@@ -587,10 +594,9 @@ If Fit-Track helps you on your fitness journey:
 
 ## 🔗 Links
 
-- **Live Demo**: [fit-track.vercel.app](https://wisdomfox-fit-track.netlify.app/)
-- **Repository**: [github.com/narainkarthikv/fit-track](https://github.com/narainkarthikv/fit-track)
-- **Issues**: [github.com/narainkarthikv/fit-track/issues](https://github.com/narainkarthikv/fit-track/issues)
-- **Discussions**: [github.com/narainkarthikv/fit-track/discussions](https://github.com/narainkarthikv/fit-track/discussions)
+- Repository: https://github.com/narainkarthikv/FitProgressr
+- Issues: https://github.com/narainkarthikv/FitProgressr/issues
+- Discussions: https://github.com/narainkarthikv/FitProgressr/discussions
 
 Want to help build these features? Check out our [Contributing Guide](./CONTRIBUTING.md)!
 
@@ -615,7 +621,7 @@ Want to help build these features? Check out our [Contributing Guide](./CONTRIBU
 
 ## 🙏 Acknowledgments
 
-- Thanks to all our [contributors](./Contributors.md) who have helped build Fit-Track
+- Thanks to all our [contributors](./Contributors.md) who have helped build FitProgressr
 - Built with amazing open-source technologies
 - Inspired by the fitness and developer communities
 

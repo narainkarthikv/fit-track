@@ -73,7 +73,7 @@ const CTA = ({ isLoggedIn, onGetStartedClick }) => {
               fontWeight: 400,
             }}
           >
-            Join others who are using Fit-Track to stay consistent with their fitness. No
+            Join others who are using FitProgressr to stay consistent with their fitness. No
             commitments, just simple workout tracking.
           </Typography>
 

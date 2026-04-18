@@ -10,7 +10,7 @@ import { initializeAxiosAuthInterceptor } from './utils/axiosAuthInterceptor';
 
 initializeAxiosAuthInterceptor();
 
-const THEME_MODE_KEY = 'fit-track-theme-mode';
+const THEME_MODE_KEY = 'fitprogressr-theme-mode';
 
 const AppRoot = () => {
   const [themeMode, setThemeMode] = React.useState(() => {
