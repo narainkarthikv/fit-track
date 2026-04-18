@@ -21,7 +21,7 @@ import PropTypes from 'prop-types';
 
 const NotificationDropdown = ({ notifications = [], toggleNotificationReadStatus }) => {
   const defaultNotifications = [
-    { id: 1, message: 'Welcome to Fit Track!', read: false },
+    { id: 1, message: 'Welcome to FitProgressr!', read: false },
     {
       id: 2,
       message: 'Your profile is 80% complete. Complete it for full',

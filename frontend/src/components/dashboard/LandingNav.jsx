@@ -57,7 +57,7 @@ const LandingNav = ({ onSignInClick, onGetStartedClick }) => {
                 letterSpacing: '-0.02em',
               }}
             >
-              Fit-Track
+              FitProgressr
             </Typography>
           </Box>
 

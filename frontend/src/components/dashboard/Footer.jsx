@@ -31,7 +31,7 @@ const Footer = () => (
                 color: 'primary.main',
               }}
             >
-              Fit-Track
+              FitProgressr
             </Typography>
             <Typography
               variant="body2"
@@ -112,7 +112,7 @@ const Footer = () => (
               </Typography>
               <Stack spacing={1}>
                 <Link
-                  href="https://github.com/narainkarthikv/fit-track"
+                  href="https://github.com/narainkarthikv/fitprogressr"
                   target="_blank"
                   rel="noopener"
                   underline="none"
@@ -125,7 +125,7 @@ const Footer = () => (
                   Docs & repo
                 </Link>
                 <Link
-                  href="https://github.com/narainkarthikv/fit-track/issues"
+                  href="https://github.com/narainkarthikv/fitprogressr/issues"
                   target="_blank"
                   rel="noopener"
                   underline="none"
@@ -153,7 +153,7 @@ const Footer = () => (
               </Typography>
               <Stack spacing={1}>
                 <Link
-                  href="https://github.com/narainkarthikv/fit-track/blob/develop/CONTRIBUTING.md"
+                  href="https://github.com/narainkarthikv/fitprogressr/blob/develop/CONTRIBUTING.md"
                   target="_blank"
                   rel="noopener"
                   underline="none"
@@ -166,7 +166,7 @@ const Footer = () => (
                   Contributing
                 </Link>
                 <Link
-                  href="https://github.com/narainkarthikv/fit-track"
+                  href="https://github.com/narainkarthikv/fitprogressr"
                   target="_blank"
                   rel="noopener"
                   underline="none"
@@ -200,12 +200,12 @@ const Footer = () => (
               fontSize: '0.875rem',
             }}
           >
-            © {new Date().getFullYear()} Fit-Track. Built in the open for athletes who care.
+            © {new Date().getFullYear()} FitProgressr. Built in the open for athletes who care.
           </Typography>
 
           <Stack direction="row" spacing={2}>
             <Link
-              href="https://github.com/narainkarthikv/fit-track"
+              href="https://github.com/narainkarthikv/fitprogressr"
               target="_blank"
               rel="noopener"
               sx={{
