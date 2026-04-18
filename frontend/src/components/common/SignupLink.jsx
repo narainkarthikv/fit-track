@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Box, Typography, Link } from '@mui/material';
 
 const SignupLink = ({
-  text = 'New to Fit-Track?',
+  text = 'New to FitProgressr?',
   linkText = 'Sign Up Now',
   linkTo = '/signup',
 }) => (
