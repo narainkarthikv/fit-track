@@ -1,4 +1,4 @@
-import React from 'react';
+import { cloneElement } from 'react';
 import {
   AccountCircle as FaUserCircle,
   DirectionsRun as FaRunning,
@@ -10,7 +10,6 @@ import {
 import {
   Box,
   Container,
-  Grid,
   Card,
   CardContent,
   Typography,
@@ -227,7 +226,7 @@ const Features = () => {
                     },
                   }}
                 >
-                  {React.cloneElement(feature.icon, {
+                  {cloneElement(feature.icon, {
                     sx: {
                       fontSize: {
                         xs: '1.625rem',

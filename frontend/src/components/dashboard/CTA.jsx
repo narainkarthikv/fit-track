@@ -1,11 +1,10 @@
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Box, Container, Typography, Button, useTheme, useMediaQuery, alpha } from '@mui/material';
+import { Box, Container, Typography, Button, useTheme, alpha } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
 
 const CTA = ({ isLoggedIn, onGetStartedClick }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Box

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { Box, Typography, LinearProgress } from '@mui/material';
 import { CalendarToday, TrendingUp } from '@mui/icons-material';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { TextField, Box, Stack, Typography } from '@mui/material';
 import { CalendarMonth, FitnessCenter } from '@mui/icons-material';
 

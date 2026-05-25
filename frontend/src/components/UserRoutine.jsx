@@ -1,5 +1,5 @@
+import { useEffect, useState } from 'react';
 import { updateTotalDays } from '../slices/userRoutineSlice';
-import React, { useEffect, useState } from 'react';
 import { Box, Typography, Chip } from '@mui/material';
 import {
   Whatshot as FireIcon,

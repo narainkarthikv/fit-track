@@ -1,6 +1,4 @@
-import React from 'react';
 import { Box, Container, Typography, Card, CardContent, Avatar } from '@mui/material';
-import { AccountCircle } from '@mui/icons-material';
 
 const Testimonials = () => {
   const testimonials = [
