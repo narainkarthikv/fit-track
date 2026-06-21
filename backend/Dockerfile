@@ -1,17 +1,28 @@
 # Build stage - Base image for Node.js
-FROM node:18-alpine
+FROM node:22-alpine
+
+# Create a non-root user and group for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package.json and package-lock.json as root
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies as root (npm requires this)
+RUN npm install --prefer-offline --no-audit && \
+    npm cache clean --force
 
 # Copy the rest of the application
 COPY . .
+
+# Set proper file ownership to nodejs user
+RUN chown -R nodejs:nodejs /app
+
+# Switch to non-root user
+USER nodejs
 
 # Expose the backend port
 EXPOSE 5000
