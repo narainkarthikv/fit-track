@@ -7,8 +7,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install --prefer-offline --no-audit && \
-    npm cache clean --force
+RUN npm install
 
 # Copy source code
 COPY . .
@@ -21,28 +20,14 @@ FROM node:22-alpine
 
 WORKDIR /app
 
-# Create a non-root user and group for security
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001
-
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies as root
-RUN npm install --prefer-offline --no-audit && \
-    npm cache clean --force
+# Install dependencies
+RUN npm install
 
 # Copy source code
 COPY . .
-
-# Copy built files from builder stage (if available)
-COPY --from=builder /app/dist ./dist
-
-# Set proper file ownership to nodejs user
-RUN chown -R nodejs:nodejs /app
-
-# Switch to non-root user
-USER nodejs
 
 # Expose Vite dev server port
 EXPOSE 5173
