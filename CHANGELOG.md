@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on Keep a Changelog
 and this project adheres to Semantic Versioning.
 
+## [Unreleased]
+
+### Added
+- Added a GitHub Actions CI workflow to run frontend lint, tests, and build checks.
+- Added a standard root `LICENSE` file for clearer open-source compatibility tooling.
+
+### Changed
+- Added a CI status badge to `README.md`.
+- Improved `CODE_OF_CONDUCT.md` contact guidance and moderator escalation path.
+- Updated community template placement to `.github/PULL_REQUEST_TEMPLATE.md`.
+
+### Fixed
+- Corrected repository licensing metadata mismatch by setting backend package license to MIT.
+- Replaced inaccurate `MIT-LICENSE.txt` copyright attribution.
+
 ## [1.1.4] - 2026-06-21
 
 ### Security

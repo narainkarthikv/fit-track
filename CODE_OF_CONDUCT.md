@@ -22,7 +22,12 @@ Examples of unacceptable behavior:
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders at [INSERT EMAIL].
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by opening a private
+maintainer report through GitHub or by contacting maintainers at narainkarthikv@users.noreply.github.com.
+All complaints will be reviewed and investigated promptly and fairly.
+
+Project maintainers are responsible for clarifying and enforcing our standards and may remove, edit, or
+reject contributions and interactions that are not aligned with this Code of Conduct.
 
 ---
 
