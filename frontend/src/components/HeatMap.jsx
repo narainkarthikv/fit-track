@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import { Box, Paper, Stack, Typography, CircularProgress, alpha, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';

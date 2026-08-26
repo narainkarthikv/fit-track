@@ -1,11 +1,11 @@
+import { cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { Box, Typography } from '@mui/material';
 
 const HeaderSection = ({ title, icon }) => (
   <Box sx={{ textAlign: 'center', mb: 4 }}>
     {icon &&
-      React.cloneElement(icon, {
+      cloneElement(icon, {
         'data-testid': 'header-section-icon',
         sx: { fontSize: 48, color: 'primary.main', mb: 1 },
       })}

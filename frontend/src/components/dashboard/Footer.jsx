@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Box, Container, Typography, Stack, Link, Divider, Grid } from '@mui/material';
 import { GitHub, FitnessCenter } from '@mui/icons-material';
 

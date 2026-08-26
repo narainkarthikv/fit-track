@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   Container,
@@ -16,12 +16,9 @@ import {
   EmojiEvents as TrophyIcon,
   CalendarMonth as CalendarIcon,
 } from '@mui/icons-material';
-import Card from '../components/common/Card';
 import ExercisesList from '../components/ExercisesList';
 import Quotes from '../components/Quotes';
 import UserRoutine from '../components/UserRoutine';
-import UserExperience from '../components/UserExperience';
-import TotalDays from '../components/TotalDays';
 import HeatMap from '../components/HeatMap';
 
 // Premium Stats Card Component

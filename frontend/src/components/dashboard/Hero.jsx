@@ -6,7 +6,6 @@ import {
   Grid,
   Typography,
   Button,
-  useMediaQuery,
   useTheme,
   Stack,
   alpha,
@@ -26,7 +25,6 @@ const gradientShift = keyframes`
 
 const Hero = ({ isLoggedIn, onGetStartedClick }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Box

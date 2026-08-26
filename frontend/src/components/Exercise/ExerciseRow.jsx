@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography, TableRow, TableCell } from '@mui/material';
 import { FitnessCenter } from '@mui/icons-material';

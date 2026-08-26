@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Typography, Skeleton, alpha, useTheme } from '@mui/material';
 import { FormatQuote } from '@mui/icons-material';
 

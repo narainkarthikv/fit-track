@@ -1,5 +1,5 @@
 # Build stage - Create optimized build
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ COPY . .
 RUN npm run build
 
 # Development stage - For development with hot reload
-FROM node:18-alpine
+FROM node:22-alpine
 
 WORKDIR /app
 

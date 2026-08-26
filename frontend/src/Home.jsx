@@ -1,4 +1,3 @@
-import React from 'react';
 import { Container, Grid, Box, Typography } from '@mui/material';
 import Card from './components/common/Card';
 import UserExperience from './components/UserExperience';

@@ -23,7 +23,6 @@ import {
   Visibility as FaEye,
   VisibilityOff as FaEyeSlash,
   Close as CloseIcon,
-  Edit as EditIcon,
 } from '@mui/icons-material';
 import Snackbar from '../common/Snackbar';
 

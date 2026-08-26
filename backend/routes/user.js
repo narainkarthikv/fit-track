@@ -3,10 +3,14 @@ const router = express.Router();
 const User = require('../models/user.model');
 const Exercise = require('../models/exercise.model');
 const bcrypt = require('bcryptjs');
-const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const verifyToken = require('../middleware/jwtAuth.js');
 const { ensureAdmin, ensureSelf } = require('../middleware/accessControl');
+const {
+  isBcryptHash,
+  hashPassword,
+  sanitizeUser,
+} = require('../utils/helpers');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
@@ -15,35 +19,6 @@ if (!JWT_SECRET) {
 const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '1d';
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || JWT_SECRET;
 const REFRESH_TOKEN_EXPIRATION = process.env.REFRESH_TOKEN_EXPIRATION || '7d';
-
-const isBcryptHash = (value = '') =>
-  value.startsWith('$2a$') || value.startsWith('$2b$') || value.startsWith('$2y$');
-
-const hashPassword = async (password) => {
-  if (typeof password !== 'string' || password.length < 6) {
-    throw new Error('Password must be at least 6 characters long');
-  }
-  return bcrypt.hash(password, saltRounds);
-};
-
-const sanitizeUser = (userDoc) => {
-  if (!userDoc) {
-    return null;
-  }
-
-  const user = userDoc.toObject ? userDoc.toObject() : userDoc;
-  return {
-    id: user._id?.toString() || user.id,
-    username: user.username,
-    email: user.email,
-    xp: user.xp,
-    totalDays: user.totalDays,
-    dayCheck: user.dayCheck,
-    lastActiveDate: user.lastActiveDate,
-    streakCount: user.streakCount,
-    role: user.role || 'user',
-  };
-};
 
 const createTokenPayload = (user) => ({
   id: user._id.toString(),

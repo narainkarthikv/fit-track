@@ -1,42 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const Exercise = require('../models/exercise.model');
-const mongoose = require('mongoose');
 const verifyToken = require('../middleware/jwtAuth.js');
 const { ensureAdmin, ensureSelf } = require('../middleware/accessControl');
-
-const normalizeDate = (value) => {
-  const parsed = new Date(value);
-  return Number.isNaN(parsed.getTime()) ? null : parsed;
-};
-
-const normalizeDayKey = (date) => date.toISOString().split('T')[0];
-const toObjectId = (value) =>
-  mongoose.Types.ObjectId.isValid(value) ? new mongoose.Types.ObjectId(value) : null;
-
-const buildUserIdFilter = (userId) => {
-  const objectId = toObjectId(userId);
-  if (!objectId) {
-    return { $expr: { $eq: [{ $toString: '$userId' }, userId] } };
-  }
-
-  return {
-    $or: [{ userId: objectId }, { $expr: { $eq: [{ $toString: '$userId' }, userId] } }],
-  };
-};
-
-const validateExercisePayload = ({ description, duration, exerciseCheck }) => {
-  if (!description || typeof description !== 'string') {
-    return 'Description is required';
-  }
-  if (!Number.isFinite(Number(duration)) || Number(duration) <= 0) {
-    return 'Duration must be a positive number';
-  }
-  if (typeof exerciseCheck !== 'boolean') {
-    return 'exerciseCheck must be a boolean';
-  }
-  return null;
-};
+const {
+  normalizeDate,
+  normalizeDayKey,
+  toObjectId,
+  buildUserIdFilter,
+  validateExercisePayload,
+} = require('../utils/helpers');
+const { validateMonth } = require('../utils/validators');
 
 router.get('/', verifyToken, ensureAdmin, async (req, res) => {
   try {
@@ -72,7 +46,7 @@ router.post('/:userId/add', verifyToken, ensureSelf('userId'), async (req, res) 
   try {
     const exercisesData = await Exercise.findOne(buildUserIdFilter(userId));
     if (!exercisesData) {
-      return res.status(404).json({ message: 'Exercise data not found for this userId.' });
+      return res.status(404).json({ error: 'Exercise data not found for this userId.' });
     }
     const validationError = validateExercisePayload({
       description,
@@ -81,7 +55,7 @@ router.post('/:userId/add', verifyToken, ensureSelf('userId'), async (req, res) 
     });
 
     if (validationError) {
-      return res.status(400).json({ message: validationError });
+      return res.status(400).json({ error: validationError });
     }
 
     const exerciseEntry = {
@@ -98,7 +72,7 @@ router.post('/:userId/add', verifyToken, ensureSelf('userId'), async (req, res) 
     });
   } catch (error) {
     console.error('Error adding exercise:', error);
-    res.status(500).json({ message: 'Error adding exercise to the database.' });
+   res.status(500).json({ error: 'Error adding exercise to the database.' });
   }
 });
 
@@ -111,18 +85,18 @@ router.delete(
     try {
       const exerciseData = await Exercise.findOne(buildUserIdFilter(userId));
       if (!exerciseData) {
-        return res.status(404).json({ message: 'Exercise data not found for this userId.' });
+        return res.status(404).json({ error: 'Exercise data not found for this userId.' });
       }
       const exerciseToRemove = exerciseData.Exercises.id(exerciseId);
       if (!exerciseToRemove) {
-        return res.status(404).json({ message: 'Exercise not found in exercise data.' });
+        return res.status(404).json({ error: 'Exercise not found in exercise data.' });
       }
       exerciseToRemove.deleteOne();
       await exerciseData.save();
       res.json({ message: `${exerciseId} Exercise deleted successfully.` });
     } catch (error) {
       console.error('Error deleting Exercise:', error);
-      res.status(500).json({ message: 'Internal server error' });
+      res.status(500).json({ error: 'Internal server error' });
     }
   }
 );
@@ -133,17 +107,17 @@ router.post('/:userId/track-exercise', verifyToken, ensureSelf('userId'), async 
 
   try {
     if (!Number.isFinite(Number(count)) || Number(count) < 0) {
-      return res.status(400).json({ message: 'Invalid count value' });
+      return res.status(400).json({ error: 'Invalid count value' });
     }
 
     const parsedDate = normalizeDate(date);
     if (!parsedDate) {
-      return res.status(400).json({ message: 'Invalid date value' });
+      return res.status(400).json({ error: 'Invalid date value' });
     }
 
     const exerciseData = await Exercise.findOne(buildUserIdFilter(userId));
     if (!exerciseData) {
-      return res.status(404).json({ message: 'Exercise data not found for this userId.' });
+      return res.status(404).json({ error: 'Exercise data not found for this userId.' });
     }
 
     // Always update the exercise for the given date or add a new entry without restriction
@@ -169,7 +143,7 @@ router.post('/:userId/track-exercise', verifyToken, ensureSelf('userId'), async 
     });
   } catch (error) {
     console.error('Error updating exercise data:', error);
-    res.status(500).json({ message: 'Error updating exercise data' });
+    res.status(500).json({ error: 'Error updating exercise data' });
   }
 });
 
@@ -181,7 +155,7 @@ router.get('/:userId/data/:month', verifyToken, ensureSelf('userId'), async (req
     const year = new Date().getFullYear();
     const startDate = new Date(`${month} 1, ${year}`);
     if (Number.isNaN(startDate.getTime())) {
-      return res.status(400).json({ message: 'Invalid month parameter' });
+      return res.status(400).json({ error: 'Invalid month parameter' });
     }
     const endDate = new Date(year, startDate.getMonth() + 1, 0); // last day of the month
 
@@ -223,7 +197,7 @@ router.get('/:userId/data/:month', verifyToken, ensureSelf('userId'), async (req
     }
   } catch (error) {
     console.error('Error fetching exercise data:', error);
-    res.status(500).json({ message: 'Error fetching exercise data' });
+    res.status(500).json({ error: 'Error fetching exercise data' });
   }
 });
 

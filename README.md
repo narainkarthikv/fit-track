@@ -1,6 +1,7 @@
 ![License](https://img.shields.io/github/license/narainkarthikv/fitprogressr)
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.1.4-blue)
 ![Last Commit](https://img.shields.io/github/last-commit/narainkarthikv/fitprogressr)
+[![CI](https://github.com/narainkarthikv/fitprogressr/actions/workflows/ci.yml/badge.svg)](https://github.com/narainkarthikv/fitprogressr/actions/workflows/ci.yml)
 [![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/fitprogressr)](https://github.com/narainkarthikv/fitprogressr/issues)
 [![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/fitprogressr)](https://github.com/narainkarthikv/fitprogressr/stargazers)
 

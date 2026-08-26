@@ -1,4 +1,4 @@
-import React from 'react';
+import { cloneElement } from 'react';
 import { Box, Container, Typography, alpha, useTheme, Grid, Stack } from '@mui/material';
 import { TrendingUp, CalendarMonth, Whatshot } from '@mui/icons-material';
 
@@ -91,7 +91,7 @@ const ProgressShowcase = () => {
                     mb: 2,
                   }}
                 >
-                  {React.cloneElement(stat.icon, {
+                  {cloneElement(stat.icon, {
                     sx: { fontSize: '1.5rem', color: stat.color },
                   })}
                 </Box>

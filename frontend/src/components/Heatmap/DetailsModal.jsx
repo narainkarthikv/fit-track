@@ -1,4 +1,3 @@
-import React from 'react';
 import { Dialog, DialogContent, IconButton, Box, Typography, Stack, Chip } from '@mui/material';
 import { CalendarMonth, FitnessCenter, EmojiEvents, Close } from '@mui/icons-material';
 

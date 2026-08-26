@@ -19,7 +19,7 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           issue-message: |
-            👋 **Welcome to FitProgessr!**
+            👋 **Welcome to FitProgressr!**
 
             Thank you for opening your first issue! We appreciate you taking the time to contribute to this project.
 
@@ -32,7 +32,7 @@ jobs:
           pr-message: |
             🎉 **Thank you for your first pull request!**
 
-            We're excited to review your contribution to FitProgessr. Here's what happens next:
+            We're excited to review your contribution to FitProgressr. Here's what happens next:
 
             - A maintainer will review your PR within 3-7 days
             - Please ensure all checks pass and address any feedback

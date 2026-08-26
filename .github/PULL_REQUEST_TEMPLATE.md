@@ -20,7 +20,7 @@
 
 ## Related Issue
 
-Fixes # (issue)
+Fixes #<issue-number>
 
 ## Screenshots (if applicable)
 
